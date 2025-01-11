@@ -1,0 +1,45 @@
+@import "tailwindcss";
+
+@import "./animations.css";
+@import "./other.utils.css";
+@import "./typo.utils.css";
+@import "./fonts/iran-yekan-x.css";
+
+@theme {
+    --color-primary: hsl(214, 100%, 97%);
+    --color-secondary: hsl(214, 100%, 97%);
+
+    /* FONT WEIGHT */
+    --font-weight-extrablack: 950;
+    --font-weight-heavy: 1000;
+
+    /* FONT FAMILY */
+    --font-lato: "Lato", sans-serif;
+    --font-inter: "Inter", sans-serif;
+    --font-dmsans: "DM Sans", sans-serif;
+    --font-iran-yekan-x: "IRANYekanXVF", "sans-serif";
+
+    /* BREAKPOINTS */
+    --breakpoint-3xl: 1700px;
+    --breakpoint-2xs: 400px;
+    --breakpoint-xs: 480px;
+
+    /* ANIMATIONS */
+    --animate-marquee: marquee 3s linear infinite;
+
+    @keyframes marquee {
+        to {
+            transform: translateX(50%);
+        }
+    }
+}
+
+/* CONTAINER */
+
+@utility container {
+    @apply mx-auto;
+    padding-inline: 3rem;
+    @screen xl {
+        padding-inline: 5rem;
+    }
+}

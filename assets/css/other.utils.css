@@ -1,0 +1,28 @@
+@utility persian-number {
+    -moz-font-feature-settings: "ss07";
+    -webkit-font-feature-settings: "ss07";
+    font-feature-settings: "ss07";
+}
+
+@utility text-gradient {
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+@utility hide-scrollbar {
+    -ms-overflow-style: none !important;
+    scrollbar-width: none !important;
+}
+
+@utility flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@utility flex-col-center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}

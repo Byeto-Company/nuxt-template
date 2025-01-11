@@ -1,0 +1,89 @@
+@layer base {
+    @font-face {
+        font-family: "IRANYekanXVF";
+        src: url("/fonts/IranYekanX/IRANYekanX-Thin.woff2");
+        font-weight: 100;
+        font-style: normal;
+        font-display: swap;
+    }
+
+    @font-face {
+        font-family: "IRANYekanXVF";
+        src: url("/fonts/IranYekanX/IRANYekanX-UltraLight.woff2");
+        font-weight: 200;
+        font-style: normal;
+        font-display: swap;
+    }
+
+    @font-face {
+        font-family: "IRANYekanXVF";
+        src: url("/fonts/IranYekanX/IRANYekanX-Light.woff2");
+        font-weight: 300;
+        font-style: normal;
+        font-display: swap;
+    }
+
+    @font-face {
+        font-family: "IRANYekanXVF";
+        src: url("/fonts/IranYekanX/IRANYekanX-Regular.woff2");
+        font-weight: 400;
+        font-style: normal;
+        font-display: swap;
+    }
+
+    @font-face {
+        font-family: "IRANYekanXVF";
+        src: url("/fonts/IranYekanX/IRANYekanX-Medium.woff2");
+        font-weight: 500;
+        font-style: normal;
+        font-display: swap;
+    }
+
+    @font-face {
+        font-family: "IRANYekanXVF";
+        src: url("/fonts/IranYekanX/IRANYekanX-DemiBold.woff2");
+        font-weight: 600;
+        font-style: normal;
+        font-display: swap;
+    }
+
+    @font-face {
+        font-family: "IRANYekanXVF";
+        src: url("/fonts/IranYekanX/IRANYekanX-Bold.woff2");
+        font-weight: 700;
+        font-style: normal;
+        font-display: swap;
+    }
+
+    @font-face {
+        font-family: "IRANYekanXVF";
+        src: url("/fonts/IranYekanX/IRANYekanX-ExtraBold.woff2");
+        font-weight: 800;
+        font-style: normal;
+        font-display: swap;
+    }
+
+    @font-face {
+        font-family: "IRANYekanXVF";
+        src: url("/fonts/IranYekanX/IRANYekanX-Black.woff2");
+        font-weight: 900;
+        font-style: normal;
+        font-display: swap;
+    }
+
+    @font-face {
+        font-family: "IRANYekanXVF";
+        src: url("/fonts/IranYekanX/IRANYekanX-ExtraBlack.woff2");
+        font-weight: 950;
+        font-style: normal;
+        font-display: swap;
+    }
+
+    @font-face {
+        font-family: "IRANYekanXVF";
+        src: url("/fonts/IranYekanX/IRANYekanX-Heavy.woff2");
+        font-weight: 1000;
+        font-style: normal;
+        font-display: swap;
+    }
+}
