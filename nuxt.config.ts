@@ -32,6 +32,7 @@ export default defineNuxtConfig({
     modules: [
         "@nuxt/icon",
         "@vueuse/nuxt",
+        "@formkit/auto-animate/nuxt",
         // [
         //     "@nuxtjs/google-fonts",
         //     {
