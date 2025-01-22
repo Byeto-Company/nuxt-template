@@ -12,13 +12,15 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@formkit/auto-animate": "^0.8.2",
     "@nuxt/icon": "^1.10.3",
     "@nuxtjs/google-fonts": "^3.2.0",
     "@tanstack/vue-query": "^5.62.16",
     "@tanstack/vue-query-devtools": "^5.62.16",
     "@vuelidate/core": "^2.0.3",
     "@vuelidate/validators": "^2.0.4",
-    "@vueuse/nuxt": "^12.4.0",
+    "@vueuse/integrations": "^12.4.0",
+    "@vueuse/nuxt": "^12.3.0",
     "axios": "^1.7.9",
     "fast-average-color": "^9.4.0",
     "gsap": "^3.12.5",
