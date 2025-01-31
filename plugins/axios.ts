@@ -12,7 +12,7 @@ export default defineNuxtPlugin(() => {
 
     axios.interceptors.request.use((config) => {
         if (!config.url?.includes(API_ENDPOINTS.auth.signin)) {
-            config.headers.Authorization = `Bearer ${token.value}`;
+            config.headers.Authorization = token.value ? `Bearer ${token.value}` : undefined;
         }
 
         return config;
