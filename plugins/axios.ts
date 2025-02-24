@@ -4,7 +4,7 @@ import { API_ENDPOINTS } from "~/constants/api-endpoints";
 
 export default defineNuxtPlugin(() => {
     const config = useRuntimeConfig();
-    const { token, logout } = useAuth();
+    const { token } = useAuth();
 
     const axios = axiosOriginal.create({
         baseURL: config.public.API_BASE_URL
