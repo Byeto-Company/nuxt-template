@@ -1,3 +1,5 @@
+import { API_RESOURCES } from "~/constants/resources";
+
 export {};
 
 declare global {
@@ -7,4 +9,6 @@ declare global {
         previous: string | null;
         results: T[];
     };
+
+    type ApiResources = keyof typeof API_RESOURCES;
 }
