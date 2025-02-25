@@ -1,22 +1,22 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-    compatibilityDate: '2024-11-01',
-    devtools: {enabled: true},
+    compatibilityDate: "2024-11-01",
+    devtools: { enabled: true },
     ssr: true,
     css: ["~/assets/css/tailwind.css"],
 
     postcss: {
         plugins: {
             "@tailwindcss/postcss": {},
-            autoprefixer: {},
-        },
+            autoprefixer: {}
+        }
     },
 
     components: [
         {
             path: "~/components",
-            pathPrefix: false,
-        },
+            pathPrefix: false
+        }
     ],
 
     // icon: {
@@ -32,7 +32,7 @@ export default defineNuxtConfig({
     modules: [
         "@nuxt/icon",
         "@vueuse/nuxt",
-        "@formkit/auto-animate/nuxt",
+        "@formkit/auto-animate/nuxt"
         // [
         //     "@nuxtjs/google-fonts",
         //     {
@@ -48,7 +48,7 @@ export default defineNuxtConfig({
 
     runtimeConfig: {
         public: {
-            API_BASE_URL: "http://localhost:8000",
-        },
-    },
-})
+            API_BASE_URL: "https://my-json-server.typicode.com/typicode/demo/"
+        }
+    }
+});
