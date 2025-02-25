@@ -1,6 +1,6 @@
 // imports
 
-import { useInfiniteQuery } from "@tanstack/vue-query";
+import { useInfiniteQuery, type UseInfiniteQueryOptions } from "@tanstack/vue-query";
 import type { AxiosRequestConfig } from "axios";
 
 // types
@@ -62,8 +62,7 @@ const useInfiniteMany = <TResponse>({
             };
 
             return lastPage?.next ? nextPageParams : undefined;
-        },
-        ...queryOptions
+        }
     });
 };
 

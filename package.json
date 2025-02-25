@@ -9,24 +9,25 @@
     "dev-o": "nuxt dev -- -o",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "upgrade" : "ncu -u"
   },
   "dependencies": {
     "@formkit/auto-animate": "^0.8.2",
     "@nuxt/icon": "^1.10.3",
     "@nuxtjs/google-fonts": "^3.2.0",
-    "@tanstack/vue-query": "^5.64.2",
-    "@tanstack/vue-query-devtools": "^5.64.2",
+    "@tanstack/vue-query": "^5.66.9",
+    "@tanstack/vue-query-devtools": "^5.66.9",
     "@vuelidate/core": "^2.0.3",
     "@vuelidate/validators": "^2.0.4",
-    "@vueuse/integrations": "^12.5.0",
-    "@vueuse/nuxt": "^12.5.0",
+    "@vueuse/integrations": "^12.7.0",
+    "@vueuse/nuxt": "^12.7.0",
     "axios": "^1.7.9",
     "fast-average-color": "^9.4.0",
     "gsap": "^3.12.7",
     "masonry-layout": "^4.2.2",
-    "nuxt": "^3.15.2",
-    "swiper": "^11.2.1",
+    "nuxt": "^3.15.4",
+    "swiper": "^11.2.4",
     "universal-cookie": "^7.2.2",
     "vue": "latest",
     "vue-router": "latest",
@@ -35,10 +36,10 @@
   },
   "devDependencies": {
     "@iconify-json/bi": "^1.2.2",
-    "@tailwindcss/postcss": "^4.0.0",
+    "@tailwindcss/postcss": "^4.0.8",
     "@types/masonry-layout": "^4.2.8",
     "autoprefixer": "^10.4.20",
-    "postcss": "^8.5.1",
-    "tailwindcss": "^4.0.0"
+    "postcss": "^8.5.3",
+    "tailwindcss": "^4.0.8"
   }
 }

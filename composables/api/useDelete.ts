@@ -10,7 +10,7 @@ export type ApiDeleteResourceOptions = {
     resource: ApiResources
     urlSearchParams?: ComputedRef<Record<any, any>>,
     axiosOptions?: AxiosRequestConfig,
-    mutationOptions?: MutateOptions<any, any, any>
+    mutationOptions?: any
 }
 
 const useDelete = <TResponse>({
@@ -33,8 +33,7 @@ const useDelete = <TResponse>({
     };
 
     return useMutation({
-        mutationFn: () => handleDelete(),
-        ...mutationOptions
+        mutationFn: () => handleDelete()
     });
 };
 

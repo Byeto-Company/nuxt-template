@@ -10,7 +10,7 @@ export type ApiOneResourceOptions = {
     resource: ApiResources
     urlSearchParams?: ComputedRef<Record<any, any>>,
     axiosOptions?: Omit<AxiosRequestConfig, "params">
-    queryOptions?: QueryOptions<any, any, any, any>
+    queryOptions?: any
 }
 
 const useOne = <T>({ resource, urlSearchParams, id, queryOptions, axiosOptions }: ApiOneResourceOptions) => {
@@ -32,8 +32,7 @@ const useOne = <T>({ resource, urlSearchParams, id, queryOptions, axiosOptions }
 
     return useQuery({
         queryKey: [resource, id, urlSearchParams ?? {}],
-        queryFn: () => handleOne(),
-        ...queryOptions
+        queryFn: () => handleOne()
     });
 };
 

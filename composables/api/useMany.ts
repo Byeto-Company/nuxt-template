@@ -16,7 +16,7 @@ export type ApiManyResourceOptions = {
         }
     },
     axiosOptions?: Omit<AxiosRequestConfig, "params">
-    queryOptions?: QueryOptions<any, any, any, any>
+    queryOptions?: any
 }
 
 const useMany = <TResponse>({ resource, urlSearchParams, page, options, queryOptions, axiosOptions }: ApiManyResourceOptions) => {
@@ -46,7 +46,6 @@ const useMany = <TResponse>({ resource, urlSearchParams, page, options, queryOpt
     return useQuery({
         queryKey: [resource, urlSearchParams ?? {}, page ?? 1],
         queryFn: () => handleMany(),
-        ...queryOptions
     });
 };
 

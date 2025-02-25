@@ -9,7 +9,7 @@ export type ApiCreateResourceOptions = {
     resource: ApiResources
     urlSearchParams?: ComputedRef<Record<any, any>>,
     axiosOptions?: Omit<AxiosRequestConfig, "params">
-    mutationOptions?: MutateOptions<any, any, any>
+    mutationOptions?: any
 }
 
 const useCreate = <TResponse, TRequest>({
@@ -36,8 +36,7 @@ const useCreate = <TResponse, TRequest>({
     };
 
     return useMutation({
-        mutationFn: (variables: TRequest) => handleCreate(variables),
-        ...mutationOptions
+        mutationFn: (variables: TRequest) => handleCreate(variables)
     });
 };
 

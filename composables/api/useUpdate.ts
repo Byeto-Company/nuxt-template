@@ -10,7 +10,7 @@ export type ApiUpdateResourceOptions = {
     resource: ApiResources
     urlSearchParams?: ComputedRef<Record<any, any>>,
     axiosOptions?: Omit<AxiosRequestConfig, "params">
-    mutationOptions?: MutateOptions<any, any, any>
+    mutationOptions?: any
 }
 
 const useUpdate = <TResponse, TRequest>({
@@ -37,8 +37,7 @@ const useUpdate = <TResponse, TRequest>({
     };
 
     return useMutation({
-        mutationFn: (variables: TRequest) => handleUpdate(variables),
-        ...mutationOptions
+        mutationFn: (variables: TRequest) => handleUpdate(variables)
     });
 };
 
