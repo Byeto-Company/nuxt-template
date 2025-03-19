@@ -1,6 +1,7 @@
 import axiosOriginal from "axios";
 import { useAuth } from "~/composables/api/auth/useAuth";
 import { API_ENDPOINTS } from "~/constants/api-endpoints";
+import Logger from "~/tools/logger";
 
 export default defineNuxtPlugin(() => {
     const config = useRuntimeConfig();
@@ -20,11 +21,11 @@ export default defineNuxtPlugin(() => {
 
     axios.interceptors.response.use((response) => {
         return response;
-    }, function(error) {
+    }, async function(error) {
 
-        // if (error.status === 401) {
-        //     logout();
-        // }
+        if (config.public.DEBUG === "true" && import.meta.server) {
+            await Logger.axiosErrorLog(error);
+        }
 
         return Promise.reject(error);
     });
