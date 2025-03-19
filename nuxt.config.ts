@@ -48,7 +48,8 @@ export default defineNuxtConfig({
 
     runtimeConfig: {
         public: {
-            API_BASE_URL: "https://my-json-server.typicode.com/typicode/demo/"
+            API_BASE_URL: process.env.API_BASE_URL,
+            DEBUG: process.env.DEBUG
         }
     }
 });
