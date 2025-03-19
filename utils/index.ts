@@ -1,3 +1,9 @@
+import fs from "fs/promises";
+
+const path = require("path");
+
+// Byte Formatter
+
 export const byteFormatter = (bytes: number, decimals = 2) => {
     if (!+bytes) return "0 B";
 
@@ -9,6 +15,8 @@ export const byteFormatter = (bytes: number, decimals = 2) => {
 
     return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
 };
+
+// Format Agent
 
 export const formatAgent = (userAgent: any) => {
     if (userAgent) {
@@ -58,12 +66,14 @@ export const formatAgent = (userAgent: any) => {
             os: os,
             browser: browser,
             browserVersion: browserVersion,
-            deviceType: deviceType,
+            deviceType: deviceType
         };
     }
 
     return undefined;
 };
+
+// Is Image
 
 export const isImage = (name: string | undefined) => {
     if (name) {
@@ -71,4 +81,20 @@ export const isImage = (name: string | undefined) => {
         return types.some((type) => name.toLowerCase().endsWith(type));
     }
     return false;
+};
+
+// Ensure Exist
+
+export const ensureFileExists = async (filePath: string, initialContent = "") => {
+    try {
+        await fs.access(filePath);
+    } catch (error) {
+        const err = error as any;
+        if (err.code === "ENOENT") {
+            await fs.mkdir(path.dirname(filePath), { recursive: true });
+            await fs.writeFile(filePath, initialContent, "utf-8");
+        } else {
+            throw err;
+        }
+    }
 };
