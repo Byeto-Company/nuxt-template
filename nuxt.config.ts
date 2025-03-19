@@ -32,7 +32,8 @@ export default defineNuxtConfig({
     modules: [
         "@nuxt/icon",
         "@vueuse/nuxt",
-        "@formkit/auto-animate/nuxt"
+        "@formkit/auto-animate/nuxt",
+        "@nuxt/ui"
         // [
         //     "@nuxtjs/google-fonts",
         //     {
@@ -45,6 +46,12 @@ export default defineNuxtConfig({
         //     },
         // ]
     ],
+
+    ui: {
+        theme: {
+            colors: ["primary", "secondary", "info", "success", "warning", "error", "custom"]
+        }
+    },
 
     runtimeConfig: {
         public: {
