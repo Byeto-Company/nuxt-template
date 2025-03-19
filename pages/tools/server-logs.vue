@@ -22,7 +22,7 @@ const { $axios: axios } = useNuxtApp();
 const { data: serverLogs, isFetching, suspense } = useQuery({
     queryKey: ["server-logs"],
     queryFn: async () => {
-        const response = await axios.get("http://localhost:3000/api/server-logger");
+        const response = await axios.get("http://localhost:3000/api/server-logs");
         return response.data.reverse();
     },
     refetchInterval: 5000,
