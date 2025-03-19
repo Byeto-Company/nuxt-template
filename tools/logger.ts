@@ -19,13 +19,17 @@ class Logger {
             date: nowDate.toString()
         };
 
+        const logFilePath = ".logs/log.json";
+
         try {
-            const oldLogs = await fs.readFile(".logs/log.json", "utf-8");
+            await ensureFileExists(logFilePath);
+
+            const oldLogs = await fs.readFile(logFilePath, "utf-8");
             const oldLogsJson = JSON.parse(oldLogs) as Record<any, any>[];
 
             oldLogsJson.push(logData);
 
-            await fs.writeFile(".logs/log.json", JSON.stringify(oldLogsJson));
+            await fs.writeFile(".logs/log.json", JSON.stringify(oldLogsJson, null, 2));
         } catch (e) {
             console.error(e);
         }
