@@ -10,7 +10,7 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "upgrade" : "ncu -u"
+    "upgrade": "ncu -u"
   },
   "dependencies": {
     "@formkit/auto-animate": "^0.8.2",
@@ -23,6 +23,7 @@
     "@vueuse/integrations": "^12.7.0",
     "@vueuse/nuxt": "^12.7.0",
     "axios": "^1.7.9",
+    "date-fns-jalali": "^4.1.0-0",
     "fast-average-color": "^9.4.0",
     "gsap": "^3.12.7",
     "masonry-layout": "^4.2.2",
