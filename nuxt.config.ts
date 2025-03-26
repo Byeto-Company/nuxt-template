@@ -46,6 +46,11 @@ export default defineNuxtConfig({
         // ]
     ],
 
+    assetsGenerator: {
+        assets: ["../public/img", "../public/video"],
+        output: "../constants/assets.ts"
+    },
+
     runtimeConfig: {
         public: {
             API_BASE_URL: process.env.API_BASE_URL,

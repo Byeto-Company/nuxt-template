@@ -1,5 +1,9 @@
 <script setup>
+
+// TODO implement complete network logs system ( showing all network requests ) OPTIONAL
+
 import { VueQueryDevtools } from "@tanstack/vue-query-devtools";
+
 </script>
 
 <template>
