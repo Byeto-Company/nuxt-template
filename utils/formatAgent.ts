@@ -1,24 +1,4 @@
-import fs from "fs/promises";
-
-const path = require("path");
-
-// Byte Formatter
-
-export const byteFormatter = (bytes: number, decimals = 2) => {
-    if (!+bytes) return "0 B";
-
-    const k = 1024;
-    const dm = decimals < 0 ? 0 : decimals;
-    const sizes = ["B", "Kb", "Mb", "Gb", "Tb", "Pb", "Eb", "Zb", "Yb"];
-
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-
-    return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
-};
-
-// Format Agent
-
-export const formatAgent = (userAgent: any) => {
+const formatAgent = (userAgent: any) => {
     if (userAgent) {
         let os = "";
         let browser = "";
@@ -73,28 +53,4 @@ export const formatAgent = (userAgent: any) => {
     return undefined;
 };
 
-// Is Image
-
-export const isImage = (name: string | undefined) => {
-    if (name) {
-        const types = [".jpg", ".jpeg", ".png", ".svg", ".webp"];
-        return types.some((type) => name.toLowerCase().endsWith(type));
-    }
-    return false;
-};
-
-// Ensure Exist
-
-export const ensureFileExists = async (filePath: string, initialContent = "") => {
-    try {
-        await fs.access(filePath);
-    } catch (error) {
-        const err = error as any;
-        if (err.code === "ENOENT") {
-            await fs.mkdir(path.dirname(filePath), { recursive: true });
-            await fs.writeFile(filePath, initialContent, "utf-8");
-        } else {
-            throw err;
-        }
-    }
-};
+export default formatAgent;
