@@ -47,6 +47,11 @@ export default defineNuxtConfig({
         // ]
     ],
 
+    assetsGenerator: {
+        assets: ["../public/img", "../public/video"],
+        output: "../constants/assets.ts"
+    },
+
     ui: {
         theme: {
             colors: ["primary", "secondary", "info", "success", "warning", "error", "custom"]

@@ -24,6 +24,7 @@
     "@vueuse/integrations": "^13.0.0",
     "@vueuse/nuxt": "^13.0.0",
     "axios": "^1.8.3",
+    "chokidar": "^4.0.3",
     "date-fns-jalali": "^4.1.0-0",
     "fast-average-color": "^9.4.0",
     "gsap": "^3.12.7",
@@ -34,12 +35,14 @@
     "vue": "latest",
     "vue-router": "latest",
     "vue-skeletor": "^1.0.6",
-    "vue3-toastify": "^0.2.8"
+    "vue3-toastify": "^0.2.8",
+    "winston": "^3.17.0"
   },
   "devDependencies": {
     "@iconify-json/bi": "^1.2.2",
     "@tailwindcss/postcss": "^4.0.14",
     "@types/masonry-layout": "^4.2.8",
+    "@types/node": "^22.13.13",
     "autoprefixer": "^10.4.21",
     "postcss": "^8.5.3",
     "tailwindcss": "^4.0.14"
