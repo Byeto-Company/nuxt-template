@@ -1,7 +1,6 @@
 // imports
 
 import { useMutation } from "@tanstack/vue-query";
-import {API_ENDPOINTS} from "~/constants/api-endpoints";
 
 // types
 
@@ -11,13 +10,11 @@ export type SignInRequest = {
 };
 
 export type SignInResponse = {
-    access: string,
-    refresh: string,
+    access: string;
+    refresh: string;
 };
 
-
 const useSignIn = () => {
-
     // state
 
     const { $axios: axios } = useNuxtApp();
@@ -25,7 +22,7 @@ const useSignIn = () => {
     // methods
 
     const handleSignIn = async (variables: SignInRequest) => {
-        const { data } = await axios.post<SignInResponse>(`${API_ENDPOINTS.auth.signin}/`, variables);
+        const { data } = await axios.post<SignInResponse>("/token", variables);
         return data;
     };
 

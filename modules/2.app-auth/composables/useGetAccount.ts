@@ -1,9 +1,6 @@
 // imports
 
 import { useQuery } from "@tanstack/vue-query";
-import { useAuth } from "~/composables/api/auth/useAuth";
-import {API_ENDPOINTS} from "~/constants/api-endpoints";
-import {QUERY_KEYS} from "~/constants/query-keys";
 
 // types
 
@@ -19,13 +16,13 @@ const useGetAccount = () => {
     // methods
 
     const handleGetAccount = async () => {
-        const { data } = await axios.get<GetAccountResponse>(`${API_ENDPOINTS.account.profile}`);
+        const { data } = await axios.get<GetAccountResponse>("/accounts/profile");
         return data;
     };
 
     return useQuery({
         enabled: !!token.value,
-        queryKey: [QUERY_KEYS.account],
+        queryKey: ["account"],
         queryFn: () => handleGetAccount()
     });
 };

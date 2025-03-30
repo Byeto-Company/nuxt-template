@@ -1,7 +1,10 @@
-import { useAuth } from "~/composables/api/auth/useAuth";
-
 export default defineNuxtRouteMiddleware(() => {
     const { token, logout } = useAuth();
+
+    const runtimeConfig = useRuntimeConfig()
+    const moduleConfig = runtimeConfig.public.appAuth
+
+    console.log(moduleConfig);
 
     if (!!token.value) {
         return;

@@ -38,23 +38,25 @@ export default defineNuxtModule({
                     const relativeDirectoryPath = "/" + path.relative("public", directory);
 
                     files.forEach(async (file) => {
-                        if (file.includes(".")) {
-                            const key = path.basename(file, path.extname(file)).toUpperCase().replaceAll("-", "_");
-                            const assetFolderKey = path.basename(assetFolder).toUpperCase();
+                        if (!file.startsWith(".")) {
+                            if (file.includes(".")) {
+                                const key = path.basename(file, path.extname(file)).toUpperCase().replaceAll("-", "_");
+                                const assetFolderKey = path.basename(assetFolder).toUpperCase();
 
-                            if (!Object.hasOwn(assetsMap, assetFolderKey)) {
-                                assetsMap[assetFolderKey] = {};
-                            }
+                                if (!Object.hasOwn(assetsMap, assetFolderKey)) {
+                                    assetsMap[assetFolderKey] = {};
+                                }
 
-                            if (Object.hasOwn(assetsMap[assetFolderKey], key)) {
-                                logger.error(`Assets conflicted. => ${relativeDirectoryPath}/${file}`);
-                                await watcher.close();
-                                process.exit(0);
+                                if (Object.hasOwn(assetsMap[assetFolderKey], key)) {
+                                    logger.error(`Assets conflicted. => ${relativeDirectoryPath}/${file}`);
+                                    await watcher.close();
+                                    process.exit(0);
+                                } else {
+                                    assetsMap[assetFolderKey][key] = `${relativeDirectoryPath}/${file}`;
+                                }
                             } else {
-                                assetsMap[assetFolderKey][key] = `${relativeDirectoryPath}/${file}`;
+                                extractFilePaths(`${directory}/${file}`);
                             }
-                        } else {
-                            extractFilePaths(`${directory}/${file}`);
                         }
                     });
 

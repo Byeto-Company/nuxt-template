@@ -1,11 +1,10 @@
-export const useAuth = () => {
-
+const useAuth = () => {
     // state
 
     const token = useCookie("token");
     const refreshToken = useCookie("refresh-token");
 
-    // method
+    // methods
 
     const updateToken = (newToken: string) => {
         token.value = newToken;
@@ -15,7 +14,7 @@ export const useAuth = () => {
         refreshToken.value = newToken;
     };
 
-    const logout = (reload ?: boolean) => {
+    const logout = (reload?: boolean) => {
         token.value = undefined;
         refreshToken.value = undefined;
         if (reload) window.location.reload();
@@ -25,6 +24,14 @@ export const useAuth = () => {
 
     const isLoggedIn = computed(() => !!token.value);
 
-    return { token, refreshToken, updateRefreshToken, updateToken, logout, isLoggedIn };
-
+    return {
+        token,
+        refreshToken,
+        updateRefreshToken,
+        updateToken,
+        logout,
+        isLoggedIn,
+    };
 };
+
+export default useAuth;

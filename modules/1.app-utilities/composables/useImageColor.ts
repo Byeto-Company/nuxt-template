@@ -1,7 +1,7 @@
 import type { FastAverageColorResult } from "fast-average-color";
 import { FastAverageColor } from "fast-average-color";
 
-export const useImageColor = (img: string) => {
+const useImageColor = (img: string) => {
     const fac = new FastAverageColor();
     const colorObject = ref<FastAverageColorResult>();
     const isPending = ref(false);
@@ -30,3 +30,5 @@ export const useImageColor = (img: string) => {
         isPending
     };
 };
+
+export default useImageColor;

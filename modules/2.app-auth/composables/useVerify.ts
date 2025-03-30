@@ -1,7 +1,6 @@
 // imports
 
 import { useMutation } from "@tanstack/vue-query";
-import {API_ENDPOINTS} from "~/constants/api-endpoints";
 
 // types
 
@@ -18,7 +17,7 @@ const useVerify = () => {
     // methods
 
     const handleVerify = async (variables: VerifyRequest) => {
-        const { data } = await axios.post(`${API_ENDPOINTS.auth.verify}`, variables);
+        const { data } = await axios.post("/accounts/verify", variables);
         return data;
     };
 

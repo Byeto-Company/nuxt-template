@@ -1,4 +1,4 @@
-export const useObjectTrack = (object: Ref) => {
+const useObjectTrack = (object: Ref) => {
     // state
 
     const isNotEqual = ref(false);
@@ -37,3 +37,5 @@ export const useObjectTrack = (object: Ref) => {
         clear,
     };
 };
+
+export default useObjectTrack;

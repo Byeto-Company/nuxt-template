@@ -1,7 +1,7 @@
 import { formatDistance, toDate } from "date-fns-jalali";
 import { faIR } from "date-fns-jalali/locale";
 
-export function usePersianTimeAgo(date: Date) {
+const usePersianTimeAgo = (date: Date) => {
     const timeAgo = ref("");
 
     const updateTimeAgo = () => {
@@ -21,3 +21,5 @@ export function usePersianTimeAgo(date: Date) {
 
     return timeAgo;
 }
+
+export default usePersianTimeAgo;

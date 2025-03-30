@@ -1,5 +1,4 @@
 import axiosOriginal from "axios";
-import { useAuth } from "~/composables/api/auth/useAuth";
 import { API_ENDPOINTS } from "~/constants/api-endpoints";
 import Logger from "~/tools/logger";
 
@@ -35,5 +34,4 @@ export default defineNuxtPlugin(() => {
             axios
         }
     };
-
 });

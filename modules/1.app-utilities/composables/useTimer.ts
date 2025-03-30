@@ -3,7 +3,7 @@ type Props = {
     callback?: () => void
 }
 
-export function useTimer({ duration, callback }: Props) {
+const useTimer = ({ duration, callback }: Props) => {
     const timeout = ref<NodeJS.Timeout | null>(null);
     const interval = ref<NodeJS.Timeout | null>(null);
 
@@ -39,4 +39,6 @@ export function useTimer({ duration, callback }: Props) {
         reset,
         start
     };
-}
+};
+
+export default useTimer;
