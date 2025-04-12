@@ -12,7 +12,7 @@ import { VueQueryDevtools } from "@tanstack/vue-query-devtools";
         <NuxtLayout>
             <NuxtPage />
             <div dir="ltr">
-                <VueQueryDevtools dir="ltr" buttonPosition="bottom-left" />
+                <VueQueryDevtools dir="l-tr" buttonPosition="bottom-left" />
             </div>
         </NuxtLayout>
     </div>

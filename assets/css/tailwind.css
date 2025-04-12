@@ -1,5 +1,4 @@
 @import "tailwindcss" theme(static);
-@import "@nuxt/ui";
 
 @import "./vue-animations.css";
 @import "./css-animations.css";
