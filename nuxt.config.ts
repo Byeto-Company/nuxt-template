@@ -33,7 +33,6 @@ export default defineNuxtConfig({
         "@nuxt/icon",
         "@vueuse/nuxt",
         "@formkit/auto-animate/nuxt",
-        "@nuxt/ui"
         // [
         //     "@nuxtjs/google-fonts",
         //     {
@@ -55,13 +54,6 @@ export default defineNuxtConfig({
     appAuth: {
         // pagePath : null
         asdasd : 123
-    },
-
-    ui: {
-        colorMode: false,
-        theme: {
-            colors: ["primary", "secondary", "info", "success", "warning", "error", "custom"]
-        }
     },
 
     runtimeConfig: {
