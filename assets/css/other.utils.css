@@ -1,7 +1,7 @@
 /* CONTAINER */
 
 @utility container {
-    @apply mx-auto px-[var(--app-container-padding)] w-full max-sm:max-w-[var(--breakpoint-xs)] max-md:max-w-[var(--breakpoint-sm)] max-lg:max-w-[var(--breakpoint-md)] max-xl:max-w-[var(--breakpoint-lg)] max-w-[var(--breakpoint-2xl)];
+    @apply mx-auto px-[var(--app-container-padding)] w-full max-sm:max-w-[var(--breakpoint-xs)] max-md:max-w-[var(--breakpoint-sm)] max-lg:max-w-[var(--breakpoint-md)] max-xl:max-w-[var(--breakpoint-lg)] max-w-[var(--breakpoint-xl)];
 }
 
 /* FONT FEATURE */
