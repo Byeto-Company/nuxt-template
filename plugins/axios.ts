@@ -1,6 +1,5 @@
 import axiosOriginal from "axios";
 import { API_ENDPOINTS } from "~/constants/api-endpoints";
-import Logger from "~/tools/logger";
 
 export default defineNuxtPlugin(() => {
     const config = useRuntimeConfig();
@@ -21,11 +20,6 @@ export default defineNuxtPlugin(() => {
     axios.interceptors.response.use((response) => {
         return response;
     }, async function(error) {
-
-        if (config.public.DEBUG === "true" && import.meta.server) {
-            await Logger.axiosErrorLog(error);
-        }
-
         return Promise.reject(error);
     });
 
