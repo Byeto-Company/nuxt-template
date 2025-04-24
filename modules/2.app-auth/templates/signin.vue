@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-
 // import
 
 import { helpers, required } from "@vuelidate/validators";
@@ -15,7 +14,7 @@ type LoginInfo = {
 
 definePageMeta({
     layout: "none",
-    middleware: ["check-is-not-logged-in"]
+    middleware: ["check-is-not-logged-in"],
 });
 
 // state
@@ -34,13 +33,13 @@ const formRules = computed(() => {
             phoneValidator: helpers.withMessage(
                 "شماره تلفن وارد شده معتبر نمی باشد",
                 helpers.regex(/^09\d{9}$/)
-            )
-        }
+            ),
+        },
     };
 });
 
 const loginInfo = ref<LoginInfo>({
-    phone: ""
+    phone: "",
 });
 
 const formValidator$ = useVuelidate(formRules, loginInfo);
@@ -49,16 +48,13 @@ const {
     timer: otpBlockerTimePassed,
     start: startOtpBlocker,
     reset: resetOtpBlocker,
-    isPending: isResendOtpBlocked
+    isPending: isResendOtpBlocked,
 } = useTimer({
-    duration: 10000
+    duration: 10000,
 });
 
 const { mutateAsync: sendOtp, isPending: sendOtpIsPending } = useOtp();
-const {
-    mutateAsync: signIn,
-    isPending: signInIsPending,
-} = useSignIn();
+const { mutateAsync: signIn, isPending: signInIsPending } = useSignIn();
 
 // computed
 
@@ -68,7 +64,7 @@ const sendOtpHandler = async () => {
     if (!sendOtpIsPending.value && !formValidator$.value.$errors.length) {
         try {
             await sendOtp({
-                phone: loginInfo.value.phone
+                phone: loginInfo.value.phone,
             });
             resetOtpBlocker();
             startOtpBlocker();
@@ -108,7 +104,7 @@ const handleLogin = async () => {
         try {
             const response = await signIn({
                 otp: otpCode.value,
-                phone: loginInfo.value.phone
+                phone: loginInfo.value.phone,
             });
 
             updateToken(response.access);
@@ -142,13 +138,14 @@ const handleLogin = async () => {
                 فرم ورود به سایت
             </h2>
             <div class="flex flex-col w-full gap-10">
-
                 <input
                     v-model="loginInfo.phone"
                     placeholder="شماره خود را وارد کنید"
                     type="text"
                     inputmode="numeric"
-                    :class="formValidator$.phone.$error ? '!border-rose-500' : ''"
+                    :class="
+                        formValidator$.phone.$error ? '!border-rose-500' : ''
+                    "
                     class="focus:border-blue-500 text-lg font-medium w-full px-4 h-[50px] rounded-xl bg-slate-700 text-white outline-none placeholder:text-slate-400 border-2 border-transparent"
                 />
 
@@ -161,7 +158,6 @@ const handleLogin = async () => {
                 />
 
                 <div class="flex items-center gap-4 w-full">
-
                     <button
                         :disabled="
                             formValidator$.phone.$error ||
@@ -173,13 +169,18 @@ const handleLogin = async () => {
                             formValidator$.phone.$error ||
                             signInIsPending ||
                             isResendOtpBlocked ||
-                            sendOtpIsPending ? 'opacity-30' : ''
+                            sendOtpIsPending
+                                ? 'opacity-30'
+                                : ''
                         "
                         @click="sendOtpHandler"
                         class="transition-all active:translate-y-1 hover:brightness-115 hover:bg-blue-500/10 cursor-pointer border-2 border-blue-500 h-[50px] text-blue-500 rounded-xl w-full"
                     >
                         <template v-if="sendOtpIsPending">
-                            <Icon name="svg-spinners:180-ring-with-bg" class="size-[40px]" />
+                            <Icon
+                                name="svg-spinners:180-ring-with-bg"
+                                class="size-[40px]"
+                            />
                         </template>
                         <template v-else>
                             ارسال کد
@@ -188,25 +189,30 @@ const handleLogin = async () => {
                     </button>
 
                     <button
-                        :disable="formValidator$.phone.$error || otpCode.length !== 6"
-                        :class="formValidator$.phone.$error || otpCode.length !== 6 ? 'opacity-30' : ''"
+                        :disable="
+                            formValidator$.phone.$error || otpCode.length !== 6
+                        "
+                        :class="
+                            formValidator$.phone.$error || otpCode.length !== 6
+                                ? 'opacity-30'
+                                : ''
+                        "
                         @click="handleLogin"
                         class="transition-all active:translate-y-1 hover:brightness-115 cursor-pointer bg-teal-500 h-[50px] text-white rounded-xl w-full"
                     >
                         <template v-if="signInIsPending">
-                            <Icon name="svg-spinners:180-ring-with-bg" class="size-[40px]" />
+                            <Icon
+                                name="svg-spinners:180-ring-with-bg"
+                                class="size-[40px]"
+                            />
                         </template>
-                        <template v-else>
-                            ورود به سایت
-                        </template>
+                        <template v-else> ورود به سایت </template>
                     </button>
-
                 </div>
             </div>
         </div>
     </div>
 </template>
-
 
 <!--
 
