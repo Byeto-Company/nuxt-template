@@ -53,7 +53,6 @@ export default defineNuxtConfig({
 
     appAuth: {
         // pagePath : null
-        asdasd : 123
     },
 
     runtimeConfig: {
