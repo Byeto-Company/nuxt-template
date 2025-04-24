@@ -1,10 +1,5 @@
 export default defineNuxtRouteMiddleware(() => {
-    const { token, logout } = useAuth();
-
-    const runtimeConfig = useRuntimeConfig()
-    const moduleConfig = runtimeConfig.public.appAuth
-
-    console.log(moduleConfig);
+    const { token } = useAuth();
 
     if (!!token.value) {
         return;
