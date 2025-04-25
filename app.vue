@@ -10,7 +10,9 @@ import { VueQueryDevtools } from "@tanstack/vue-query-devtools";
         <NuxtRouteAnnouncer />
 
         <NuxtLayout>
-            <NuxtPage />
+            <UApp>
+                <NuxtPage />
+            </UApp>
             <div dir="ltr">
                 <VueQueryDevtools dir="l-tr" buttonPosition="bottom-left" />
             </div>

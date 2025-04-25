@@ -1,11 +1,6 @@
 export default defineAppConfig({
     icon: {
-        customize: (
-            content: string,
-            name: string,
-            prefix: string,
-            provider: string
-        ) => {
+        customize: (content: string, name: string, prefix: string, provider: string) => {
             // if (content.includes("@fontawesome")) {
             //     return `<g fill="currentColor">
             //         ${content}
@@ -13,6 +8,13 @@ export default defineAppConfig({
             // }
 
             return content;
+        },
+    },
+    ui: {
+        colors: {
+            custom: "custom",
+            primary: "blue",
+            neutral: "zinc",
         },
     },
 });
