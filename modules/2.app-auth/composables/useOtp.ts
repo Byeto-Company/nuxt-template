@@ -1,6 +1,7 @@
 // imports
 
 import { useMutation } from "@tanstack/vue-query";
+import { API_ENDPOINTS } from "~/constants/api-endpoints";
 
 // types
 
@@ -17,7 +18,7 @@ const useOtp = () => {
     // methods
 
     const handleOtp = async (variables: OtpRequest) => {
-        const { data } = await axios.post("/accounts/send_otp", variables);
+        const { data } = await axios.post(API_ENDPOINTS.user.otp, variables);
         return data;
     };
 

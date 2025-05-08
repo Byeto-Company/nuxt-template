@@ -1,6 +1,7 @@
 // imports
 
 import { useMutation } from "@tanstack/vue-query";
+import { API_ENDPOINTS } from "~/constants/api-endpoints";
 
 // types
 
@@ -16,7 +17,7 @@ const useSignOut = () => {
     // methods
 
     const handleSignOut = async (params: SignOutRequest) => {
-        const { data } = await axios.post("/accounts/logout", params);
+        const { data } = await axios.post(API_ENDPOINTS.user.logout, params);
         return data;
     };
 
