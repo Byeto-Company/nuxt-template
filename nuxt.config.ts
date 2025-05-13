@@ -5,18 +5,26 @@ export default defineNuxtConfig({
     ssr: true,
     css: ["~/assets/css/tailwind.css"],
 
+    app: {
+        head: {},
+    },
+
+    sitemap: {
+        enabled: false,
+    },
+
     postcss: {
         plugins: {
             "@tailwindcss/postcss": {},
-            autoprefixer: {}
-        }
+            autoprefixer: {},
+        },
     },
 
     components: [
         {
             path: "~/components",
-            pathPrefix: false
-        }
+            pathPrefix: false,
+        },
     ],
 
     // icon: {
@@ -33,7 +41,8 @@ export default defineNuxtConfig({
         "@nuxt/icon",
         "@vueuse/nuxt",
         "@formkit/auto-animate/nuxt",
-        "@nuxt/ui"
+        "@pinia/nuxt",
+        "@nuxt/ui",
         // [
         //     "@nuxtjs/google-fonts",
         //     {
@@ -45,11 +54,13 @@ export default defineNuxtConfig({
         //         },
         //     },
         // ]
+        "motion-v/nuxt",
+        "@nuxtjs/seo",
     ],
 
     assetsGenerator: {
         assets: ["../../public/img", "../../public/video"],
-        output: "../../constants/assets.ts"
+        output: "../../constants/assets.ts",
     },
 
     appAuth: {
@@ -66,7 +77,7 @@ export default defineNuxtConfig({
     runtimeConfig: {
         public: {
             API_BASE_URL: process.env.API_BASE_URL,
-            DEBUG: process.env.DEBUG
-        }
-    }
+            DEBUG: process.env.DEBUG,
+        },
+    },
 });

@@ -1,12 +1,10 @@
 export const API_ENDPOINTS = {
-    test: "/test",
-    account: {
-        profile: "/accounts/profile",
-    },
-    auth: {
-        refresh: "/token/refresh",
-        verify: "/accounts/verify",
-        signin: "/token",
-        logout: "/accounts/logout",
+    user: {
+        profile: "/user/profile",
+        refresh: "/user/token/refresh",
+        verify: "/user/verify",
+        signin: "/user/token",
+        logout: "/user/logout",
+        otp: "/user/send_otp",
     },
 };

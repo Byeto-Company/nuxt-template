@@ -1,6 +1,7 @@
 // imports
 
 import { useMutation } from "@tanstack/vue-query";
+import { API_ENDPOINTS } from "~/constants/api-endpoints";
 
 // types
 
@@ -21,7 +22,7 @@ const useRefreshAuth = () => {
     // methods
 
     const handleRefreshAuth = async (variables: RefreshAuthRequest) => {
-        const { data } = await axios.post<RefreshAuthResponse>("/token/refresh", variables);
+        const { data } = await axios.post<RefreshAuthResponse>(API_ENDPOINTS.user.refresh, variables);
         return data;
     };
 

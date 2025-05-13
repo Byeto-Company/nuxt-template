@@ -1,6 +1,7 @@
 // imports
 
 import { useMutation } from "@tanstack/vue-query";
+import { API_ENDPOINTS } from "~/constants/api-endpoints";
 
 // types
 
@@ -22,7 +23,7 @@ const useSignIn = () => {
     // methods
 
     const handleSignIn = async (variables: SignInRequest) => {
-        const { data } = await axios.post<SignInResponse>("/token", variables);
+        const { data } = await axios.post<SignInResponse>(API_ENDPOINTS.user.signin, variables);
         return data;
     };
 

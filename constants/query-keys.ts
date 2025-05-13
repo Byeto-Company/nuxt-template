@@ -1,8 +1,7 @@
 import { API_RESOURCES } from "~/constants/resources";
 
 export const QUERY_KEYS = {
-    test: "test",
-    account: "account",
+    user: "user",
     ...API_RESOURCES
 };
 

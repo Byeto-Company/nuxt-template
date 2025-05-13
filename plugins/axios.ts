@@ -6,26 +6,29 @@ export default defineNuxtPlugin(() => {
     const { token } = useAuth();
 
     const axios = axiosOriginal.create({
-        baseURL: config.public.API_BASE_URL
+        baseURL: config.public.API_BASE_URL,
     });
 
     axios.interceptors.request.use((config) => {
-        if (!config.url?.includes(API_ENDPOINTS.auth.signin)) {
+        if (!config.url?.includes(API_ENDPOINTS.user.signin)) {
             config.headers.Authorization = token.value ? `Bearer ${token.value}` : undefined;
         }
 
         return config;
     });
 
-    axios.interceptors.response.use((response) => {
-        return response;
-    }, async function(error) {
-        return Promise.reject(error);
-    });
+    axios.interceptors.response.use(
+        (response) => {
+            return response;
+        },
+        async function (error) {
+            return Promise.reject(error);
+        }
+    );
 
     return {
         provide: {
-            axios
-        }
+            axios,
+        },
     };
 });
