@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-useSeoMeta({
-    title: "",
-    ogImage: "",
-    twitterImage: "",
-    ogDescription: "",
-    twitterDescription: "",
-});
+// useSeoMeta({
+//     title: "",
+//     ogImage: "",
+//     twitterImage: "",
+//     ogDescription: "",
+//     twitterDescription: "",
+// });
 </script>
 
 <template>
