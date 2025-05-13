@@ -5,6 +5,14 @@ export default defineNuxtConfig({
     ssr: true,
     css: ["~/assets/css/tailwind.css"],
 
+    app: {
+        head: {},
+    },
+
+    sitemap: {
+        enabled: false,
+    },
+
     postcss: {
         plugins: {
             "@tailwindcss/postcss": {},
@@ -30,22 +38,23 @@ export default defineNuxtConfig({
     // },
 
     modules: [
-        "@nuxt/icon",
-        "@vueuse/nuxt",
-        "@formkit/auto-animate/nuxt",
-        "@pinia/nuxt",
-        "motion-v/nuxt",
-        // [
-        //     "@nuxtjs/google-fonts",
-        //     {
-        //         families: {
-        //             "DM Sans": "100..900",
-        //             Inter: "100..900",
-        //             download: true,
-        //             inject: false,
-        //         },
-        //     },
-        // ]
+      "@nuxt/icon",
+      "@vueuse/nuxt",
+      "@formkit/auto-animate/nuxt",
+      "@pinia/nuxt",
+      // [
+      //     "@nuxtjs/google-fonts",
+      //     {
+      //         families: {
+      //             "DM Sans": "100..900",
+      //             Inter: "100..900",
+      //             download: true,
+      //             inject: false,
+      //         },
+      //     },
+      // ]
+      "motion-v/nuxt",
+      "@nuxtjs/seo",
     ],
 
     assetsGenerator: {
