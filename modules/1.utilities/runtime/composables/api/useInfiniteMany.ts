@@ -5,26 +5,25 @@ import type { AxiosRequestConfig } from "axios";
 
 // types
 
-export type ApiInfiniteManyResourceOptions = {
-    resource: ApiResources
-    urlSearchParams?: ComputedRef<Record<any, any>>,
+export type ApiInfiniteManyResourceOptions<TResponse> = {
+    resource: ApiResources;
+    urlSearchParams?: ComputedRef<Record<any, any>>;
     options?: {
         pagination?: {
-            limit?: number,
-        }
-    },
-    axiosOptions?: Omit<AxiosRequestConfig, "params">
-    queryOptions?: any
-}
+            limit?: number;
+        };
+    };
+    axiosOptions?: Omit<AxiosRequestConfig, "params">;
+    queryOptions?: Partial<Omit<UseInfiniteQueryOptions<TResponse>, "queryKey" | "queryFn">>;
+};
 
 const useInfiniteMany = <TResponse>({
     resource,
     urlSearchParams,
     options,
     queryOptions,
-    axiosOptions
-}: ApiInfiniteManyResourceOptions) => {
-
+    axiosOptions,
+}: ApiInfiniteManyResourceOptions<TResponse>) => {
     // state
 
     const { $axios: axios } = useNuxtApp();
@@ -38,9 +37,9 @@ const useInfiniteMany = <TResponse>({
             params: {
                 ...urlSearchParams?.value,
                 limit: limit,
-                offset: offset
+                offset: offset,
             },
-            ...axiosOptions
+            ...axiosOptions,
         });
 
         return data;
@@ -51,18 +50,19 @@ const useInfiniteMany = <TResponse>({
         queryFn: ({ pageParam }) => handleInfiniteMany(pageParam),
         initialPageParam: {
             limit,
-            offset: 0
+            offset: 0,
         },
         getNextPageParam: (lastPage, pages) => {
             const page = pages.length + 1;
 
             const nextPageParams = {
                 offset: page * limit - limit,
-                limit
+                limit,
             };
 
             return lastPage?.next ? nextPageParams : undefined;
-        }
+        },
+        ...queryOptions,
     });
 };
 

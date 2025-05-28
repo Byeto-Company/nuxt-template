@@ -1,11 +1,11 @@
 // imports
 
-import { type QueryOptions, useQuery } from "@tanstack/vue-query";
+import { type UseQueryOptions, useQuery } from "@tanstack/vue-query";
 import type { AxiosRequestConfig } from "axios";
 
 // types
 
-export type ApiOneResourceOptions = {
+export type ApiOneResourceOptions<TResponse> = {
     id: string | number;
     resource?: ApiResources;
     customResource?: {
@@ -14,17 +14,17 @@ export type ApiOneResourceOptions = {
     };
     urlSearchParams?: ComputedRef<Record<any, any>>;
     axiosOptions?: Omit<AxiosRequestConfig, "params">;
-    queryOptions?: any;
+    queryOptions?: Partial<Omit<UseQueryOptions<TResponse>, "queryKey" | "queryFn">>;
 };
 
-const useOne = <T>({
+const useOne = <TResponse>({
     resource,
     customResource,
     urlSearchParams,
     id,
     queryOptions,
     axiosOptions,
-}: ApiOneResourceOptions) => {
+}: ApiOneResourceOptions<TResponse>) => {
     // state
 
     const { $axios: axios } = useNuxtApp();
@@ -32,7 +32,7 @@ const useOne = <T>({
     // methods
 
     const handleOne = async () => {
-        const { data } = await axios.get<T>(`${customResource ? customResource.path : resource}/${id}`, {
+        const { data } = await axios.get<TResponse>(`${customResource ? customResource.path : resource}/${id}`, {
             params: { ...urlSearchParams?.value },
             ...axiosOptions,
         });
@@ -43,6 +43,7 @@ const useOne = <T>({
     return useQuery({
         queryKey: [customResource ? customResource.name : resource, id, urlSearchParams ?? {}],
         queryFn: () => handleOne(),
+        ...queryOptions,
     });
 };
 

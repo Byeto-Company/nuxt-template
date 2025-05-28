@@ -1,22 +1,30 @@
 // imports
 
-import { type MutateOptions, useMutation } from "@tanstack/vue-query";
+import { type MutateOptions, useMutation, type UseMutationOptions } from "@tanstack/vue-query";
 import type { AxiosRequestConfig } from "axios";
 
 // types
 
-export type ApiDeleteResourceOptions = {
-    id: string | number,
-    resource: ApiResources
-    urlSearchParams?: ComputedRef<Record<any, any>>,
-    axiosOptions?: AxiosRequestConfig,
-    mutationOptions?: any
-}
+export type ApiDeleteResourceOptions<TResponse> = {
+    id: string | number;
+    resource?: ApiResources;
+    customResource?: {
+        name?: string;
+        path: string;
+    };
+    urlSearchParams?: ComputedRef<Record<any, any>>;
+    axiosOptions?: AxiosRequestConfig;
+    mutationOptions?: Partial<Omit<UseMutationOptions<TResponse>, "queryKey" | "queryFn">>;
+};
 
 const useDelete = <TResponse>({
-                                  id, resource, urlSearchParams, axiosOptions, mutationOptions
-                              }: ApiDeleteResourceOptions) => {
-
+    id,
+    resource,
+    urlSearchParams,
+    axiosOptions,
+    mutationOptions,
+    customResource,
+}: ApiDeleteResourceOptions<TResponse>) => {
     // state
 
     const { $axios: axios } = useNuxtApp();
@@ -24,16 +32,18 @@ const useDelete = <TResponse>({
     // methods
 
     const handleDelete = async () => {
-        const { data } = await axios.delete<TResponse>(`${resource}/${id}`, {
+        const { data } = await axios.delete<TResponse>(`${customResource ? customResource.path : resource}/${id}`, {
             params: { ...urlSearchParams?.value },
-            ...axiosOptions
+            ...axiosOptions,
         });
 
         return data;
     };
 
     return useMutation({
-        mutationFn: () => handleDelete()
+        mutationKey: customResource?.name ? [customResource.name] : undefined,
+        mutationFn: () => handleDelete(),
+        ...mutationOptions,
     });
 };
 
