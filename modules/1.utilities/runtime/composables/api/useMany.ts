@@ -1,11 +1,11 @@
 // imports
 
-import { type QueryOptions, useQuery } from "@tanstack/vue-query";
+import { type QueryOptions, useQuery, type UseQueryOptions } from "@tanstack/vue-query";
 import type { AxiosRequestConfig } from "axios";
 
 // types
 
-export type ApiManyResourceOptions = {
+export type ApiManyResourceOptions<TResponse> = {
     resource?: ApiResources;
     customResource?: {
         name: string;
@@ -20,7 +20,7 @@ export type ApiManyResourceOptions = {
         };
     };
     axiosOptions?: Omit<AxiosRequestConfig, "params">;
-    queryOptions?: any;
+    queryOptions?: Partial<Omit<UseQueryOptions<TResponse>, "queryKey" | "queryFn">>;
 };
 
 const useMany = <TResponse>({
@@ -31,7 +31,7 @@ const useMany = <TResponse>({
     options,
     queryOptions,
     axiosOptions,
-}: ApiManyResourceOptions) => {
+}: ApiManyResourceOptions<TResponse>) => {
     // state
 
     const { $axios: axios } = useNuxtApp();
@@ -60,6 +60,7 @@ const useMany = <TResponse>({
     return useQuery({
         queryKey: [customResource ? customResource.name : resource, urlSearchParams ?? {}, page ?? 1],
         queryFn: () => handleMany(),
+        ...queryOptions,
     });
 };
 

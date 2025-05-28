@@ -1,21 +1,30 @@
 // imports
 
-import { type MutateOptions, useMutation } from "@tanstack/vue-query";
+import { type MutateOptions, useMutation, type UseMutationOptions } from "@tanstack/vue-query";
 import type { AxiosRequestConfig } from "axios";
 
 // types
 
-export type ApiCreateResourceOptions = {
-    resource: ApiResources
-    urlSearchParams?: ComputedRef<Record<any, any>>,
-    axiosOptions?: Omit<AxiosRequestConfig, "params">
-    mutationOptions?: any
-}
+export type ApiCreateResourceOptions<TResponse> = {
+    resource?: ApiResources;
+    customResource?: {
+        name?: string;
+        path: string;
+    };
+    urlSearchParams?: ComputedRef<Record<any, any>>;
+    axiosOptions?: Omit<AxiosRequestConfig, "params">;
+    mutationOptions?: Partial<Omit<UseMutationOptions<TResponse>, "queryKey" | "queryFn">>;
+    contentType?: "json" | "form";
+};
 
 const useCreate = <TResponse, TRequest>({
-    resource, urlSearchParams, axiosOptions, mutationOptions
-}: ApiCreateResourceOptions) => {
-
+    resource,
+    urlSearchParams,
+    axiosOptions,
+    mutationOptions,
+    customResource,
+    contentType = "json",
+}: ApiCreateResourceOptions<TResponse>) => {
     // state
 
     const { $axios: axios } = useNuxtApp();
@@ -23,20 +32,22 @@ const useCreate = <TResponse, TRequest>({
     // methods
 
     const handleCreate = async (variables: TRequest) => {
-        const { data } = await axios.post<TResponse>(`${resource}/`, variables, {
+        const { data } = await axios.post<TResponse>(`${customResource ? customResource.path : resource}`, variables, {
             params: { ...urlSearchParams?.value },
             ...axiosOptions,
             headers: {
-                "Content-Type": "multipart/form-data",
-                ...axiosOptions?.headers
-            }
+                "Content-Type": contentType === "form" ? "multipart/form-data" : "application/json",
+                ...axiosOptions?.headers,
+            },
         });
 
         return data;
     };
 
     return useMutation({
-        mutationFn: (variables: TRequest) => handleCreate(variables)
+        mutationKey: customResource?.name ? [customResource.name] : undefined,
+        mutationFn: (variables: TRequest) => handleCreate(variables),
+        ...mutationOptions,
     });
 };
 
