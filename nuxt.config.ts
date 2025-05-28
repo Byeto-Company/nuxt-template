@@ -70,8 +70,8 @@ export default defineNuxtConfig({
     ui: {
         colorMode: false,
         theme: {
-            colors: ["primary", "secondary", "info", "success", "warning", "error", "custom"]
-        }
+            colors: ["primary", "secondary", "info", "success", "warning", "error"],
+        },
     },
 
     runtimeConfig: {
