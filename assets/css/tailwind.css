@@ -11,7 +11,7 @@
     --app-container-padding: 1.25rem;
 
     /* NUXT UI BORDER RADIUS */
-    --ui-radius: var(--radius-lg);
+    --ui-radius: 0.25rem;
 }
 
 @theme {
