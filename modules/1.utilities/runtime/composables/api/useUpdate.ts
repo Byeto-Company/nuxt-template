@@ -15,7 +15,9 @@ export type ApiUpdateResourceOptions<TResponse> = {
     urlSearchParams?: ComputedRef<Record<any, any>>;
     axiosOptions?: Omit<AxiosRequestConfig, "params">;
     mutationOptions?: Partial<Omit<UseMutationOptions<TResponse>, "queryKey" | "queryFn">>;
-    contentType?: "form" | "json";
+    options?: {
+        contentType?: "json" | "form";
+    };
 };
 
 const useUpdate = <TResponse, TRequest>({
@@ -25,7 +27,7 @@ const useUpdate = <TResponse, TRequest>({
     axiosOptions,
     mutationOptions,
     customResource,
-    contentType = "json",
+    options = { contentType: "json" },
 }: ApiUpdateResourceOptions<TResponse>) => {
     // state
 
@@ -41,7 +43,7 @@ const useUpdate = <TResponse, TRequest>({
                 params: { ...urlSearchParams?.value },
                 ...axiosOptions,
                 headers: {
-                    "Content-Type": contentType === "form" ? "multipart/form-data" : "application/json",
+                    "Content-Type": options.contentType === "form" ? "multipart/form-data" : "application/json",
                     ...axiosOptions?.headers,
                 },
             }

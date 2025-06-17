@@ -10,5 +10,6 @@ export default defineNuxtModule({
         const resolver = createResolver(import.meta.url);
 
         addImportsDir(resolver.resolve("runtime/composables"));
+        addImportsDir(resolver.resolve("runtime/composables/api"));
     },
 });
