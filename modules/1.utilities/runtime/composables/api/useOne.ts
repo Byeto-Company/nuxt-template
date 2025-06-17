@@ -6,7 +6,7 @@ import type { AxiosRequestConfig } from "axios";
 // types
 
 export type ApiOneResourceOptions<TResponse> = {
-    id: string | number;
+    id: Ref<string | number> | ComputedRef<string | number>;
     resource?: ApiResources;
     customResource?: {
         name: string;
@@ -32,7 +32,7 @@ const useOne = <TResponse>({
     // methods
 
     const handleOne = async () => {
-        const { data } = await axios.get<TResponse>(`${customResource ? customResource.path : resource}/${id}`, {
+        const { data } = await axios.get<TResponse>(`${customResource ? customResource.path : resource}/${id.value}`, {
             params: { ...urlSearchParams?.value },
             ...axiosOptions,
         });
