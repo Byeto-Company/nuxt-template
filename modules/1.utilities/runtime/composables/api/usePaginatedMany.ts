@@ -48,7 +48,7 @@ const usePaginatedMany = <TResponse>({
                 params: {
                     ...urlSearchParams?.value,
                     limit: limit,
-                    offset: page.value * limit - limit,
+                    offset: initialOffset ?? page.value * limit - limit,
                 },
                 ...axiosOptions,
             }
