@@ -1,6 +1,9 @@
 <script lang="ts" setup>
+// imports
 
-// type2
+import useArticleBuilderServices from "~/stores/services/useArticleBuilderServices.client";
+
+// types
 
 type Props = {
     id: number;
@@ -14,14 +17,16 @@ const { id } = toRefs(props);
 
 // state
 
-const articleBuilderStore = useArticleBuilderStore();
+const { getContent, getOptions, updateContent, updateContentOptions } = useArticleBuilderServices();
 
 const contentValue = computed({
-    get: () => articleBuilderStore.getContent(id.value),
-    set: (value) => articleBuilderStore.updateContent(id.value, value),
+    get: () => getContent(id.value),
+    set: (value) => updateContent(id.value, value),
 });
 
-const options = ref(articleBuilderStore.getOptions(id.value));
+const options = ref(getOptions(id.value));
+
+// computed
 
 const headingLevelOptions = computed({
     get: () => {
@@ -32,15 +37,36 @@ const headingLevelOptions = computed({
     },
 });
 
+const currentStyle = computed(() => {
+    switch (headingLevelOptions.value) {
+        case 1:
+            return "text-3xl lg:text-4xl xl:text-5xl";
+        case 2:
+            return "text-2xl lg:text-3xl xl:text-4xl";
+        case 3:
+            return "text-xl lg:text-2xl xl:text-3xl";
+        case 4:
+            return "text-lg lg:text-xl xl:text-2xl";
+        case 5:
+            return "lg:text-lg xl:text-xl";
+        case 6:
+            return "text-sm lg:text-[1rem] xl:text-lg";
+    }
+});
+
+// watch
+
 watch(
     options,
     (nv) => {
-        articleBuilderStore.updateContentOptions(id.value, nv);
+        updateContentOptions(id.value, nv);
     },
     {
         deep: true,
     }
 );
+
+// life-cycle
 
 onMounted(() => {
     options.value!["level"] = 1;
@@ -53,21 +79,14 @@ onMounted(() => {
         title="عنوان"
     >
         <template #default>
-            <div class="p-4">
-                <input
-                    v-model="contentValue"
-                    class="w-fit max-w-fit min-w-fit outline-none"
-                    placeholder="متن عنوان را وارد کنید"
-                    :class="{
-                        'text-xl': options!.level === 6,
-                        'text-2xl': options!.level === 5,
-                        'text-3xl': options!.level === 4,
-                        'text-4xl': options!.level === 3,
-                        'text-5xl': options!.level === 2,
-                        'text-6xl': options!.level === 1,
-                    }"
-                />
-            </div>
+            <UInput
+                v-model="contentValue"
+                variant="ghost"
+                class="w-full font-semibold"
+                placeholder="متن عنوان را وارد کنید"
+                :ui="{ base: `!w-full ${currentStyle}` }"
+                :class="{}"
+            />
         </template>
         <template #settings>
             <UFormField label="سایز هدینگ">
