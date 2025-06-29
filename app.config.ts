@@ -15,5 +15,10 @@ export default defineAppConfig({
             primary: "blue",
             neutral: "zinc",
         },
+        modal: {
+            slots: {
+                content: "!rounded-2xl",
+            },
+        },
     },
 });
