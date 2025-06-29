@@ -2,12 +2,13 @@
 // import
 
 import { motion } from "motion-v";
+import useArticleBuilderServices from "~/stores/services/useArticleBuilderServices.client";
 
 // state
 
 const isOpen = ref(false);
 
-const articleBuilderStore = useArticleBuilderStore();
+const { appendContent } = useArticleBuilderServices();
 
 const actions: {
     icon: string;
@@ -36,6 +37,30 @@ const actions: {
         template: {
             contentValue: "",
             type: "image",
+            options: {},
+        },
+    },
+    {
+        icon: "lucide:gallery-horizontal-end",
+        template: {
+            contentValue: "",
+            type: "image",
+            options: {},
+        },
+    },
+    {
+        icon: "lucide:slash",
+        template: {
+            contentValue: "",
+            type: "seprator",
+            options: {},
+        },
+    },
+    {
+        icon: "lucide:paperclip",
+        template: {
+            contentValue: "",
+            type: "seprator",
             options: {},
         },
     },
@@ -91,21 +116,11 @@ const actions: {
                         variant="solid"
                         @click="
                             () => {
-                                articleBuilderStore.appendContent(action.template);
+                                appendContent(action.template);
                                 isOpen = false;
                             }
                         "
                     />
-                    <!-- <UButton
-                        class="!text-2xl px-5"
-                        icon="lucide:image"
-                        variant="solid"
-                    />
-                    <UButton
-                        class="!text-2xl px-5"
-                        icon="lucide:video"
-                        variant="solid"
-                    /> -->
                 </UButtonGroup>
             </motion.div>
         </AnimatePresence>
