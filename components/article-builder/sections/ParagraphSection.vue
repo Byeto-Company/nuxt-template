@@ -2,6 +2,7 @@
 // imports
 
 import { QuillEditor } from "@vueup/vue-quill";
+import useArticleBuilderServices from "~/stores/services/useArticleBuilderServices.client";
 
 // types
 
@@ -17,14 +18,14 @@ const { id } = toRefs(props);
 
 // state
 
-const articleBuilderStore = useArticleBuilderStore();
+const { getContent, updateContent, getOptions } = useArticleBuilderServices();
 
 const contentValue = computed({
-    get: () => articleBuilderStore.getContent(id.value),
-    set: (value) => articleBuilderStore.updateContent(id.value, value),
+    get: () => getContent(id.value),
+    set: (value) => updateContent(id.value, value),
 });
 
-const options = ref(articleBuilderStore.getOptions(id.value));
+const options = ref(getOptions(id.value));
 
 // const headingLevelOptions = computed({
 //     get: () => {
@@ -57,100 +58,73 @@ const options = ref(articleBuilderStore.getOptions(id.value));
         :contentElevation="false"
     >
         <template #default>
-            <div class="p-4">
-                <QuillEditor
-                    v-model:content="contentValue"
-                    contentType="html"
-                    :toolbar="[
-                        ['bold', 'italic', 'underline', 'link', { direction: 'rtl' }],
-                        [{ list: 'ordered' }, { list: 'bullet' }],
-                        ['clean'],
-                        // ['link', 'image'],
-                        // ['blockquote', 'code-block'],
-                        // [{ header: 1 }, { header: 2 }],
-                    ]"
-                />
-
-                <!-- <input
-                    v-model="contentValue"
-                    class="w-fit max-w-fit min-w-fit outline-none"
-                    placeholder="متن عنوان را وارد کنید"
-                    :class="{
-                        'text-xl': options!.level === 6,
-                        'text-2xl': options!.level === 5,
-                        'text-3xl': options!.level === 4,
-                        'text-4xl': options!.level === 3,
-                        'text-5xl': options!.level === 2,
-                        'text-6xl': options!.level === 1,
-                    }"
-                /> -->
-            </div>
-        </template>
-        <template #settings>
-            <!-- <UFormField label="سایز هدینگ">
-                <USelectMenu
-                    :default-value="3"
-                    v-model="headingLevelOptions"
-                    value-key="id"
-                    :items="[
-                        {
-                            label: 'عنوان سایز ۱',
-                            id: 1,
-                        },
-                        {
-                            label: 'عنوان سایز ۲',
-                            id: 2,
-                        },
-                        {
-                            label: 'عنوان سایز ۳',
-                            id: 3,
-                        },
-                        {
-                            label: 'عنوان سایز ۴',
-                            id: 4,
-                        },
-                        {
-                            label: 'عنوان سایز ۵',
-                            id: 5,
-                        },
-                        {
-                            label: 'عنوان سایز ۶',
-                            id: 6,
-                        },
-                    ]"
-                    class="w-48"
-                />
-            </UFormField> -->
+            <QuillEditor
+                v-model:content="contentValue"
+                contentType="html"
+                class="!p-0 [&>.ql-editor>ul]:list-disc [&>.ql-editor>ol]:list-decimal"
+                :toolbar="[
+                    ['bold', 'italic', 'underline', 'link', { direction: 'rtl' }],
+                    [{ list: 'ordered' }, { list: 'bullet' }],
+                    ['clean'],
+                ]"
+            />
         </template>
     </SectionsWrapper>
 </template>
 
 <style>
 .ql-container {
-    border: none !important;
+    border: 1px solid var(--color-neutral-700) !important;
+    border-style: dashed !important;
     background-color: hsla(0, 0%, 100%, 0.05);
     border-radius: 8px;
     margin-bottom: 20px;
+    background-color: var(--color-neutral-800) !important;
 }
 
 .ql-editor {
     min-height: 200px;
+    padding: 16px;
 }
 
 .ql-toolbar {
-    /* border: 1px solid hsla(0, 0%, 100%, 1) !important; */
-    border: none !important;
+    border: 1px solid var(--color-neutral-700) !important;
+    border-style: dashed !important;
     background-color: hsla(0, 0%, 100%, 0.1);
     border-radius: 8px;
     margin-bottom: 20px;
+    min-height: 40px;
+    display: flex;
+    gap: 5px;
+    justify-content: start;
+    padding: 8px;
+    align-items: center;
+    background-color: var(--color-neutral-900) !important;
+}
+
+.ql-formats {
+    display: inline-flex;
+    align-items: center;
+    justify-content: start;
+    gap: 5px;
 }
 
 .ql-formats button {
+    width: 35px;
+    height: 35px;
+    padding: 5px;
     border-radius: 4px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .ql-formats button:hover {
     background: hsla(0, 0%, 50%, 0.2) !important;
+}
+
+.ql-formats button:hover .ql-stroke {
+    fill: var(--color-neutral-900) !important;
 }
 
 .ql-formats button svg {
@@ -158,11 +132,16 @@ const options = ref(articleBuilderStore.getOptions(id.value));
 }
 
 .ql-active {
-    background: hsla(0, 0%, 50%, 0.6) !important;
+    background: hsla(0, 0%, 50%, 0.3) !important;
 }
 
 .ql-stroke {
-    stroke: hsla(0, 0%, 50%, 1) !important;
+    stroke: white !important;
+    fill: var(--color-neutral-900) !important;
+}
+
+.ql-fill {
+    fill: white !important;
 }
 
 .ql-snow.ql-toolbar button.ql-active .ql-stroke,
@@ -178,5 +157,14 @@ const options = ref(articleBuilderStore.getOptions(id.value));
 .ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-stroke-miter,
 .ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-stroke-miter {
     stroke: white !important;
+}
+
+.ql-clipboard,
+.ql-tooltip {
+    display: none;
+}
+
+button[value="bullet"] > svg {
+    transform: translateX(-2px);
 }
 </style>
