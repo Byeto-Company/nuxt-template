@@ -1,7 +1,8 @@
 <script lang="ts" setup>
 // imports
 
-import { QuillEditor } from "@vueup/vue-quill";
+import useArticleBuilderServices from "~/stores/services/useArticleBuilderServices.client";
+import { useDropZone, useFileDialog } from "@vueuse/core";
 
 // types
 
@@ -19,9 +20,18 @@ const { id } = toRefs(props);
 
 const dropZoneRef = ref<HTMLDivElement>();
 
+function handleFile(selectedFile: File) {
+    const sizeInMB = selectedFile.size / (1024 * 1024);
+    if (sizeInMB > 10) {
+        console.error("File size exceeds 10MB limit.");
+        return;
+    }
+    contentValue.value = selectedFile;
+}
+
 function onDrop(files: File[] | null) {
-    console.log(files);
-    // called when files are dropped on zone
+    if (!files || !files.length) return;
+    handleFile(files[0]);
 }
 
 const { isOverDropZone } = useDropZone(dropZoneRef, {
@@ -31,43 +41,25 @@ const { isOverDropZone } = useDropZone(dropZoneRef, {
     preventDefaultForUnhandled: false,
 });
 
-const { files, open, reset, onCancel, onChange } = useFileDialog({
-    accept: "image/*", // Set to accept only image files
-    directory: false, // Select directories instead of files if set true
+const { files, open, onChange } = useFileDialog({
+    accept: "image/*",
+    directory: false,
     multiple: false,
 });
 
-const articleBuilderStore = useArticleBuilderStore();
+const { getContent, updateContent, getOptions } = useArticleBuilderServices();
 
 const contentValue = computed({
-    get: () => articleBuilderStore.getContent(id.value),
-    set: (value) => articleBuilderStore.updateContent(id.value, value),
+    get: () => getContent(id.value),
+    set: (value) => updateContent(id.value, value),
 });
 
-const options = ref(articleBuilderStore.getOptions(id.value));
+const options = ref(getOptions(id.value));
 
-// const headingLevelOptions = computed({
-//     get: () => {
-//         return options.value!["level"];
-//     },
-//     set: (value) => {
-//         options.value!["level"] = value;
-//     },
-// });
-
-// watch(
-//     options,
-//     (nv) => {
-//         articleBuilderStore.updateContentOptions(id.value, nv);
-//     },
-//     {
-//         deep: true,
-//     }
-// );
-
-// onMounted(() => {
-//     options.value!["level"] = 1;
-// });
+onChange(() => {
+    if (!files.value?.length) return;
+    handleFile(files.value[0]);
+});
 </script>
 
 <template>
@@ -77,24 +69,25 @@ const options = ref(articleBuilderStore.getOptions(id.value));
         :contentElevation="false"
     >
         <template #default>
-            <div class="p-4 flex-center">
-                <div
-                    class="w-[500px] aspect-square bg-neutral-500/10 text-neutral-400 flex-center flex-col-center text-center gap-4 rounded-xl border-neutral-700 border-4 border-dashed"
-                    :class="isOverDropZone ? '!bg-red-500' : ''"
-                    ref="dropZoneRef"
+            <div
+                class="w-full bg-neutral-800 text-neutral-400 flex-center flex-col-center text-center gap-4 rounded-xl border-neutral-700 py-20 border-dashed transition-all"
+                :class="isOverDropZone ? '!bg-neutral-900 border-2' : 'border'"
+                ref="dropZoneRef"
+            >
+                <UIcon
+                    name="lucide:image"
+                    class="text-[100px] text-neutral-400"
+                />
+                عکس خود را در اینجا رها کنید
+                <br />
+                یا انتخاب کنید
+                <UButton
+                    @click="open()"
+                    size="lg"
                 >
-                    <UIcon
-                        name="lucide:image"
-                        class="text-[100px] text-neutral-400"
-                    />
-                    عکس خود را در اینجا رها کنید
-                    <br />
-                    یا انتخاب کنید
-                    {{ files }}
-                    <UButton @click="() => open()"> انتخاب کنید </UButton>
-                </div>
+                    انتخاب کنید
+                </UButton>
             </div>
         </template>
-        <template #settings> </template>
     </SectionsWrapper>
 </template>
