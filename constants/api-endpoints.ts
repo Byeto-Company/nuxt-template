@@ -7,4 +7,7 @@ export const API_ENDPOINTS = {
         logout: "/user/logout",
         otp: "/user/send_otp",
     },
+    artilce: {
+        upload: "/article/upload-file",
+    },
 };
