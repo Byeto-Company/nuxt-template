@@ -1,87 +1,69 @@
 export type ArticleSection = {
     id: number;
-    type: "heading" | "paragraph" | "image" | "video";
+    type: "heading" | "paragraph" | "image" | "video" | "seprator";
     contentValue: any;
     options?: Record<any, any>;
 };
 
+export type Article = { title: string; description: string; content: ArticleSection[] };
+
+export type Language = { title: string; value: string };
+
 export const useArticleBuilderStore = defineStore("articleBuilder", () => {
-    // STATES
+    // States (plain refs, safe for SSR)
+    const currentLanguage = ref<Language>({
+        title: "فارسی",
+        value: "fa",
+    });
+    const main_title = ref<string>("");
+    const article = ref<Article>({ title: "", description: "", content: [] });
 
-    const title = ref("");
-    const contents = ref<ArticleSection[]>([
-        {
-            id: 1,
-            contentValue: "Hello World",
-            type: "heading",
-            options: {
-                level : 2
+    let main_title_storage: Ref<string> | undefined;
+    let article_storage: Ref<Article> | undefined;
+
+    onMounted(() => {
+        main_title_storage = useSessionStorage<string>("main-title", "");
+        article_storage = useLocalStorage<Article>("article", { title: "", description: "", content: [] });
+
+        main_title.value = main_title_storage.value;
+        article.value = article_storage.value;
+
+        watch(main_title, (val) => {
+            if (main_title_storage) main_title_storage.value = val;
+        });
+
+        watch(
+            article,
+            (val) => {
+                if (article_storage) article_storage.value = val;
             },
-        },
-        {
-            id: 2,
-            contentValue: "Hello World 2313",
-            type: "heading",
-            options: {},
-        },
-    ]);
+            { deep: true }
+        );
+    });
 
-    // ACTIONS
+    // Actions
+    const setMainTitle = (value: string) => {
+        main_title.value = value;
+    };
 
     const setTitle = (value: string) => {
-        title.value = value;
+        article.value.title = value;
     };
 
-    const setContents = (value: any) => {
-        return (contents.value = value);
+    const setDescription = (value: string) => {
+        article.value.description = value;
     };
 
-    const getContent = (id: number) => {
-        return contents.value.find((content) => content.id === id)!.contentValue;
-    };
-
-    const getOptions = (id: number) => {
-        return contents.value.find((content) => content.id === id)!.options;
-    };
-
-    const updateContent = (id: number, value: any) => {
-        const contentIndex = contents.value.findIndex((content) => content.id === id);
-        const copyOfContents = [...contents.value];
-        copyOfContents[contentIndex].contentValue = value;
-        contents.value = copyOfContents;
-    };
-
-    const updateContentOptions = (id: number, value: any) => {
-        const contentIndex = contents.value.findIndex((content) => content.id === id);
-        const copyOfContents = [...contents.value];
-        copyOfContents[contentIndex].options = value;
-        contents.value = copyOfContents;
-    };
-
-    const appendContent = (value: Omit<ArticleSection, "id">) => {
-        contents.value = [
-            ...contents.value,
-            {
-                id: (contents.value[contents.value.length - 1]?.id ?? 0) + 1,
-                ...value,
-            },
-        ];
-    };
-
-    const removeContent = (id: number) => {
-        contents.value = contents.value.filter((content) => content.id !== id);
+    const setContent = (value: any) => {
+        article.value.content = value;
     };
 
     return {
-        title,
-        contents,
+        article,
+        main_title,
         setTitle,
-        appendContent,
-        removeContent,
-        updateContent,
-        updateContentOptions,
-        getContent,
-        setContents,
-        getOptions,
+        setDescription,
+        setContent,
+        setMainTitle,
     };
 });
