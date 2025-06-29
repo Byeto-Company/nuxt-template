@@ -1,4 +1,8 @@
 <script lang="ts" setup>
+// imports
+
+import useArticleBuilderServices from "~/stores/services/useArticleBuilderServices.client";
+
 // type
 
 type Props = {
@@ -16,12 +20,12 @@ const { id } = toRefs(props);
 
 // state
 
-const articleBuilderStore = useArticleBuilderStore();
+const { removeContent } = useArticleBuilderServices();
 </script>
 
 <template>
     <div
-        class="relative p-4 rounded-lg bg-neutral-800/60 backdrop-blur-sm border border-neutral-700/60 shadow-lg shadow-black/20"
+        class="relative p-4 rounded-lg bg-neutral-800/60 backdrop-blur-sm border border-neutral-700/60 shadow-md shadow-black/20"
     >
         <div class="flex items-center justify-between p-4 w-full">
             <span class="text-white text-2xl font-bold">
@@ -39,7 +43,7 @@ const articleBuilderStore = useArticleBuilderStore();
                     />
                 </UButton>
                 <UButton
-                    @click="articleBuilderStore.removeContent(id)"
+                    @click="removeContent(id)"
                     color="error"
                     class="p-2"
                     variant="subtle"
@@ -52,12 +56,19 @@ const articleBuilderStore = useArticleBuilderStore();
             </div>
         </div>
         <div
-            class="py-8"
-            :class="contentElevation ? 'bg-neutral-800 rounded-lg border border-dashed border-neutral-700' : ''"
+            class="p-4"
+            v-if="$slots['default']"
         >
-            <slot />
+            <div
+                :class="contentElevation ? 'bg-neutral-800 rounded-lg border border-dashed border-neutral-700 p-4' : ''"
+            >
+                <slot />
+            </div>
         </div>
-        <div class="p-4 w-full">
+        <div
+            v-if="!!$slots['settings']"
+            class="p-4 w-full"
+        >
             <slot name="settings" />
         </div>
     </div>
