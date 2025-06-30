@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 // imports
-import useArticleBuilderServices from "~/stores/services/useArticleBuilderServices.client";
+import useArticleBuilderServices from "~/stores/services/useArticleBuilderServices";
 
 // state
 
@@ -22,7 +22,7 @@ const description = computed({
 <template>
     <div class="w-full flex flex-col gap-5 container border-b-2 border-neutral-800 pb-9">
         <div class="w-full flex items-center justify-between">
-            <h1 class="text-2xl font-semibold">عنوان اصلی : متن تستی است</h1>
+            <h1 class="text-2xl font-semibold">عنوان اصلی : {{ store.main_title }}</h1>
             <ArticleLanguages />
         </div>
         <div class="w-full flex flex-col gap-5">
