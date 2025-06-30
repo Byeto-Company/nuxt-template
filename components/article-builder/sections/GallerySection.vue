@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 // imports
 
-import useArticleBuilderServices from "~/stores/services/useArticleBuilderServices.client";
+import useArticleBuilderServices from "~/stores/services/useArticleBuilderServices";
 
 // types
 
