@@ -1,17 +1,13 @@
 <script setup lang="ts">
 // imports
 
-import type { TabsItem } from "@nuxt/ui";
+import useArticleBuilderServices from "~/stores/services/useArticleBuilderServices";
 
 // state
 
-const currentLanguage = ref({
-    label: "فارسی",
-    code: "fa",
-    icon: "circle-flags:ir",
-});
+const { store } = useArticleBuilderServices();
 
-const items = [
+const items: Language[] = [
     {
         label: "English",
         code: "en",
@@ -32,9 +28,11 @@ const items = [
 // computeds
 
 const currentTab = computed({
-    get: () => items.findIndex((item) => item.code == currentLanguage.value.code).toString(),
+    get: () => items.findIndex((item) => item.code == store.currentLanguage?.code).toString(),
     set: (value: number) => {
-        currentLanguage.value = items[value];
+        console.log(items[value]);
+
+        store.setCurrentLanguage(items[value]);
     },
 });
 </script>
