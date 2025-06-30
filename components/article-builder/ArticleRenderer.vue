@@ -2,7 +2,7 @@
 // imports
 
 import { Reorder } from "motion-v";
-import useArticleBuilderServices from "~/stores/services/useArticleBuilderServices.client";
+import useArticleBuilderServices from "~/stores/services/useArticleBuilderServices";
 
 // state
 
@@ -15,7 +15,7 @@ const currentContents = computed({
     set: (value) => store.setContent(value),
 });
 
-const articleComponents = ["heading", "paragraph", "image", "seprator", "video", "gallery"];
+const articleComponents = ["heading", "paragraph", "image", "seprator", "video", "gallery", "attachment"];
 
 const componentMap = Object.fromEntries(
     articleComponents.map((key) => [
