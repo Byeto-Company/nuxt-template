@@ -1,7 +1,7 @@
 <script setup lang="ts">
 // import
 
-import useArticleBuilderServices from "~/stores/services/useArticleBuilderServices.client";
+import useArticleBuilderServices from "~/stores/services/useArticleBuilderServices";
 import { helpers, required, minLength } from "@vuelidate/validators";
 import { useVuelidate } from "@vuelidate/core";
 
