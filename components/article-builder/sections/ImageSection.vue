@@ -1,8 +1,9 @@
 <script lang="ts" setup>
 // imports
 
-import useArticleBuilderServices from "~/stores/services/useArticleBuilderServices.client";
+import useArticleBuilderServices from "~/stores/services/useArticleBuilderServices";
 import { useDropZone, useFileDialog } from "@vueuse/core";
+import useUploadFile from "~/composables/api/article-builder/useUploadFile";
 
 // types
 
@@ -20,19 +21,68 @@ const { id } = toRefs(props);
 
 const dropZoneRef = ref<HTMLDivElement>();
 
-function handleFile(selectedFile: File) {
+const toast = useToast();
+
+const uploadProgress = ref(0);
+
+const { getContent, updateContent, getOptions } = useArticleBuilderServices();
+
+// queries
+
+const { mutateAsync: uploadFile, isPending: uploadFileIsPending } = useUploadFile();
+
+// computeds
+
+const contentValue = computed<FileResponse>({
+    get: () => getContent(id.value),
+    set: (value) => {
+        console.log(value);
+        updateContent(id.value, value);
+    },
+});
+
+const options = ref(getOptions(id.value));
+
+// methods
+
+const handleFile = async (selectedFile: File) => {
     const sizeInMB = selectedFile.size / (1024 * 1024);
     if (sizeInMB > 10) {
-        console.error("File size exceeds 10MB limit.");
+        toast.add({
+            title: "حجم فایل باید کمتر از ۱۰ مگابایت باشد",
+            color: "error",
+        });
         return;
     }
-    contentValue.value = selectedFile;
-}
+    await uploadFile(
+        {
+            file: selectedFile,
+            onProgress: (p) => {
+                uploadProgress.value = p;
+            },
+        },
+        {
+            onSuccess: (data: FileResponse) => {
+                contentValue.value = { ...data };
+            },
+            onError: () => {
+                toast.add({
+                    title: "خطایی در آپلود فایل رخ داد",
+                    color: "error",
+                });
+            },
+            onSettled: () => {
+                uploadProgress.value = 0;
+                reset();
+            },
+        }
+    );
+};
 
-function onDrop(files: File[] | null) {
+const onDrop = (files: File[] | null) => {
     if (!files || !files.length) return;
     handleFile(files[0]);
-}
+};
 
 const { isOverDropZone } = useDropZone(dropZoneRef, {
     onDrop,
@@ -41,20 +91,11 @@ const { isOverDropZone } = useDropZone(dropZoneRef, {
     preventDefaultForUnhandled: false,
 });
 
-const { files, open, onChange } = useFileDialog({
+const { files, open, onChange, reset } = useFileDialog({
     accept: "image/*",
     directory: false,
     multiple: false,
 });
-
-const { getContent, updateContent, getOptions } = useArticleBuilderServices();
-
-const contentValue = computed({
-    get: () => getContent(id.value),
-    set: (value) => updateContent(id.value, value),
-});
-
-const options = ref(getOptions(id.value));
 
 onChange(() => {
     if (!files.value?.length) return;
@@ -70,22 +111,54 @@ onChange(() => {
     >
         <template #default>
             <div
-                class="w-full bg-neutral-800 text-neutral-400 flex-center flex-col-center text-center gap-4 rounded-xl border-neutral-700 py-20 border-dashed transition-all"
-                :class="isOverDropZone ? '!bg-neutral-900 border-2' : 'border'"
+                class="relative w-full bg-neutral-800 text-neutral-400 flex-center flex-col-center text-center gap-5 rounded-xl border-neutral-700 border-dashed py-20 transition-all overflow-hidden"
+                :class="{
+                    '!bg-neutral-900 border-2': isOverDropZone,
+                    border: !isOverDropZone,
+                    '!py-12': !!contentValue,
+                }"
                 ref="dropZoneRef"
             >
-                <UIcon
-                    name="lucide:image"
-                    class="text-[100px] text-neutral-400"
+                <div
+                    class="absolute inset-0 bg-primary-500/15 z-1 transition-all"
+                    :style="{
+                        width: `${uploadProgress}%`,
+                    }"
                 />
-                عکس خود را در اینجا رها کنید
-                <br />
-                یا انتخاب کنید
+
+                <ImagePreview
+                    v-if="!!contentValue"
+                    :src="contentValue.file"
+                    class="!w-2/3 border border-slate-200/20 rounded-2xl z-3"
+                >
+                    <template #thumbnail>
+                        <div class="w-full h-[14rem] sm:h-[20rem] lg:h-[35rem]">
+                            <img
+                                class="size-full object-cover"
+                                :src="contentValue.file"
+                            />
+                        </div>
+                    </template>
+                </ImagePreview>
+
+                <template v-else>
+                    <UIcon
+                        name="lucide:image"
+                        class="text-[100px] text-neutral-400"
+                    />
+                    عکس خود را در اینجا رها کنید
+                    <br />
+                    یا انتخاب کنید
+                </template>
+
                 <UButton
                     @click="open()"
                     size="lg"
+                    class="z-3"
+                    :loading="uploadFileIsPending"
+                    :class="!!contentValue ? 'mt-4' : ''"
                 >
-                    انتخاب کنید
+                    {{ !!contentValue ? "تغییر عکس" : "انتخاب کنید" }}
                 </UButton>
             </div>
         </template>
