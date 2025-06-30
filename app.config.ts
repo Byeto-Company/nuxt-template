@@ -17,7 +17,7 @@ export default defineAppConfig({
         },
         modal: {
             slots: {
-                content: "!rounded-2xl",
+                overlay: "bg-black/90",
             },
         },
     },
