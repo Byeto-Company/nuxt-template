@@ -1,47 +1,24 @@
 export type ArticleSection = {
     id: number;
-    type: "heading" | "paragraph" | "image" | "video" | "seprator";
+    type: "heading" | "paragraph" | "image" | "video" | "seprator" | "attachment";
     contentValue: any;
     options?: Record<any, any>;
 };
 
 export type Article = { title: string; description: string; content: ArticleSection[] };
 
-export type Language = { title: string; value: string };
+export type Language = { label: string; code: string; icon: string };
 
 export const useArticleBuilderStore = defineStore("articleBuilder", () => {
-    // States (plain refs, safe for SSR)
-    const currentLanguage = ref<Language>({
-        title: "فارسی",
-        value: "fa",
+    const currentLanguage = useLocalStorage<Language>("current-language", {
+        label: "فارسی",
+        code: "fa",
+        icon: "circle-flags:ir",
     });
-    const main_title = ref<string>("");
-    const article = ref<Article>({ title: "", description: "", content: [] });
+    const main_title = useLocalStorage<string>("main-title", "");
+    const article = useLocalStorage<Article>("article", { title: "", description: "", content: [] });
 
-    let main_title_storage: Ref<string> | undefined;
-    let article_storage: Ref<Article> | undefined;
-
-    onMounted(() => {
-        main_title_storage = useSessionStorage<string>("main-title", "");
-        article_storage = useLocalStorage<Article>("article", { title: "", description: "", content: [] });
-
-        main_title.value = main_title_storage.value;
-        article.value = article_storage.value;
-
-        watch(main_title, (val) => {
-            if (main_title_storage) main_title_storage.value = val;
-        });
-
-        watch(
-            article,
-            (val) => {
-                if (article_storage) article_storage.value = val;
-            },
-            { deep: true }
-        );
-    });
-
-    // Actions
+    // actions
     const setMainTitle = (value: string) => {
         main_title.value = value;
     };
@@ -58,12 +35,18 @@ export const useArticleBuilderStore = defineStore("articleBuilder", () => {
         article.value.content = value;
     };
 
+    const setCurrentLanguage = (value: Language) => {
+        currentLanguage.value = { ...value };
+    };
+
     return {
         article,
         main_title,
+        currentLanguage,
         setTitle,
         setDescription,
         setContent,
         setMainTitle,
+        setCurrentLanguage,
     };
 });
