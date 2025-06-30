@@ -2,7 +2,7 @@
 // import
 
 import { motion } from "motion-v";
-import useArticleBuilderServices from "~/stores/services/useArticleBuilderServices.client";
+import useArticleBuilderServices from "~/stores/services/useArticleBuilderServices";
 
 // state
 
@@ -37,6 +37,16 @@ const actions: {
         template: {
             contentValue: "",
             type: "image",
+            options: {
+                alt: "",
+            },
+        },
+    },
+    {
+        icon: "lucide:video",
+        template: {
+            contentValue: "",
+            type: "video",
             options: {},
         },
     },
@@ -60,7 +70,7 @@ const actions: {
         icon: "lucide:paperclip",
         template: {
             contentValue: "",
-            type: "seprator",
+            type: "attachment",
             options: {},
         },
     },
