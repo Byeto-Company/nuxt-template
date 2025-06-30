@@ -45,6 +45,10 @@ const useArticleBuilderServices = () => {
         articleContent.value = articleContent.value.filter((content) => content.id !== id);
     };
 
+    const clearData = () => {
+        articleStore.article = { title: "", description: "", content: [] };
+    };
+
     return {
         store: articleStore,
         appendContent,
@@ -53,6 +57,7 @@ const useArticleBuilderServices = () => {
         getOptions,
         updateContentOptions,
         removeContent,
+        clearData,
     };
 };
 
