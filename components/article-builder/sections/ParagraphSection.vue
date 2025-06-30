@@ -2,7 +2,7 @@
 // imports
 
 import { QuillEditor } from "@vueup/vue-quill";
-import useArticleBuilderServices from "~/stores/services/useArticleBuilderServices.client";
+import useArticleBuilderServices from "~/stores/services/useArticleBuilderServices";
 
 // types
 
