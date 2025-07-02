@@ -17,7 +17,7 @@ export default defineAppConfig({
         },
         modal: {
             slots: {
-                overlay: "bg-black/90",
+                overlay: "bg-black/70",
             },
         },
     },
