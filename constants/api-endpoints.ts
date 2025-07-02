@@ -9,5 +9,6 @@ export const API_ENDPOINTS = {
     },
     artilce: {
         upload: "/article/upload-file",
+        delete: "/article/delete-file",
     },
 };
