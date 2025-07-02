@@ -27,6 +27,8 @@ const uploadProgress = ref(0);
 
 const { getContent, updateContent, getOptions } = useArticleBuilderServices();
 
+const options = ref(getOptions(id.value));
+
 // queries
 
 const { mutateAsync: uploadFile, isPending: uploadFileIsPending } = useUploadFile();
@@ -36,16 +38,22 @@ const { mutateAsync: uploadFile, isPending: uploadFileIsPending } = useUploadFil
 const contentValue = computed<FileResponse>({
     get: () => getContent(id.value),
     set: (value) => {
-        console.log(value);
         updateContent(id.value, value);
     },
 });
 
-const options = ref(getOptions(id.value));
+const imageAltOptions = computed({
+    get: () => {
+        return options.value!["alt"];
+    },
+    set: (value) => {
+        options.value!["alt"] = value;
+    },
+});
 
 // methods
 
-const handleFile = async (selectedFile: File) => {
+const handleUploadFile = async (selectedFile: File) => {
     const sizeInMB = selectedFile.size / (1024 * 1024);
     if (sizeInMB > 10) {
         toast.add({
@@ -81,7 +89,7 @@ const handleFile = async (selectedFile: File) => {
 
 const onDrop = (files: File[] | null) => {
     if (!files || !files.length) return;
-    handleFile(files[0]);
+    handleUploadFile(files[0]);
 };
 
 const { isOverDropZone } = useDropZone(dropZoneRef, {
@@ -99,7 +107,7 @@ const { files, open, onChange, reset } = useFileDialog({
 
 onChange(() => {
     if (!files.value?.length) return;
-    handleFile(files.value[0]);
+    handleUploadFile(files.value[0]);
 });
 </script>
 
@@ -129,10 +137,10 @@ onChange(() => {
                 <ImagePreview
                     v-if="!!contentValue"
                     :src="contentValue.file"
-                    class="!w-2/3 border border-slate-200/20 rounded-2xl z-3"
+                    class="!w-2/3 h-[30rem] border border-slate-200/20 rounded-2xl z-3"
                 >
                     <template #thumbnail>
-                        <div class="w-full h-[14rem] sm:h-[20rem] lg:h-[35rem]">
+                        <div class="w-full h-[30rem]">
                             <img
                                 class="size-full object-cover"
                                 :src="contentValue.file"
@@ -156,11 +164,23 @@ onChange(() => {
                     size="lg"
                     class="z-3"
                     :loading="uploadFileIsPending"
-                    :class="!!contentValue ? 'mt-4' : ''"
+                    :class="!!contentValue ? 'mt-3' : ''"
                 >
                     {{ !!contentValue ? "تغییر عکس" : "انتخاب کنید" }}
                 </UButton>
             </div>
+        </template>
+        <template
+            #settings
+            v-if="!!contentValue"
+        >
+            <UFormField label="عنوان عکس">
+                <UInput
+                    v-model="imageAltOptions"
+                    size="lg"
+                    class="w-full mt-2"
+                />
+            </UFormField>
         </template>
     </SectionsWrapper>
 </template>
