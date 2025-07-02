@@ -1,5 +1,10 @@
 <script setup>
-import { VueQueryDevtools } from "@tanstack/vue-query-devtools";
+// imports
+
+import useGetToken from "~/composables/api/auth/useGetToken";
+import useAppServices from "~/stores/services/useAppServices";
+
+// meta
 
 useHead({
     htmlAttrs: {
@@ -13,6 +18,25 @@ useSeoMeta({
     titleTemplate: (titleChunk) => {
         return titleChunk ? `${titleChunk} - Site Title` : "Site Title";
     },
+});
+
+// imports
+
+import { VueQueryDevtools } from "@tanstack/vue-query-devtools";
+
+// state
+
+const { store } = useAppServices();
+
+// queries
+
+const { data: token, isSuccess } = useGetToken();
+
+// watch
+
+watch(isSuccess, () => {
+    store.setToken(token.value.access);
+    store.setRefreshToken(token.value.refresh);
 });
 </script>
 
