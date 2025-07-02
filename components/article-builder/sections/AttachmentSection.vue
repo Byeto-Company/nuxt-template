@@ -33,7 +33,7 @@ const { mutateAsync: uploadFile, isPending: uploadFileIsPending } = useUploadFil
 
 // computeds
 
-const contentValue = computed<FileResponse>({
+const contentValue = computed<FileResponse[]>({
     get: () => getContent(id.value),
     set: (value) => {
         console.log(value);
@@ -45,7 +45,7 @@ const options = ref(getOptions(id.value));
 
 // methods
 
-const handleFile = async (selectedFile: File) => {
+const handleUploadFile = async (selectedFile: File) => {
     const sizeInMB = selectedFile.size / (1024 * 1024);
     if (sizeInMB > 10) {
         toast.add({
@@ -63,7 +63,7 @@ const handleFile = async (selectedFile: File) => {
         },
         {
             onSuccess: (data: FileResponse) => {
-                contentValue.value = { ...data };
+                contentValue.value.push({ ...data });
             },
             onError: () => {
                 toast.add({
@@ -81,7 +81,7 @@ const handleFile = async (selectedFile: File) => {
 
 const onDrop = (files: File[] | null) => {
     if (!files || !files.length) return;
-    handleFile(files[0]);
+    handleUploadFile(files[0]);
 };
 
 const { isOverDropZone } = useDropZone(dropZoneRef, {
@@ -99,7 +99,7 @@ const { files, open, onChange, reset } = useFileDialog({
 
 onChange(() => {
     if (!files.value?.length) return;
-    handleFile(files.value[0]);
+    handleUploadFile(files.value[0]);
 });
 </script>
 
@@ -115,7 +115,7 @@ onChange(() => {
                 :class="{
                     '!bg-neutral-900 border-2': isOverDropZone,
                     border: !isOverDropZone,
-                    '!py-12': !!contentValue,
+                    '!py-12': contentValue.length > 0,
                 }"
                 ref="dropZoneRef"
             >
@@ -126,40 +126,34 @@ onChange(() => {
                     }"
                 />
 
-                <ImagePreview
-                    v-if="!!contentValue"
-                    :src="contentValue.file"
-                    class="!w-2/3 border border-slate-200/20 rounded-2xl z-3"
-                >
-                    <template #thumbnail>
-                        <div class="w-full h-[14rem] sm:h-[20rem] lg:h-[35rem]">
-                            <img
-                                class="size-full object-cover"
-                                :src="contentValue.file"
-                            />
-                        </div>
-                    </template>
-                </ImagePreview>
-
-                <template v-else>
-                    <UIcon
-                        name="lucide:paperclip"
-                        class="text-[100px] text-neutral-400"
-                    />
-                    فایل خود را در اینجا رها کنید
-                    <br />
-                    یا انتخاب کنید
-                </template>
+                <UIcon
+                    name="lucide:paperclip"
+                    class="text-[100px] text-neutral-400"
+                />
+                فایل خود را در اینجا رها کنید
+                <br />
+                یا انتخاب کنید
 
                 <UButton
                     @click="open()"
                     size="lg"
                     class="z-3"
                     :loading="uploadFileIsPending"
-                    :class="!!contentValue ? 'mt-4' : ''"
+                    :class="contentValue.length > 0 ? 'mt-3' : ''"
                 >
-                    {{ !!contentValue ? "تغییر عکس" : "انتخاب کنید" }}
+                    افزودن ضمیمه
                 </UButton>
+
+                <div
+                    v-if="contentValue.length > 0"
+                    class="w-full grid grid-cols-4 gap-5 px-5 mt-8"
+                >
+                    <Attachment
+                        v-for="(attachment, index) in contentValue"
+                        :key="index"
+                        :data="attachment"
+                    />
+                </div>
             </div>
         </template>
     </SectionsWrapper>
