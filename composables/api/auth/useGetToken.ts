@@ -1,0 +1,44 @@
+// imports
+
+import { useQuery } from "@tanstack/vue-query";
+import { API_ENDPOINTS } from "~/constants/api-endpoints";
+import { QUERY_KEYS } from "~/constants/query-keys";
+
+// types
+
+export type GetTokenRequest = {
+    otp: string;
+};
+
+export type GetTokenResponse = {
+    refresh: string;
+    access: string;
+};
+
+// composable
+
+const useGetToken = () => {
+    // state
+
+    const { $axios: axios } = useNuxtApp();
+
+    const route = useRoute();
+
+    const otp = computed(() => route.query["otp"]);
+
+    const handleGetToken = async () => {
+        const { data } = await axios.post<GetTokenResponse>(API_ENDPOINTS.user.signin, {
+            otp: otp.value,
+        });
+
+        return data;
+    };
+
+    return useQuery({
+        queryKey: [QUERY_KEYS.user],
+        queryFn: () => handleGetToken(),
+        enabled: !!otp.value,
+    });
+};
+
+export default useGetToken;
