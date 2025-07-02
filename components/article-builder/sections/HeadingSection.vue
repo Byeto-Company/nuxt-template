@@ -65,12 +65,6 @@ watch(
         deep: true,
     }
 );
-
-// life-cycle
-
-onMounted(() => {
-    options.value!["level"] = 1;
-});
 </script>
 
 <template>
@@ -94,6 +88,7 @@ onMounted(() => {
                     :default-value="3"
                     v-model="headingLevelOptions"
                     value-key="id"
+                    size="lg"
                     :items="[
                         {
                             label: 'عنوان سایز ۱',
@@ -120,7 +115,7 @@ onMounted(() => {
                             id: 6,
                         },
                     ]"
-                    class="w-48"
+                    class="w-48 mt-2"
                 />
             </UFormField>
         </template>
