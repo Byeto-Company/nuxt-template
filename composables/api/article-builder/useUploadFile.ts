@@ -2,7 +2,6 @@
 
 import { useMutation } from "@tanstack/vue-query";
 import { API_ENDPOINTS } from "~/constants/api-endpoints";
-import { ref } from "vue";
 
 // types
 
