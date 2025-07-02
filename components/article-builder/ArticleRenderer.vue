@@ -33,17 +33,18 @@ const capitalize = (str: string): string => {
 
 <template>
     <Reorder.Group
+        as="ol"
         axis="y"
         v-model:values="currentContents"
         class="flex flex-col gap-10 py-9 container"
     >
         <Reorder.Item
             v-for="(content, i) in currentContents"
-            :data-index="i"
             :key="content.id"
             :value="content"
-            class="relative"
             :dragListener="false"
+            :dragControls="dragControls"
+            class="relative"
         >
             <component
                 :is="componentMap[content.type]"
