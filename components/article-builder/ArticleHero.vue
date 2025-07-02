@@ -23,7 +23,13 @@ const description = computed({
     <div class="w-full flex flex-col gap-5 container border-b-2 border-neutral-800 pb-9">
         <div class="w-full flex items-center justify-between">
             <h1 class="text-2xl font-semibold">عنوان اصلی : {{ store.main_title }}</h1>
-            <ArticleLanguages />
+            <div class="w-max flex items-center justify-start gap-5">
+                <USwitch
+                    label="منتشر شده"
+                    class="pt-1"
+                />
+                <ArticleLanguages />
+            </div>
         </div>
         <div class="w-full flex flex-col gap-5">
             <UInput
