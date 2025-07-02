@@ -11,12 +11,11 @@ const useArticleBuilderServices = () => {
     // methods
 
     const appendContent = (value: Omit<ArticleSection, "id">) => {
-        const newConrent = {
+        const newContent = {
             id: (articleContent.value[articleContent.value.length - 1]?.id ?? 0) + 1,
             ...value,
         };
-
-        articleStore.article.content.push(newConrent);
+        articleStore.article.content.push(newContent);
     };
 
     const getContent = (id: number) => {
@@ -25,9 +24,9 @@ const useArticleBuilderServices = () => {
 
     const updateContent = (id: number, value: any) => {
         const contentIndex = articleContent.value.findIndex((content) => content.id === id);
-        const copyOfContents = [...articleContent.value];
-        copyOfContents[contentIndex].contentValue = value;
-        articleContent.value = copyOfContents;
+        if (contentIndex !== -1) {
+            articleContent.value[contentIndex].contentValue = value;
+        }
     };
 
     const getOptions = (id: number) => {
@@ -36,9 +35,9 @@ const useArticleBuilderServices = () => {
 
     const updateContentOptions = (id: number, value: any) => {
         const contentIndex = articleContent.value.findIndex((content) => content.id === id);
-        const copyOfContents = [...articleContent.value];
-        copyOfContents[contentIndex].options = value;
-        articleContent.value = copyOfContents;
+        if (contentIndex !== -1) {
+            articleContent.value[contentIndex].options = value;
+        }
     };
 
     const removeContent = (id: number) => {
