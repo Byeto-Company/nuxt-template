@@ -53,8 +53,8 @@ const actions: {
     {
         icon: "lucide:gallery-horizontal-end",
         template: {
-            contentValue: "",
-            type: "image",
+            contentValue: [],
+            type: "gallery",
             options: {},
         },
     },
@@ -69,7 +69,7 @@ const actions: {
     {
         icon: "lucide:paperclip",
         template: {
-            contentValue: "",
+            contentValue: [],
             type: "attachment",
             options: {},
         },
