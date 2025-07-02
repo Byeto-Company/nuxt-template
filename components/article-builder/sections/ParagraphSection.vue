@@ -61,7 +61,7 @@ const options = ref(getOptions(id.value));
             <QuillEditor
                 v-model:content="contentValue"
                 contentType="html"
-                class="!p-0 [&>.ql-editor>ul]:list-disc [&>.ql-editor>ol]:list-decimal"
+                class="!p-0 [&>.ql-editor>ul]:list-disc [&>.ql-editor>ol]:list-decimal [&>.ql-editor>ol>li.ql-direction-rtl]:ms-4 [&>.ql-editor>ol>li]:ms-4 [&>.ql-editor>ul>li.ql-direction-rtl]:ms-4 [&>.ql-editor>ul>li]:ms-4 [&>.ql-editor>p>a]:underline [&>.ql-editor>p>a]:text-cyan-400"
                 :toolbar="[
                     ['bold', 'italic', 'underline', 'link', { direction: 'rtl' }],
                     [{ list: 'ordered' }, { list: 'bullet' }],
@@ -166,5 +166,10 @@ const options = ref(getOptions(id.value));
 
 button[value="bullet"] > svg {
     transform: translateX(-2px);
+}
+
+.ql-direction-rtl {
+    direction: ltr !important;
+    text-align: left;
 }
 </style>
