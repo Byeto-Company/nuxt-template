@@ -1,6 +1,6 @@
 export type ArticleSection = {
     id: number;
-    type: "heading" | "paragraph" | "image" | "video" | "seprator" | "attachment";
+    type: "heading" | "paragraph" | "image" | "video" | "seprator" | "attachment" | "gallery";
     contentValue: any;
     options?: Record<any, any>;
 };
@@ -16,7 +16,7 @@ export const useArticleBuilderStore = defineStore("articleBuilder", () => {
         icon: "circle-flags:ir",
     });
     const main_title = useLocalStorage<string>("main-title", "");
-    const article = useLocalStorage<Article>("article", { title: "", description: "", content: [] });
+    const article = useSessionStorage<Article>("article", { title: "", description: "", content: [] });
 
     // actions
     const setMainTitle = (value: string) => {
