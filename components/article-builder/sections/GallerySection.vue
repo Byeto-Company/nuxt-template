@@ -2,6 +2,8 @@
 // imports
 
 import useArticleBuilderServices from "~/stores/services/useArticleBuilderServices";
+import { useDropZone, useFileDialog } from "@vueuse/core";
+import useUploadFile from "~/composables/api/article-builder/useUploadFile";
 
 // types
 
@@ -19,10 +21,80 @@ const { id } = toRefs(props);
 
 const dropZoneRef = ref<HTMLDivElement>();
 
-function onDrop(files: File[] | null) {
-    console.log(files);
-    // called when files are dropped on zone
-}
+const toast = useToast();
+
+const uploadProgress = ref(0);
+
+const { getContent, updateContent, getOptions } = useArticleBuilderServices();
+
+// const options = ref(getOptions(id.value));
+
+// queries
+
+const { mutateAsync: uploadFile, isPending: uploadFileIsPending } = useUploadFile();
+
+// computeds
+
+const contentValue = computed<FileResponse[]>({
+    get: () => getContent(id.value),
+    set: (value) => {
+        updateContent(id.value, value);
+    },
+});
+
+// const imageAltOptions = computed({
+//     get: () => {
+//         return options.value!["alt"];
+//     },
+//     set: (value) => {
+//         options.value!["alt"] = value;
+//     },
+// });
+
+// methods
+
+const handleUploadFile = async (selectedFile: File) => {
+    const sizeInMB = selectedFile.size / (1024 * 1024);
+    if (sizeInMB > 10) {
+        toast.add({
+            title: "حجم فایل باید کمتر از ۱۰ مگابایت باشد",
+            color: "error",
+        });
+        return;
+    }
+    await uploadFile(
+        {
+            file: selectedFile,
+            onProgress: (p) => {
+                uploadProgress.value = p;
+            },
+        },
+        {
+            onSuccess: (data: FileResponse) => {
+                contentValue.value.push({ ...data });
+            },
+            onError: () => {
+                toast.add({
+                    title: "خطایی در آپلود فایل رخ داد",
+                    color: "error",
+                });
+            },
+            onSettled: () => {
+                uploadProgress.value = 0;
+                reset();
+            },
+        }
+    );
+};
+
+const handleDeletedItem = (id: number) => {
+    contentValue.value = contentValue.value.filter((item) => item.id !== id);
+};
+
+const onDrop = (files: File[] | null) => {
+    if (!files || !files.length) return;
+    handleUploadFile(files[0]);
+};
 
 const { isOverDropZone } = useDropZone(dropZoneRef, {
     onDrop,
@@ -31,48 +103,41 @@ const { isOverDropZone } = useDropZone(dropZoneRef, {
     preventDefaultForUnhandled: false,
 });
 
-const { files, open, reset, onCancel, onChange } = useFileDialog({
-    accept: "image/*", // Set to accept only image files
-    directory: false, // Select directories instead of files if set true
+const { files, open, onChange, reset } = useFileDialog({
+    accept: "image/*",
+    directory: false,
     multiple: false,
 });
 
-const { getContent, updateContent, getOptions } = useArticleBuilderServices();
-
-const contentValue = computed({
-    get: () => getContent(id.value),
-    set: (value) => updateContent(id.value, value),
+onChange(() => {
+    if (!files.value?.length) return;
+    handleUploadFile(files.value[0]);
 });
-
-const options = ref(getOptions(id.value));
-
-// watch(
-//     options,
-//     (nv) => {
-//         updateContentOptions(id.value, nv);
-//     },
-//     {
-//         deep: true,
-//     }
-// );
-
-// onMounted(() => {
-//     options.value!["level"] = 1;
-// });
 </script>
 
 <template>
     <SectionsWrapper
         :id="id"
-        title="گالری تصویر"
+        title="گالری تصویر ( حداقل ۲ تصویر )"
         :contentElevation="false"
     >
         <template #default>
             <div
-                class="w-full bg-neutral-500/10 text-neutral-400 flex-center flex-col-center text-center gap-4 rounded-xl border-neutral-700 border py-20 border-dashed"
-                :class="isOverDropZone ? '!bg-red-500' : ''"
+                class="relative w-full bg-neutral-800 text-neutral-400 flex-center flex-col-center text-center gap-5 rounded-xl border-neutral-700 border-dashed py-20 transition-all overflow-hidden"
+                :class="{
+                    '!bg-neutral-900 border-2': isOverDropZone,
+                    border: !isOverDropZone,
+                    '!py-12': contentValue.length > 0,
+                }"
                 ref="dropZoneRef"
             >
+                <div
+                    class="absolute inset-0 bg-primary-500/15 z-1 transition-all"
+                    :style="{
+                        width: `${uploadProgress}%`,
+                    }"
+                />
+
                 <UIcon
                     name="lucide:image"
                     class="text-[100px] text-neutral-400"
@@ -80,13 +145,38 @@ const options = ref(getOptions(id.value));
                 عکس خود را در اینجا رها کنید
                 <br />
                 یا انتخاب کنید
-                {{ files }}
+
                 <UButton
-                    @click="() => open()"
+                    @click="open()"
                     size="lg"
+                    class="z-3"
+                    :loading="uploadFileIsPending"
+                    :class="contentValue.length > 0 ? 'mt-3' : ''"
                 >
-                    انتخاب کنید
+                    افزودن عکس
                 </UButton>
+
+                <div
+                    v-if="contentValue.length > 0"
+                    class="w-full grid grid-cols-3 gap-5 px-5 mt-8"
+                >
+                    <ImagePreview
+                        v-for="(image, index) in contentValue"
+                        :key="index"
+                        :src="image.file"
+                        :id="image.id"
+                        class="h-[16rem] border border-slate-200/20 rounded-2xl z-3"
+                        @delete="handleDeletedItem"
+                    >
+                        <template #thumbnail>
+                            <div class="w-full h-[16rem]">
+                                <img
+                                    class="size-full object-cover"
+                                    :src="image.file"
+                                />
+                            </div> </template
+                    ></ImagePreview>
+                </div>
             </div>
         </template>
     </SectionsWrapper>
