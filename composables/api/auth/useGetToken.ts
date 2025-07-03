@@ -3,6 +3,7 @@
 import { useQuery } from "@tanstack/vue-query";
 import { API_ENDPOINTS } from "~/constants/api-endpoints";
 import { QUERY_KEYS } from "~/constants/query-keys";
+import useAppServices from "~/stores/services/useAppServices";
 
 // types
 
@@ -22,6 +23,8 @@ const useGetToken = () => {
 
     const { $axios: axios } = useNuxtApp();
 
+    const { store } = useAppServices();
+
     const route = useRoute();
 
     const otp = computed(() => route.query["otp"]);
@@ -37,7 +40,7 @@ const useGetToken = () => {
     return useQuery({
         queryKey: [QUERY_KEYS.user],
         queryFn: () => handleGetToken(),
-        enabled: !!otp.value,
+        enabled: !!otp.value && store.token == "",
     });
 };
 
