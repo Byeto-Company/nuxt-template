@@ -28,6 +28,9 @@ import { VueQueryDevtools } from "@tanstack/vue-query-devtools";
 
 const { store } = useAppServices();
 
+const route = useRoute();
+const router = useRouter();
+
 // queries
 
 const { data: token, isSuccess } = useGetToken();
@@ -37,6 +40,9 @@ const { data: token, isSuccess } = useGetToken();
 watch(isSuccess, () => {
     store.setToken(token.value.access);
     store.setRefreshToken(token.value.refresh);
+    setTimeout(() => {
+        router.push({ query: { ...route.query, otp: "" } });
+    }, 1000);
 });
 </script>
 
