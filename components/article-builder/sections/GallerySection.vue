@@ -4,6 +4,7 @@
 import useArticleBuilderServices from "~/stores/services/useArticleBuilderServices";
 import { useDropZone, useFileDialog } from "@vueuse/core";
 import useUploadFile from "~/composables/api/article-builder/useUploadFile";
+import { useSortable } from "@vueuse/integrations/useSortable";
 
 // types
 
@@ -25,6 +26,8 @@ const toast = useToast();
 
 const uploadProgress = ref(0);
 
+const el = useTemplateRef<HTMLElement>("el");
+
 const { getContent, updateContent, getOptions } = useArticleBuilderServices();
 
 // const options = ref(getOptions(id.value));
@@ -40,6 +43,11 @@ const contentValue = computed<FileResponse[]>({
     set: (value) => {
         updateContent(id.value, value);
     },
+});
+
+useSortable(el, contentValue, {
+    animation: 200,
+    direction: "horizontal",
 });
 
 // const imageAltOptions = computed({
@@ -158,7 +166,9 @@ onChange(() => {
 
                 <div
                     v-if="contentValue.length > 0"
+                    ref="el"
                     class="w-full grid grid-cols-3 gap-5 px-5 mt-8"
+                    dir="ltr"
                 >
                     <ImagePreview
                         v-for="(image, index) in contentValue"
