@@ -59,9 +59,10 @@ const options = ref(getOptions(id.value));
     >
         <template #default>
             <QuillEditor
+                dir="ltr"
                 v-model:content="contentValue"
                 contentType="html"
-                class="!p-0 [&>.ql-editor>ul]:list-disc [&>.ql-editor>ol]:list-decimal [&>.ql-editor>ol>li.ql-direction-rtl]:ms-4 [&>.ql-editor>ol>li]:ms-4 [&>.ql-editor>ul>li.ql-direction-rtl]:ms-4 [&>.ql-editor>ul>li]:ms-4 [&>.ql-editor>p>a]:underline [&>.ql-editor>p>a]:text-cyan-400"
+                class="!p-0 [&>.ql-editor>ul]:list-disc [&>.ql-editor>ol]:list-decimal [&>.ql-editor]:text-[1rem] [&>.ql-editor>ol>li]:before:!text-left [&>.ql-editor>ul>li]:before:!text-left [&>.ql-editor>ol>li.ql-align-right]:before:!text-right [&>.ql-editor>ul>li.ql-align-right]:before:!text-right"
                 :toolbar="[
                     ['bold', 'italic', 'underline', 'link', { direction: 'rtl' }],
                     [{ list: 'ordered' }, { list: 'bullet' }],
@@ -73,6 +74,8 @@ const options = ref(getOptions(id.value));
 </template>
 
 <style>
+@import url("@vueup/vue-quill/dist/vue-quill.snow.css");
+
 .ql-container {
     border: 1px solid var(--color-neutral-700) !important;
     border-style: dashed !important;
@@ -97,9 +100,12 @@ const options = ref(getOptions(id.value));
     display: flex;
     gap: 5px;
     justify-content: start;
-    padding: 8px;
     align-items: center;
     background-color: var(--color-neutral-900) !important;
+}
+
+.ql-formats {
+    margin: 0px !important;
 }
 
 .ql-formats {
@@ -110,13 +116,13 @@ const options = ref(getOptions(id.value));
 }
 
 .ql-formats button {
-    width: 35px;
-    height: 35px;
-    padding: 5px;
+    width: 32px !important;
+    height: 32px !important;
+    padding: 5px !important;
     border-radius: 4px !important;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
 }
 
 .ql-formats button:hover {
@@ -159,17 +165,30 @@ const options = ref(getOptions(id.value));
     stroke: white !important;
 }
 
-.ql-clipboard,
-.ql-tooltip {
+.ql-clipboard {
     display: none;
 }
 
-button[value="bullet"] > svg {
-    transform: translateX(-2px);
+.ql-tooltip {
+    background-color: var(--color-neutral-900) !important;
+    color: white !important;
+    padding: 8px 16px !important;
+    border-radius: 5px !important;
+    border: 1px solid var(--color-neutral-700) !important;
+    box-shadow: none !important;
 }
 
-.ql-direction-rtl {
-    direction: ltr !important;
-    text-align: left;
+.ql-tooltip > input {
+    border-radius: 3px !important;
+}
+
+.ql-tooltip > input:focus {
+    outline: none;
+    border: 1px solid var(--color-neutral-700) !important;
+}
+
+ol,
+ul {
+    padding: 0px !important;
 }
 </style>
