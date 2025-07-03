@@ -109,7 +109,7 @@ const handleDeleteFile = async () => {
         <UModal
             v-model:open="previewVisible"
             :ui="{
-                content: 'bg-transparent !ring-slate-200/20 divide-none scale-150',
+                content: 'bg-transparent !ring-slate-200/20 divide-none',
             }"
         >
             <template #content>
