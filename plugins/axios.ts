@@ -11,7 +11,7 @@ export default defineNuxtPlugin(() => {
     });
 
     axios.interceptors.request.use((config) => {
-        const { currentLanguage } = useArticleBuilderStore();
+        // const { currentLanguage } = useArticleBuilderStore();
 
         if (!config.url?.includes(API_ENDPOINTS.user.signin)) {
             config.headers.Authorization = store.token ? `Bearer ${store.token}` : undefined;
@@ -19,7 +19,7 @@ export default defineNuxtPlugin(() => {
 
         // @ts-ignore
         if (process.client) {
-            config.headers["Accept-Language"] = currentLanguage?.code;
+            config.headers["Accept-Language"] = "fa";
         }
 
         return config;
