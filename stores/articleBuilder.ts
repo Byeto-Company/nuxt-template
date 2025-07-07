@@ -1,52 +1,69 @@
+import { useStorage } from "@vueuse/core";
+
 export type ArticleSection = {
     id: number;
-    type: "heading" | "paragraph" | "image" | "video" | "seprator" | "attachment" | "gallery";
-    contentValue: any;
+    content_type: "heading" | "paragraph" | "image" | "video" | "separator" | "attachment" | "gallery";
+    content_value: any;
     options?: Record<any, any>;
 };
 
-export type Article = { title: string; description: string; content: ArticleSection[] };
+export type Article = {
+    id: number | null;
+    title: string;
+    summary: string;
+    parent: number | null;
+    slug: string;
+    thumbnail: File | string | null;
+    is_publish: boolean;
+    language: string;
+    contents: ArticleSection[];
+};
 
 export type Language = { label: string; code: string; icon: string };
 
 export const useArticleBuilderStore = defineStore("articleBuilder", () => {
-    const currentLanguage = useLocalStorage<Language>("current-language", {
-        label: "فارسی",
-        code: "fa",
-        icon: "circle-flags:ir",
-    });
-    const main_title = useLocalStorage<string>("main-title", "");
-    const article = useSessionStorage<Article>("article", { title: "", description: "", content: [] });
+    const currentLanguage = useStorage<Language>(
+        "current-language",
+        {
+            label: "فارسی",
+            code: "fa",
+            icon: "circle-flags:ir",
+        },
+        sessionStorage
+    );
+    const main_title = useStorage<string>("main-title", "", sessionStorage);
+    const article = useStorage<Article>(
+        "article",
+        {
+            id: null,
+            title: "",
+            summary: "",
+            parent: null,
+            slug: "",
+            thumbnail: null,
+            is_publish: true,
+            language: currentLanguage.value.code,
+            contents: [],
+        },
+        sessionStorage
+    );
 
     // actions
-    const setMainTitle = (value: string) => {
-        main_title.value = value;
-    };
 
-    const setTitle = (value: string) => {
-        article.value.title = value;
-    };
-
-    const setDescription = (value: string) => {
-        article.value.description = value;
-    };
-
-    const setContent = (value: any) => {
-        article.value.content = value;
+    const setContents = (value: any) => {
+        article.value.contents = value;
     };
 
     const setCurrentLanguage = (value: Language) => {
         currentLanguage.value = { ...value };
+        article.value.language = value.code;
     };
 
     return {
         article,
         main_title,
         currentLanguage,
-        setTitle,
-        setDescription,
-        setContent,
-        setMainTitle,
+        setContents,
         setCurrentLanguage,
     };
 });
