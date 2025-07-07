@@ -7,8 +7,11 @@ export const API_ENDPOINTS = {
         logout: "/user/logout",
         otp: "/user/send_otp",
     },
-    artilce: {
-        upload: "/article/upload-file",
-        delete: "/article/delete-file",
+    article: {
+        upload: "/article/file",
+        delete: "/article/file",
+        patch_hero: "/article/child",
+        create_section: "/article/content",
+        get: "/article/child",
     },
 };
