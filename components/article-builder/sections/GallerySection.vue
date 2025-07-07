@@ -38,14 +38,14 @@ const { mutateAsync: uploadFile, isPending: uploadFileIsPending } = useUploadFil
 
 // computeds
 
-const contentValue = computed<FileResponse[]>({
+const content_value = computed<FileResponse[]>({
     get: () => getContent(id.value),
     set: (value) => {
         updateContent(id.value, value);
     },
 });
 
-useSortable(el, contentValue, {
+useSortable(el, content_value, {
     animation: 200,
     direction: "horizontal",
 });
@@ -79,7 +79,7 @@ const handleUploadFile = async (selectedFile: File) => {
         },
         {
             onSuccess: (data: FileResponse) => {
-                contentValue.value.push({ ...data });
+                content_value.value.push({ ...data });
             },
             onError: () => {
                 toast.add({
@@ -96,7 +96,7 @@ const handleUploadFile = async (selectedFile: File) => {
 };
 
 const handleDeletedItem = (id: number) => {
-    contentValue.value = contentValue.value.filter((item) => item.id !== id);
+    content_value.value = content_value.value.filter((item) => item.id !== id);
 };
 
 const onDrop = (files: File[] | null) => {
@@ -135,7 +135,7 @@ onChange(() => {
                 :class="{
                     '!bg-neutral-900 border-2': isOverDropZone,
                     border: !isOverDropZone,
-                    '!py-12': contentValue.length > 0,
+                    '!py-12': content_value.length > 0,
                 }"
                 ref="dropZoneRef"
             >
@@ -159,19 +159,19 @@ onChange(() => {
                     size="lg"
                     class="z-3"
                     :loading="uploadFileIsPending"
-                    :class="contentValue.length > 0 ? 'mt-3' : ''"
+                    :class="content_value.length > 0 ? 'mt-3' : ''"
                 >
                     افزودن عکس
                 </UButton>
 
                 <div
-                    v-if="contentValue.length > 0"
+                    v-if="content_value.length > 0"
                     ref="el"
                     class="w-full grid grid-cols-3 gap-5 px-5 mt-8"
                     dir="ltr"
                 >
                     <ImagePreview
-                        v-for="(image, index) in contentValue"
+                        v-for="(image, index) in content_value"
                         :key="index"
                         :src="image.file"
                         :id="image.id"
