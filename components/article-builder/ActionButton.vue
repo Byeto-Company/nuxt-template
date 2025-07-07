@@ -2,7 +2,16 @@
 // import
 
 import { motion } from "motion-v";
+import useCreateSection from "~/composables/api/article-builder/useCreateSection";
+import { useAppParams } from "~/composables/global/useAppParams";
 import useArticleBuilderServices from "~/stores/services/useArticleBuilderServices";
+
+// types
+
+type Action = {
+    icon: string;
+    template: Omit<ArticleSection, "id">;
+};
 
 // state
 
@@ -10,15 +19,14 @@ const isOpen = ref(false);
 
 const { appendContent } = useArticleBuilderServices();
 
-const actions: {
-    icon: string;
-    template: Omit<ArticleSection, "id">;
-}[] = [
+const { store } = useArticleBuilderServices();
+
+const actions: Action[] = [
     {
         icon: "lucide:heading-2",
         template: {
-            contentValue: "",
-            type: "heading",
+            content_value: "",
+            content_type: "heading",
             options: {
                 level: 3,
             },
@@ -27,16 +35,16 @@ const actions: {
     {
         icon: "lucide:text",
         template: {
-            contentValue: "",
-            type: "paragraph",
+            content_value: "",
+            content_type: "paragraph",
             options: {},
         },
     },
     {
         icon: "lucide:image",
         template: {
-            contentValue: "",
-            type: "image",
+            content_value: "",
+            content_type: "image",
             options: {
                 alt: "",
             },
@@ -45,36 +53,65 @@ const actions: {
     {
         icon: "lucide:video",
         template: {
-            contentValue: "",
-            type: "video",
+            content_value: "",
+            content_type: "video",
             options: {},
         },
     },
     {
         icon: "lucide:gallery-horizontal-end",
         template: {
-            contentValue: [],
-            type: "gallery",
+            content_value: [],
+            content_type: "gallery",
             options: {},
         },
     },
     {
         icon: "lucide:slash",
         template: {
-            contentValue: "",
-            type: "seprator",
+            content_value: "",
+            content_type: "separator",
             options: {},
         },
     },
     {
         icon: "lucide:paperclip",
         template: {
-            contentValue: [],
-            type: "attachment",
+            content_value: [],
+            content_type: "attachment",
             options: {},
         },
     },
 ];
+
+// queries
+
+const { mutateAsync: createSection, isPending: createSectionIsPending } = useCreateSection();
+
+const { slug } = useAppParams();
+
+// methods
+
+const handleAppendContent = (action: Action) => {
+    isOpen.value = false;
+    createSection(
+        {
+            slug: slug.value!,
+            options: action.template.options,
+            content_value: action.template.content_value,
+            content_type: action.template.content_type,
+            order: store.article.contents.length,
+        },
+        {
+            onSuccess: () => {
+                appendContent(action.template);
+                setTimeout(() => {
+                    window.scrollY = window.innerHeight;
+                }, 100);
+            },
+        }
+    );
+};
 </script>
 
 <template>
@@ -85,7 +122,7 @@ const actions: {
             class="size-[60px] flex-center rounded-full cursor-pointer relative z-1"
         >
             <UIcon
-                name="lucide:plus"
+                :name="createSectionIsPending ? 'svg-spinners:180-ring' : 'lucide:plus'"
                 class="text-2xl transition-all"
                 :class="isOpen ? 'rotate-45' : ''"
             />
@@ -117,6 +154,7 @@ const actions: {
                 <UButtonGroup
                     size="xl"
                     class="h-[60px]"
+                    :class="createSectionIsPending ? 'pointer-events-none' : ''"
                 >
                     <UButton
                         v-for="action in actions"
@@ -124,12 +162,7 @@ const actions: {
                         class="!text-2xl px-5"
                         :icon="action.icon"
                         variant="solid"
-                        @click="
-                            () => {
-                                appendContent(action.template);
-                                isOpen = false;
-                            }
-                        "
+                        @click="handleAppendContent(action)"
                     />
                 </UButtonGroup>
             </motion.div>
