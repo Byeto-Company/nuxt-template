@@ -20,7 +20,7 @@ const { id } = toRefs(props);
 
 const { getContent, updateContent, getOptions } = useArticleBuilderServices();
 
-const contentValue = computed({
+const content_value = computed({
     get: () => getContent(id.value),
     set: (value) => updateContent(id.value, value),
 });
@@ -60,7 +60,7 @@ const options = ref(getOptions(id.value));
         <template #default>
             <QuillEditor
                 dir="ltr"
-                v-model:content="contentValue"
+                v-model:content="content_value"
                 contentType="html"
                 class="!p-0 [&>.ql-editor>ul]:list-disc [&>.ql-editor>ol]:list-decimal [&>.ql-editor]:text-[1rem] [&>.ql-editor>ol>li]:before:!text-left [&>.ql-editor>ul>li]:before:!text-left [&>.ql-editor>ol>li.ql-align-right]:before:!text-right [&>.ql-editor>ul>li.ql-align-right]:before:!text-right"
                 :toolbar="[

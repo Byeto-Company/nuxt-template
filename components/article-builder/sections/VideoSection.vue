@@ -33,7 +33,7 @@ const { mutateAsync: uploadFile, isPending: uploadFileIsPending } = useUploadFil
 
 // computeds
 
-const contentValue = computed<FileResponse>({
+const content_value = computed<FileResponse>({
     get: () => getContent(id.value),
     set: (value) => {
         console.log(value);
@@ -63,7 +63,7 @@ const handleFile = async (selectedFile: File) => {
         },
         {
             onSuccess: (data: FileResponse) => {
-                contentValue.value = { ...data };
+                content_value.value = { ...data };
             },
             onError: () => {
                 toast.add({
@@ -115,7 +115,7 @@ onChange(() => {
                 :class="{
                     '!bg-neutral-900 border-2': isOverDropZone,
                     border: !isOverDropZone,
-                    '!py-12': !!contentValue,
+                    '!py-12': !!content_value,
                 }"
                 ref="dropZoneRef"
             >
@@ -127,8 +127,8 @@ onChange(() => {
                 />
 
                 <video
-                    v-if="!!contentValue"
-                    :src="contentValue.file"
+                    v-if="!!content_value"
+                    :src="content_value.file"
                     class="w-2/3 rounded-2xl z-3 border border-slate-200/20 h-[14rem] sm:h-[20rem] lg:h-[35rem]"
                 ></video>
 
@@ -147,9 +147,9 @@ onChange(() => {
                     size="lg"
                     class="z-3"
                     :loading="uploadFileIsPending"
-                    :class="!!contentValue ? 'mt-4' : ''"
+                    :class="!!content_value ? 'mt-4' : ''"
                 >
-                    {{ !!contentValue ? "تغییر عکس" : "انتخاب کنید" }}
+                    {{ !!content_value ? "تغییر عکس" : "انتخاب کنید" }}
                 </UButton>
             </div>
         </template>

@@ -19,7 +19,7 @@ const { id } = toRefs(props);
 
 const { getContent, getOptions, updateContent, updateContentOptions } = useArticleBuilderServices();
 
-const contentValue = computed({
+const content_value = computed({
     get: () => getContent(id.value),
     set: (value) => updateContent(id.value, value),
 });
@@ -74,7 +74,7 @@ watch(
     >
         <template #default>
             <UInput
-                v-model="contentValue"
+                v-model="content_value"
                 variant="ghost"
                 class="w-full font-semibold"
                 placeholder="متن عنوان را وارد کنید"
