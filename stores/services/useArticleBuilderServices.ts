@@ -4,28 +4,24 @@ const useArticleBuilderServices = () => {
     // computeds
 
     const articleContent = computed({
-        get: () => articleStore.article.content,
-        set: (value) => (articleStore.article.content = value),
+        get: () => articleStore.article.contents,
+        set: (value) => (articleStore.article.contents = value),
     });
 
     // methods
 
-    const appendContent = (value: Omit<ArticleSection, "id">) => {
-        const newContent = {
-            id: (articleContent.value[articleContent.value.length - 1]?.id ?? 0) + 1,
-            ...value,
-        };
-        articleStore.article.content.push(newContent);
+    const appendContent = (value: ArticleSection) => {
+        articleStore.article.contents.push(value);
     };
 
     const getContent = (id: number) => {
-        return articleContent.value.find((content) => content.id === id)!.contentValue;
+        return articleContent.value.find((content) => content.id === id)!.content_value;
     };
 
     const updateContent = (id: number, value: any) => {
         const contentIndex = articleContent.value.findIndex((content) => content.id === id);
         if (contentIndex !== -1) {
-            articleContent.value[contentIndex].contentValue = value;
+            articleContent.value[contentIndex].content_value = value;
         }
     };
 
@@ -45,7 +41,13 @@ const useArticleBuilderServices = () => {
     };
 
     const clearData = () => {
-        articleStore.article = { title: "", description: "", content: [] };
+        Object.assign(articleStore.article, {
+            title: "",
+            summary: "",
+            slug: "",
+            thumbnail: null,
+            contents: [],
+        });
     };
 
     return {
