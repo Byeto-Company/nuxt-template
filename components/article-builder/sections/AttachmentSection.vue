@@ -33,10 +33,9 @@ const { mutateAsync: uploadFile, isPending: uploadFileIsPending } = useUploadFil
 
 // computeds
 
-const contentValue = computed<FileResponse[]>({
+const content_value = computed<FileResponse[]>({
     get: () => getContent(id.value),
     set: (value) => {
-        console.log(value);
         updateContent(id.value, value);
     },
 });
@@ -63,7 +62,7 @@ const handleUploadFile = async (selectedFile: File) => {
         },
         {
             onSuccess: (data: FileResponse) => {
-                contentValue.value.push({ ...data });
+                content_value.value.push({ ...data });
             },
             onError: () => {
                 toast.add({
@@ -115,7 +114,7 @@ onChange(() => {
                 :class="{
                     '!bg-neutral-900 border-2': isOverDropZone,
                     border: !isOverDropZone,
-                    '!py-12': contentValue.length > 0,
+                    '!py-12': content_value.length > 0,
                 }"
                 ref="dropZoneRef"
             >
@@ -139,17 +138,17 @@ onChange(() => {
                     size="lg"
                     class="z-3"
                     :loading="uploadFileIsPending"
-                    :class="contentValue.length > 0 ? 'mt-3' : ''"
+                    :class="content_value.length > 0 ? 'mt-3' : ''"
                 >
                     افزودن ضمیمه
                 </UButton>
 
                 <div
-                    v-if="contentValue.length > 0"
+                    v-if="content_value.length > 0"
                     class="w-full grid grid-cols-4 gap-5 px-5 mt-8"
                 >
                     <Attachment
-                        v-for="(attachment, index) in contentValue"
+                        v-for="(attachment, index) in content_value"
                         :key="index"
                         :data="attachment"
                     />
