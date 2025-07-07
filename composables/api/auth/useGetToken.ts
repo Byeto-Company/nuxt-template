@@ -23,8 +23,6 @@ const useGetToken = () => {
 
     const { $axios: axios } = useNuxtApp();
 
-    const { store } = useAppServices();
-
     const route = useRoute();
 
     const otp = computed(() => route.query["otp"]);
@@ -40,7 +38,10 @@ const useGetToken = () => {
     return useQuery({
         queryKey: [QUERY_KEYS.user],
         queryFn: () => handleGetToken(),
-        enabled: !!otp.value && store.token == "",
+        enabled: !!otp.value,
+        retry: 0,
+        refetchOnWindowFocus: false,
+        staleTime: Infinity,
     });
 };
 
