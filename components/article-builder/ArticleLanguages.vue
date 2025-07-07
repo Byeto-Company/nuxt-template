@@ -3,11 +3,19 @@
 
 import useArticleBuilderServices from "~/stores/services/useArticleBuilderServices";
 
+// types
+
+type Emits = {
+    change: [value: Language];
+};
+
+// emits
+
+const emit = defineEmits<Emits>();
+
 // state
 
-const { store, clearData } = useArticleBuilderServices();
-
-const confirmChangingIsOpen = ref(false);
+const { store } = useArticleBuilderServices();
 
 const items: Language[] = [
     { label: "English", code: "en", icon: "circle-flags:us" },
@@ -16,28 +24,11 @@ const items: Language[] = [
 ];
 
 const currentTab = ref(0);
-const previousTab = ref(currentTab.value);
-const pendingTab = ref<number | null>(null);
 
-const onTabClick = (index: number) => {
-    if (index === currentTab.value) return;
-
-    pendingTab.value = index;
-    confirmChangingIsOpen.value = true;
-};
-
-const confirmChange = () => {
-    previousTab.value = currentTab.value;
-    currentTab.value = pendingTab.value!;
+const onTabClick = (value: number) => {
+    currentTab.value = value;
+    emit("change", items[currentTab.value]);
     store.setCurrentLanguage(items[currentTab.value]);
-    confirmChangingIsOpen.value = false;
-    pendingTab.value = null;
-    clearData();
-};
-
-const cancelChange = () => {
-    pendingTab.value = null;
-    confirmChangingIsOpen.value = false;
 };
 
 // watch
@@ -60,48 +51,4 @@ watch(
         :content="false"
         @update:model-value="(value: any) => onTabClick(value)"
     />
-
-    <UModal
-        v-model:open="confirmChangingIsOpen"
-        class="persian-number font-iran-yekan-x"
-        close-icon="lucide:x"
-        :dismissible="false"
-        :close="false"
-    >
-        <template #title>
-            <span class="flex items-center justify-start text-lg gap-2">
-                <UIcon
-                    name="lucide:triangle-alert"
-                    class="text-lg mb-0.5 text-red-500"
-                />
-                هشدار
-            </span>
-        </template>
-
-        <template #body>
-            <div class="w-full flex flex-col gap-3 text-sm">
-                <p>لطفا قبل از تغییر زبان موارد زبان قبلی را ذخیره کنید</p>
-                <p>در صورت ذخیره نشدن موارد قبلی قابل بازگشت نیستند.</p>
-            </div>
-        </template>
-
-        <template #footer>
-            <div class="w-full flex justify-end items-center gap-4">
-                <UButton
-                    label="بازگشت"
-                    variant="subtle"
-                    size="md"
-                    trailing-icon="lucide:x"
-                    @click="cancelChange"
-                />
-                <UButton
-                    label="ذخیره و تغییر زبان"
-                    variant="solid"
-                    size="md"
-                    trailing-icon="lucide:save"
-                    @click="confirmChange"
-                />
-            </div>
-        </template>
-    </UModal>
 </template>
