@@ -21,7 +21,7 @@ const useUploadFile = () => {
         const formData = new FormData();
         formData.append("file", file);
 
-        const { data } = await axios.post<UploadFileResponse>(API_ENDPOINTS.artilce.upload, formData, {
+        const { data } = await axios.post<UploadFileResponse>(API_ENDPOINTS.article.upload, formData, {
             headers: {
                 "Content-Type": "multipart/form-data",
             },
