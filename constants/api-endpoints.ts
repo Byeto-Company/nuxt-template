@@ -8,10 +8,13 @@ export const API_ENDPOINTS = {
         otp: "/user/send_otp",
     },
     article: {
-        upload: "/article/file",
-        delete: "/article/file",
         patch_hero: "/article/child",
+        upload_file: "/article/file",
+        delete_file: "/article/file",
         create_section: "/article/content",
+        delete_section: "/article/content",
+        patch_section: "/article/content",
         get: "/article/child",
+
     },
 };
