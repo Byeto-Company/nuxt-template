@@ -39,9 +39,9 @@ const capitalize = (str: string): string => {
 
 whenever(
     () => GetArticleIsSuccess.value,
-    async (nv) => {
+    (nv) => {
         if (nv) {
-            await Object.assign(store.article, article.value);
+            Object.assign(store.article, article.value);
         }
     }
 );
