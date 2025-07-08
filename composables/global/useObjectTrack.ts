@@ -6,7 +6,6 @@ export function useTrackChanges<T extends Record<string, any>>(
 ) {
     const initial = ref<T>(cloneDeep(unref(target)));
 
-    // Only reset initial when the whole target reference changes, not on every deep property change
     watch(
         () => unref(target),
         (nv, ov) => {
