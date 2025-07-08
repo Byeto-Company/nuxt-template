@@ -6,7 +6,6 @@ import type { AxiosRequestConfig } from "axios";
 // types
 
 export type ApiUpdateResourceOptions<TResponse> = {
-    id: string | number;
     resource?: ApiResources;
     customResource?: {
         name?: string;
@@ -21,7 +20,6 @@ export type ApiUpdateResourceOptions<TResponse> = {
 };
 
 const useUpdate = <TResponse, TRequest>({
-    id,
     resource,
     urlSearchParams,
     axiosOptions,
@@ -35,7 +33,7 @@ const useUpdate = <TResponse, TRequest>({
 
     // methods
 
-    const handleUpdate = async (variables: TRequest) => {
+    const handleUpdate = async (variables: TRequest, id: number | string) => {
         const { data } = await axios.patch<TResponse>(
             `${customResource ? customResource.path : resource}/${id}`,
             variables,
@@ -54,7 +52,7 @@ const useUpdate = <TResponse, TRequest>({
 
     return useMutation({
         mutationKey: customResource?.name ? [customResource.name] : undefined,
-        mutationFn: (variables: TRequest) => handleUpdate(variables),
+        mutationFn: ({ id, variables }: { id: number | string; variables: TRequest }) => handleUpdate(variables, id),
         ...mutationOptions,
     });
 };

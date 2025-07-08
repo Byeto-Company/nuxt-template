@@ -6,7 +6,6 @@ import type { AxiosRequestConfig } from "axios";
 // types
 
 export type ApiDeleteResourceOptions<TResponse> = {
-    id: Ref<string | number> | ComputedRef<string | number>;
     resource?: ApiResources;
     customResource?: {
         name?: string;
@@ -18,7 +17,6 @@ export type ApiDeleteResourceOptions<TResponse> = {
 };
 
 const useDelete = <TResponse>({
-    id,
     resource,
     urlSearchParams,
     axiosOptions,
@@ -31,8 +29,8 @@ const useDelete = <TResponse>({
 
     // methods
 
-    const handleDelete = async () => {
-        const { data } = await axios.delete<TResponse>(`${customResource ? customResource.path : resource}/${id.value}`, {
+    const handleDelete = async (id: number | string) => {
+        const { data } = await axios.delete<TResponse>(`${customResource ? customResource.path : resource}/${id}`, {
             params: { ...urlSearchParams?.value },
             ...axiosOptions,
         });
@@ -42,7 +40,7 @@ const useDelete = <TResponse>({
 
     return useMutation({
         mutationKey: customResource?.name ? [customResource.name] : undefined,
-        mutationFn: () => handleDelete(),
+        mutationFn: ({ id }: { id: number | string }) => handleDelete(id),
         ...mutationOptions,
     });
 };
