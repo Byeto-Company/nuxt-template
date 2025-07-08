@@ -15,7 +15,7 @@ const useDeleteFile = () => {
     const { $axios: axios } = useNuxtApp();
 
     const handleDeleteFile = async ({ id }: DeleteFileRequest) => {
-        const { data } = await axios.delete(`${API_ENDPOINTS.article.delete}/${id}`);
+        const { data } = await axios.delete(`${API_ENDPOINTS.article.delete_file}/${id}`);
 
         return data;
     };
