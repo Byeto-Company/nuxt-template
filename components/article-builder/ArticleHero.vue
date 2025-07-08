@@ -101,7 +101,7 @@ const { ignoreUpdates } = watchIgnorable(
                         slug.value = data.slug;
                     }
                     ignoreUpdates(() => {
-                        Object.assign(store.article, data);
+                        store.article.thumbnail = data.thumbnail
                         resetTracking();
                     });
                 },
