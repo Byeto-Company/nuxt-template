@@ -3,7 +3,7 @@ export const API_ENDPOINTS = {
         profile: "/user/profile",
         refresh: "/user/token/refresh",
         verify: "/user/verify",
-        signin: "/user/token",
+        signin: "/user/token/admin-pannel",
         logout: "/user/logout",
         otp: "/user/send_otp",
     },
