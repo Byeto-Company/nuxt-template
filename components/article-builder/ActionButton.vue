@@ -10,6 +10,7 @@ import useArticleBuilderServices from "~/stores/services/useArticleBuilderServic
 
 type Action = {
     icon: string;
+    name: string;
     template: Omit<ArticleSection, "id">;
 };
 
@@ -24,6 +25,7 @@ const { store } = useArticleBuilderServices();
 const actions: Action[] = [
     {
         icon: "lucide:heading-2",
+        name: "عنوان",
         template: {
             content_value: "",
             content_type: "heading",
@@ -34,6 +36,7 @@ const actions: Action[] = [
     },
     {
         icon: "lucide:text",
+        name: "پاراگراف",
         template: {
             content_value: "",
             content_type: "paragraph",
@@ -42,6 +45,7 @@ const actions: Action[] = [
     },
     {
         icon: "lucide:image",
+        name: "عکس",
         template: {
             content_value: "",
             content_type: "image",
@@ -52,6 +56,7 @@ const actions: Action[] = [
     },
     {
         icon: "lucide:video",
+        name: "ویدیو",
         template: {
             content_value: "",
             content_type: "video",
@@ -60,6 +65,7 @@ const actions: Action[] = [
     },
     {
         icon: "lucide:gallery-horizontal-end",
+        name: "گالری عکس",
         template: {
             content_value: [],
             content_type: "gallery",
@@ -68,6 +74,7 @@ const actions: Action[] = [
     },
     {
         icon: "lucide:slash",
+        name: "جدا کننده",
         template: {
             content_value: "",
             content_type: "separator",
@@ -76,9 +83,10 @@ const actions: Action[] = [
     },
     {
         icon: "lucide:paperclip",
+        name: "ضمیمه",
         template: {
             content_value: [],
-            content_type: "attachment",
+            content_type: "attachments",
             options: {},
         },
     },
@@ -103,8 +111,8 @@ const handleAppendContent = (action: Action) => {
             order: store.article.contents.length,
         },
         {
-            onSuccess: () => {
-                appendContent(action.template);
+            onSuccess: (data) => {
+                appendContent({ ...data });
                 setTimeout(() => {
                     window.scrollY = window.innerHeight;
                 }, 100);
@@ -156,14 +164,21 @@ const handleAppendContent = (action: Action) => {
                     class="h-[60px]"
                     :class="createSectionIsPending ? 'pointer-events-none' : ''"
                 >
-                    <UButton
+                    <UTooltip
                         v-for="action in actions"
                         :key="action.icon"
-                        class="!text-2xl px-5"
-                        :icon="action.icon"
-                        variant="solid"
-                        @click="handleAppendContent(action)"
-                    />
+                        arrow
+                        :text="action.name"
+                        :content="{ side: 'top', sideOffset: 5 }"
+                        :delay-duration="0"
+                    >
+                        <UButton
+                            class="!text-2xl px-5"
+                            :icon="action.icon"
+                            variant="solid"
+                            @click="handleAppendContent(action)"
+                        />
+                    </UTooltip>
                 </UButtonGroup>
             </motion.div>
         </AnimatePresence>
