@@ -14,7 +14,7 @@ export const API_ENDPOINTS = {
         create_section: "/article/content",
         delete_section: "/article/content",
         patch_section: "/article/content",
+        reorder_section: "/article/content/reorder",
         get: "/article/child",
-
     },
 };
