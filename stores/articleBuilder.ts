@@ -2,7 +2,8 @@ import { useStorage } from "@vueuse/core";
 
 export type ArticleSection = {
     id: number;
-    content_type: "heading" | "paragraph" | "image" | "video" | "separator" | "attachment" | "gallery";
+    order?: number;
+    content_type: "heading" | "paragraph" | "image" | "video" | "separator" | "attachments" | "gallery";
     content_value: any;
     options?: Record<any, any>;
 };
