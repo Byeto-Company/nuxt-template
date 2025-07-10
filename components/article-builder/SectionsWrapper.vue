@@ -3,6 +3,7 @@
 
 import useDeleteSection from "~/composables/api/article-builder/useDeleteSection";
 import usePatchSection from "~/composables/api/article-builder/usePatchSection";
+import { QUERY_KEYS } from "~/constants/query-keys";
 import useArticleBuilderServices from "~/stores/services/useArticleBuilderServices";
 
 // type
@@ -10,10 +11,11 @@ import useArticleBuilderServices from "~/stores/services/useArticleBuilderServic
 type Props = {
     id: number;
     title: string;
+    type: ArticleSection["content_type"];
     contentElevation?: boolean;
 };
 
-type ContentValue = Pick<ArticleSection, "content_value">;
+type ContentValue = any;
 type Options = Pick<ArticleSection, "options">;
 
 // props
@@ -21,9 +23,17 @@ type Options = Pick<ArticleSection, "options">;
 const props = withDefaults(defineProps<Props>(), {
     contentElevation: true,
 });
-const { id } = toRefs(props);
+const { id, type } = toRefs(props);
+
+// inject
+
+const ignoreUpdates = inject<any>("ignoreUpdates");
+
+const shouldTrackContentChanges = inject<any>("shouldTrackContentChanges");
 
 // state
+
+const { $queryClient: queryClient } = useNuxtApp();
 
 const patchMessage = ref<{
     title: string;
@@ -50,31 +60,58 @@ const handleDelete = () => {
     deleteSection(
         { id: id.value },
         {
-            onSuccess: () => {
+            onSettled: () => {
                 removeContent(id.value);
+            },
+            onError: () => {
+                queryClient.resetQueries({ queryKey: [QUERY_KEYS.article] });
+                patchMessage.value = {
+                    title: "خطا در حذف محتوا",
+                    status: "error",
+                };
             },
         }
     );
 };
 
+const mapPayloadByType = (type: ArticleSection["content_type"], content_value: ContentValue): any => {
+    switch (type) {
+        case "image":
+        case "video":
+            return content_value.id;
+        case "attachments":
+        case "gallery":
+            return content_value.map((i: FileResponse) => i.id);
+        case "heading":
+        case "paragraph":
+        case "separator":
+        default:
+            return content_value;
+    }
+};
+
 const handlePatch = (content_value: ContentValue, options: Options) => {
+    const payload = mapPayloadByType(type.value, content_value);
+
     patchSection(
         {
             id: id.value,
             variables: {
-                content_value: content_value ?? null,
+                content_value: payload ?? null,
                 options: options ?? null,
             },
         },
         {
             onSuccess: () => {
-                patchMessage.value = {
-                    title: "ذخیره شده",
-                    status: "success",
-                };
-                setTimeout(() => {
-                    patchMessage.value = null;
-                }, 2000);
+                ignoreUpdates(() => {
+                    patchMessage.value = {
+                        title: "ذخیره شده",
+                        status: "success",
+                    };
+                    setTimeout(() => {
+                        patchMessage.value = null;
+                    }, 2000);
+                });
             },
             onError: () => {
                 patchMessage.value = {
@@ -91,7 +128,9 @@ const handlePatch = (content_value: ContentValue, options: Options) => {
 watchDebounced(
     () => [content_value.value, options.value],
     ([nv1, nv2]) => {
-        handlePatch(nv1 as ContentValue, nv2 as Options);
+        if (shouldTrackContentChanges.value) {
+            handlePatch(nv1, nv2);
+        }
     },
     { debounce: 1000, maxWait: 1500, deep: true }
 );
@@ -120,7 +159,13 @@ watchDebounced(
                         :label="patchMessage.title"
                         :color="patchMessage.status"
                         variant="subtle"
-                        trailing-icon="lucide:square-check"
+                        :trailing-icon="
+                            patchMessage.status == 'success'
+                                ? 'lucide:square-check'
+                                : patchMessage.status == 'error'
+                                ? 'lucide:square-x'
+                                : ''
+                        "
                         :ui="{
                             base: 'text-xs py-[9px] gap-2',
                             trailingIcon: 'text-lg',
