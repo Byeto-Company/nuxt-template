@@ -107,6 +107,7 @@ onChange(() => {
         :id="id"
         title="فایل یا ضمیمه"
         :contentElevation="false"
+        :type="content.content_type"
     >
         <template #default>
             <div
