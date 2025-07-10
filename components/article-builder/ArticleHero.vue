@@ -11,8 +11,10 @@ import useArticleBuilderServices from "~/stores/services/useArticleBuilderServic
 const { store } = useArticleBuilderServices();
 
 const route = useRoute();
+const router = useRouter();
 
 const toast = useToast();
+
 
 const { slug } = useAppParams();
 
@@ -51,6 +53,7 @@ const isPublished = computed({
 
 const handleUploadFile = async (selectedFile: File) => {
     const sizeInMB = selectedFile.size / (1024 * 1024);
+    reset()
     if (sizeInMB > 10) {
         toast.add({
             title: "حجم فایل باید کمتر از ۱۰ مگابایت باشد",
@@ -89,6 +92,9 @@ const { changedFields, reset: resetTracking } = useTrackChanges(store.article, [
 const { ignoreUpdates } = watchIgnorable(
     () => changedFields.value,
     useDebounceFn(() => {
+        if (!Object.keys(changedFields.value).length) {
+            return;
+        }
         patchHero(
             { ...changedFields.value, slug: slug.value },
             {
@@ -98,10 +104,10 @@ const { ignoreUpdates } = watchIgnorable(
                         color: "success",
                     });
                     if (!slug.value) {
-                        slug.value = data.slug;
+                        router.push({ query: { ...route.query, slug: data.slug } });
                     }
                     ignoreUpdates(() => {
-                        store.article.thumbnail = data.thumbnail
+                        store.article.thumbnail = data.thumbnail;
                         resetTracking();
                     });
                 },
