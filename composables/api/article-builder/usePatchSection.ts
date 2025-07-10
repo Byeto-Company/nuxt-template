@@ -13,9 +13,6 @@ const usePatchSection = () => {
         customResource: {
             path: API_ENDPOINTS.article.patch_section,
         },
-        options: {
-            contentType: "form",
-        },
     });
 };
 
