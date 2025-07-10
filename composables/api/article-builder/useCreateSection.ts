@@ -13,7 +13,7 @@ export type CreateSectionRequest = {
     content_value: Pick<ArticleSection, "content_value">;
 };
 
-export type CreateSectionResponse = any;
+export type CreateSectionResponse = ArticleSection;
 
 // composable
 
