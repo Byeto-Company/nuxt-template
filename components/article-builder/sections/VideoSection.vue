@@ -47,9 +47,9 @@ const options = ref(getOptions(id.value));
 
 const handleFile = async (selectedFile: File) => {
     const sizeInMB = selectedFile.size / (1024 * 1024);
-    if (sizeInMB > 20) {
+    if (sizeInMB > 50) {
         toast.add({
-            title: "حجم فایل باید کمتر از ۲۰ مگابایت باشد",
+            title: "حجم فایل باید کمتر از ۵۰ مگابایت باشد",
             color: "error",
         });
         return;
@@ -108,6 +108,7 @@ onChange(() => {
         :id="id"
         title="ویدیو"
         :contentElevation="false"
+        :type="content.content_type"
     >
         <template #default>
             <div
@@ -129,6 +130,7 @@ onChange(() => {
                 <video
                     v-if="!!content_value"
                     :src="content_value.file"
+                    controls
                     class="w-2/3 rounded-2xl z-3 border border-slate-200/20 h-[14rem] sm:h-[20rem] lg:h-[35rem]"
                 ></video>
 
@@ -149,7 +151,7 @@ onChange(() => {
                     :loading="uploadFileIsPending"
                     :class="!!content_value ? 'mt-4' : ''"
                 >
-                    {{ !!content_value ? "تغییر عکس" : "انتخاب کنید" }}
+                    {{ !!content_value ? "تغییر ویدیو" : "انتخاب کنید" }}
                 </UButton>
             </div>
         </template>

@@ -128,6 +128,7 @@ onChange(() => {
         :id="id"
         title="گالری تصویر ( حداقل ۲ تصویر )"
         :contentElevation="false"
+        :type="content.content_type"
     >
         <template #default>
             <div

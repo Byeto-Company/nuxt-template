@@ -17,6 +17,7 @@ const { id } = toRefs(props);
         :id="id"
         title="جدا کننده"
         :contentElevation="false"
+        :type="content.content_type"
     />
 </template>
 

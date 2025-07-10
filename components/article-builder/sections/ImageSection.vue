@@ -9,7 +9,7 @@ import useUploadFile from "~/composables/api/article-builder/useUploadFile";
 
 type Props = {
     id: number;
-    content: any;
+    content: ArticleSection;
 };
 
 // props
@@ -55,9 +55,9 @@ const imageAltOptions = computed({
 
 const handleUploadFile = async (selectedFile: File) => {
     const sizeInMB = selectedFile.size / (1024 * 1024);
-    if (sizeInMB > 10) {
+    if (sizeInMB > 30) {
         toast.add({
-            title: "حجم فایل باید کمتر از ۱۰ مگابایت باشد",
+            title: "حجم فایل باید کمتر از ۳۰ مگابایت باشد",
             color: "error",
         });
         return;
@@ -116,6 +116,7 @@ onChange(() => {
         :id="id"
         title="تصویر"
         :contentElevation="false"
+        :type="content.content_type"
     >
         <template #default>
             <div

@@ -71,6 +71,7 @@ watch(
     <SectionsWrapper
         :id="id"
         title="عنوان"
+        :type="content.content_type"
     >
         <template #default>
             <UInput

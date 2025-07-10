@@ -56,6 +56,7 @@ const options = ref(getOptions(id.value));
         :id="id"
         title="پاراگراف"
         :contentElevation="false"
+        :type="content.content_type"
     >
         <template #default>
             <QuillEditor
