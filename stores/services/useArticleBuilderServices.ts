@@ -5,13 +5,15 @@ const useArticleBuilderServices = () => {
 
     const articleContent = computed({
         get: () => articleStore.article.contents,
-        set: (value) => (articleStore.article.contents = value),
+        set: (value) => (articleStore.article.contents = [...value]),
     });
 
     // methods
 
     const appendContent = (value: ArticleSection) => {
-        articleStore.article.contents.push(value);
+        const updated = [...articleContent.value];
+        updated.push({ ...value });
+        articleContent.value = updated;
     };
 
     const getContent = (id: number) => {
