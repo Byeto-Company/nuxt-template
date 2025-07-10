@@ -21,7 +21,12 @@ const usePatchHero = () => {
         for (const key in rest) {
             if (Object.prototype.hasOwnProperty.call(rest, key)) {
                 const value = (rest as any)[key];
-                formData.append(key, value);
+                if (key === "thumbnail" && !value) {
+                    const emptyFile = new File([], "", { type: "application/octet-stream" });
+                    formData.append(key, emptyFile);
+                } else if (value != null && value !== "") {
+                    formData.append(key, value);
+                }
             }
         }
 
