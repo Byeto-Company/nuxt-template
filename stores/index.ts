@@ -1,15 +1,9 @@
-import { useStorage } from "@vueuse/core";
-
 export const useAppStore = defineStore("app", () => {
-    const token = useStorage("token", "", sessionStorage);
-    const refreshToken = useStorage("refresh-token", "", sessionStorage);
+    const test = ref("");
 
-    const setToken = (value: string) => {
-        token.value = value;
-    };
-    const setRefreshToken = (value: string) => {
-        refreshToken.value = value;
+    const setTest = (value: string) => {
+        test.value = value;
     };
 
-    return { token, refreshToken, setToken, setRefreshToken };
+    return { test, setTest };
 });

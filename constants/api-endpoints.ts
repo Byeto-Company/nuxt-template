@@ -3,7 +3,7 @@ export const API_ENDPOINTS = {
         profile: "/user/profile",
         refresh: "/user/token/refresh",
         verify: "/user/verify",
-        signin: "/user/token/admin-pannel",
+        signin: "/user/token",
         logout: "/user/logout",
         otp: "/user/send_otp",
     },
@@ -15,6 +15,7 @@ export const API_ENDPOINTS = {
         delete_section: "/article/content",
         patch_section: "/article/content",
         reorder_section: "/article/content/reorder",
+        signin : "/user/token/admin-pannel",
         get: "/article/child",
     },
 };
