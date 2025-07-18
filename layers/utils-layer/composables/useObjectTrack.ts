@@ -1,42 +1,44 @@
-import { cloneDeep, isEqual } from "lodash-es";
+import { ref, watch, useRefHistory } from '#imports'
+import type { Ref } from '#imports'
 
-export function useTrackChanges<T extends Record<string, any>>(
-    target: Ref<T> | ComputedRef<T>,
-    excludeKeys: (keyof T)[] = []
-) {
-    const initial = ref<T>(cloneDeep(unref(target)));
+const useObjectTrack = (object: Ref) => {
+  // state
 
-    watch(
-        () => unref(target),
-        (nv, ov) => {
-            if (nv !== ov) {
-                initial.value = cloneDeep(nv);
-            }
-        },
-        { immediate: true }
-    );
+  const isNotEqual = ref(false)
 
-    const changedFields = computed(() => {
-        const changes: Partial<T> = {};
+  const { history, reset, clear } = useRefHistory(object, {
+    deep: true
+  })
 
-        const current = unref(target);
+  // watch
 
-        for (const key in current) {
-            if (excludeKeys.includes(key as keyof T)) continue;
-            if (!isEqual(current[key], initial.value[key])) {
-                changes[key] = current[key];
-            }
-        }
+  watch(
+    () => history.value,
+    (newHistory) => {
+      if (newHistory.length < 2) {
+        isNotEqual.value = false
+        return
+      }
 
-        return changes;
-    });
+      const initial = newHistory[0].snapshot
+      const current = newHistory[newHistory.length - 1].snapshot
 
-    const reset = () => {
-        initial.value = cloneDeep(unref(target));
-    };
+      const hasChanges = Object.keys(initial).some(
+        (key) =>
+          JSON.stringify(current[key]) !==
+          JSON.stringify(initial[key])
+      )
 
-    return {
-        changedFields,
-        reset,
-    };
+      isNotEqual.value = hasChanges
+    },
+    { deep: true }
+  )
+
+  return {
+    isNotEqual,
+    reset,
+    clear
+  }
 }
+
+export default useObjectTrack
