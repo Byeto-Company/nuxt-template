@@ -14,7 +14,7 @@ export default defineNuxtPlugin({
             defaultOptions: { queries: { staleTime: 5000 } },
             queryCache: new QueryCache({
                 onError: (error, query) => {
-                    if (import.meta.client && error instanceof AxiosError && query.meta?.showError) {
+                    if (import.meta.client && error instanceof AxiosError && query.meta?.handleError) {
                         toast.add({
                             color: "error",
                             title: "مشکلی پیش آمده",
@@ -26,7 +26,7 @@ export default defineNuxtPlugin({
             }),
             mutationCache: new MutationCache({
                 onError: (error, _variables, _context, mutation) => {
-                    if (import.meta.client && error instanceof AxiosError && mutation.meta?.showError) {
+                    if (import.meta.client && error instanceof AxiosError && mutation.meta?.handleError) {
                         toast.add({
                             color: "error",
                             title: "مشکلی پیش آمده",

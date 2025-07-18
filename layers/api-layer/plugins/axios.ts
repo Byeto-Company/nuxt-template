@@ -10,13 +10,8 @@ export default defineNuxtPlugin(() => {
     });
 
     axios.interceptors.request.use((config) => {
-        if (!config.url?.includes(API_ENDPOINTS.user.signin)) {
+        if (config.authorization) {
             config.headers.Authorization = token.value ? `Bearer ${token.value}` : undefined;
-        }
-
-        // @ts-ignore
-        if (import.meta.client) {
-            config.headers["Accept-Language"] = "fa";
         }
 
         return config;

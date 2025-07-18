@@ -22,7 +22,8 @@ export type ApiPaginatedManyResourceOptions<TResponse> = {
     axiosInstance?: AxiosInstance;
     axiosOptions?: Omit<AxiosRequestConfig, "params">;
     queryOptions?: Partial<Omit<UseQueryOptions<TResponse>, "queryKey" | "queryFn">>;
-    showError?: boolean;
+    handleError?: boolean;
+    authorization?: boolean;
 };
 
 const usePaginatedMany = <TResponse>({
@@ -34,7 +35,8 @@ const usePaginatedMany = <TResponse>({
     queryOptions,
     axiosOptions,
     axiosInstance,
-    showError,
+    handleError,
+    authorization,
 }: ApiPaginatedManyResourceOptions<TResponse>) => {
     // state
 
@@ -57,6 +59,7 @@ const usePaginatedMany = <TResponse>({
                     offset: initialOffset ?? page.value * limit - limit,
                 },
                 ...axiosOptions,
+                authorization,
             }
         );
 
@@ -66,7 +69,7 @@ const usePaginatedMany = <TResponse>({
     return useQuery<ApiPaginated<TResponse>, ApiError>({
         queryKey: [customResource ? customResource.name : resource, urlSearchParams ?? {}, page],
         queryFn: () => handleMany(),
-        meta: { showError: showError },
+        meta: { handleError: handleError },
         ...queryOptions,
     });
 };

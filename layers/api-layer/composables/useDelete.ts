@@ -15,7 +15,8 @@ export type ApiDeleteResourceOptions<TResponse> = {
     axiosInstance?: AxiosInstance;
     axiosOptions?: AxiosRequestConfig;
     mutationOptions?: Partial<Omit<UseMutationOptions<TResponse>, "queryKey" | "queryFn">>;
-    showError?: boolean;
+    handleError?: boolean;
+    authorization?: boolean;
 };
 
 const useDelete = <TResponse, TRequest>({
@@ -25,7 +26,8 @@ const useDelete = <TResponse, TRequest>({
     axiosInstance,
     mutationOptions,
     customResource,
-    showError,
+    handleError,
+    authorization,
 }: ApiDeleteResourceOptions<TResponse>) => {
     // state
 
@@ -42,6 +44,7 @@ const useDelete = <TResponse, TRequest>({
                 params: { ...urlSearchParams?.value },
                 data: { ...variables, id: undefined },
                 ...axiosOptions,
+                authorization,
             }
         );
 
@@ -51,7 +54,7 @@ const useDelete = <TResponse, TRequest>({
     return useMutation<TResponse, ApiError, TRequest & { id: number | string }>({
         mutationKey: customResource?.name ? [customResource.name] : undefined,
         mutationFn: (variables) => handleDelete(variables),
-        meta: { showError: showError },
+        meta: { handleError: handleError },
         ...mutationOptions,
     });
 };

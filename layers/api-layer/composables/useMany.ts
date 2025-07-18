@@ -15,7 +15,8 @@ export type ApiManyResourceOptions<TResponse> = {
     axiosInstance?: AxiosInstance;
     axiosOptions?: Omit<AxiosRequestConfig, "params">;
     queryOptions?: Partial<Omit<UseQueryOptions<TResponse>, "queryKey" | "queryFn">>;
-    showError?: boolean;
+    handleError?: boolean;
+    authorization?: boolean;
 };
 
 const useMany = <TResponse>({
@@ -25,7 +26,8 @@ const useMany = <TResponse>({
     queryOptions,
     axiosOptions,
     axiosInstance,
-    showError,
+    handleError,
+    authorization,
 }: ApiManyResourceOptions<TResponse>) => {
     // state
 
@@ -41,6 +43,7 @@ const useMany = <TResponse>({
                 ...urlSearchParams?.value,
             },
             ...axiosOptions,
+            authorization,
         });
 
         return data;
@@ -49,7 +52,7 @@ const useMany = <TResponse>({
     return useQuery<TResponse[], ApiError>({
         queryKey: [customResource ? customResource.name : resource, urlSearchParams ?? {}],
         queryFn: () => handleMany(),
-        meta: { showError: showError },
+        meta: { handleError: handleError },
         ...queryOptions,
     });
 };

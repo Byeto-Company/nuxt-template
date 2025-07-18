@@ -16,7 +16,8 @@ export type ApiInfiniteManyResourceOptions<TResponse> = {
     axiosInstance?: AxiosInstance;
     axiosOptions?: Omit<AxiosRequestConfig, "params">;
     queryOptions?: Partial<Omit<UseInfiniteQueryOptions<TResponse>, "queryKey" | "queryFn">>;
-    showError?: boolean;
+    handleError?: boolean;
+    authorization?: boolean;
 };
 
 const useInfiniteMany = <TResponse>({
@@ -26,7 +27,8 @@ const useInfiniteMany = <TResponse>({
     queryOptions,
     axiosOptions,
     axiosInstance,
-    showError,
+    handleError,
+    authorization,
 }: ApiInfiniteManyResourceOptions<TResponse>) => {
     // state
 
@@ -46,6 +48,7 @@ const useInfiniteMany = <TResponse>({
                 offset: offset,
             },
             ...axiosOptions,
+            authorization,
         });
 
         return data;
@@ -68,7 +71,7 @@ const useInfiniteMany = <TResponse>({
 
             return lastPage?.next ? nextPageParams : undefined;
         },
-        meta: { showError: showError },
+        meta: { handleError: handleError },
 
         ...queryOptions,
     });

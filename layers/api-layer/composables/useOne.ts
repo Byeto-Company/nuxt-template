@@ -16,7 +16,8 @@ export type ApiOneResourceOptions<TResponse> = {
     axiosInstance?: AxiosInstance;
     axiosOptions?: Omit<AxiosRequestConfig, "params">;
     queryOptions?: Partial<Omit<UseQueryOptions<TResponse>, "queryKey" | "queryFn">>;
-    showError?: boolean;
+    handleError?: boolean;
+    authorization?: boolean;
 };
 
 const useOne = <TResponse>({
@@ -27,7 +28,8 @@ const useOne = <TResponse>({
     queryOptions,
     axiosOptions,
     axiosInstance,
-    showError,
+    handleError,
+    authorization,
 }: ApiOneResourceOptions<TResponse>) => {
     // state
 
@@ -43,6 +45,7 @@ const useOne = <TResponse>({
             {
                 params: { ...urlSearchParams?.value },
                 ...axiosOptions,
+                authorization,
             }
         );
 
@@ -52,7 +55,7 @@ const useOne = <TResponse>({
     return useQuery<TResponse, ApiError>({
         queryKey: [customResource ? customResource.name : resource, id, urlSearchParams ?? {}],
         queryFn: () => handleOne(),
-        meta: { showError: showError },
+        meta: { handleError: handleError },
         ...queryOptions,
     });
 };

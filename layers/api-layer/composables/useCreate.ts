@@ -16,7 +16,8 @@ export type ApiCreateResourceOptions<TResponse> = {
     axiosOptions?: Omit<AxiosRequestConfig, "params">;
     mutationOptions?: Partial<Omit<UseMutationOptions<TResponse>, "queryKey" | "queryFn">>;
     contentType?: "json" | "form";
-    showError?: boolean;
+    handleError?: boolean;
+    authorization?: boolean;
 };
 
 const useCreate = <TResponse, TRequest>({
@@ -27,7 +28,8 @@ const useCreate = <TResponse, TRequest>({
     customResource,
     axiosInstance,
     contentType = "json",
-    showError,
+    handleError,
+    authorization,
 }: ApiCreateResourceOptions<TResponse>) => {
     // state
 
@@ -45,6 +47,7 @@ const useCreate = <TResponse, TRequest>({
                 "Content-Type": contentType === "form" ? "multipart/form-data" : "application/json",
                 ...axiosOptions?.headers,
             },
+            authorization,
         });
 
         return data;
@@ -53,7 +56,7 @@ const useCreate = <TResponse, TRequest>({
     return useMutation<TResponse, ApiError, TRequest>({
         mutationKey: customResource?.name ? [customResource.name] : undefined,
         mutationFn: (variables) => handleCreate(variables),
-        meta: { showError: showError },
+        meta: { handleError: handleError },
         ...mutationOptions,
     });
 };

@@ -16,7 +16,8 @@ export type ApiUpdateResourceOptions<TResponse> = {
     axiosOptions?: Omit<AxiosRequestConfig, "params">;
     mutationOptions?: Partial<Omit<UseMutationOptions<TResponse>, "queryKey" | "queryFn">>;
     contentType?: "form" | "json";
-    showError?: boolean;
+    handleError?: boolean;
+    authorization?: boolean;
 };
 
 const useUpdate = <TResponse, TRequest>({
@@ -27,7 +28,8 @@ const useUpdate = <TResponse, TRequest>({
     mutationOptions,
     customResource,
     contentType = "json",
-    showError,
+    handleError,
+    authorization,
 }: ApiUpdateResourceOptions<TResponse>) => {
     // state
 
@@ -48,6 +50,7 @@ const useUpdate = <TResponse, TRequest>({
                     "Content-Type": contentType === "form" ? "multipart/form-data" : "application/json",
                     ...axiosOptions?.headers,
                 },
+                authorization,
             }
         );
 
@@ -57,7 +60,7 @@ const useUpdate = <TResponse, TRequest>({
     return useMutation<TResponse, ApiError, TRequest & { id: number | string }>({
         mutationKey: customResource?.name ? [customResource.name] : undefined,
         mutationFn: (variables) => handleUpdate(variables),
-        meta: { showError: showError },
+        meta: { handleError: handleError },
         ...mutationOptions,
     });
 };
