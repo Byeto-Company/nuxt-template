@@ -23,10 +23,10 @@ export default defineNuxtConfig({
         },
     },
     pwa: {
-        strategies: "injectManifest",
-        srcDir: "public",
-        filename: "sw.js",
-        registerType: process.env.NODE_ENV === "production" ? "autoUpdate" : "prompt",
+        // strategies: "injectManifest",
+        // srcDir: "public",
+        // filename: "sw.js",
+        // registerType: process.env.NODE_ENV === "production" ? "autoUpdate" : "prompt",
         manifest: {
             name: "Unique",
             short_name: "Unique",
