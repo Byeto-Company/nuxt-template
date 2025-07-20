@@ -1,7 +1,7 @@
-import { API_RESOURCES } from "./resources";
+import { API_RESOURCES } from "~/constants/resources";
 
 export const QUERY_KEYS = {
     user: "user",
-    article : "article",
+    article: "article",
     ...API_RESOURCES,
 };

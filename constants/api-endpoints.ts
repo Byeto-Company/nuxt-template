@@ -3,11 +3,12 @@ export const API_ENDPOINTS = {
         profile: "/user/profile",
         refresh: "/user/token/refresh",
         verify: "/user/verify",
-        signin: "/user/token",
+        signin: "/user/token/admin-pannel",
         logout: "/user/logout",
         otp: "/user/send_otp",
     },
     article: {
+        create_parent: "/article/create-parent",
         patch_hero: "/article/child",
         upload_file: "/article/file",
         delete_file: "/article/file",
@@ -15,7 +16,6 @@ export const API_ENDPOINTS = {
         delete_section: "/article/content",
         patch_section: "/article/content",
         reorder_section: "/article/content/reorder",
-        signin : "/user/token/admin-pannel",
         get: "/article/child",
     },
 };

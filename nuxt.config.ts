@@ -2,10 +2,18 @@
 export default defineNuxtConfig({
     compatibilityDate: "2024-11-01",
     devtools: { enabled: true },
-    ssr: true,
+    ssr: false,
+    css: ["~/assets/css/tailwind.css"],
 
-    typescript: {
-        typeCheck: false,
+    sitemap: {
+        enabled: false,
+    },
+
+    postcss: {
+        plugins: {
+            "@tailwindcss/postcss": {},
+            autoprefixer: {},
+        },
     },
 
     components: [
@@ -13,17 +21,6 @@ export default defineNuxtConfig({
             path: "~/components",
             pathPrefix: false,
         },
-    ],
-
-    extends: [
-        "./layers/pwa-layer",
-        "./layers/utils-layer",
-        "./layers/api-layer",
-        "./layers/nuxt-ui-layer",
-        "./layers/auth-layer",
-        "./layers/assets-generator-layer",
-        "./layers/icons-layer",
-        "./layers/article-builder-layer",
     ],
 
     modules: [
@@ -36,13 +33,25 @@ export default defineNuxtConfig({
         "@nuxtjs/seo",
     ],
 
-    sitemap: {
-        enabled: false,
+    assetsGenerator: {
+        assets: ["../../public/img", "../../public/video"],
+        output: "../../constants/assets.ts",
+    },
+
+    appAuth: {
+        // pagePath : null
+    },
+
+    ui: {
+        colorMode: false,
+        theme: {
+            colors: ["primary", "secondary", "info", "success", "warning", "error"],
+        },
     },
 
     runtimeConfig: {
         public: {
-            API_BASE_URL: process.env.API_BASE_URL,
+            API_BASE_URL: process.env.API_BASE_URL || "https://api.alavihospital.ir",
             DEBUG: process.env.DEBUG,
         },
     },
