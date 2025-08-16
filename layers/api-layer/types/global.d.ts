@@ -1,5 +1,4 @@
 import type { AxiosError } from "axios";
-import { API_RESOURCES } from "~/constants/resources";
 
 export {};
 
@@ -11,7 +10,7 @@ declare global {
         results: T[];
     };
 
-    type ApiError = AxiosError<Record<string, string[]>>;
+    type ApiErrorData = Record<string, (string | ApiErrorData)[]>;
 
-    type ApiResources = keyof typeof API_RESOURCES;
+    type ApiError = AxiosError<ErrorData>;
 }

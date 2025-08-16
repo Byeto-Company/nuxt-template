@@ -6,13 +6,16 @@ import type { AxiosInstance, AxiosRequestConfig } from "axios";
 // types
 
 export type ApiInfiniteManyResourceOptions<TResponse> = {
-    resource: ApiResources;
     urlSearchParams?: ComputedRef<Record<any, any>>;
-    options?: {
+    customResource?: {
+        name: string;
+        path: string;
+    };
+    options?: MaybeRefOrGetter<{
         pagination?: {
             limit?: number;
         };
-    };
+    }>;
     axiosInstance?: AxiosInstance;
     axiosOptions?: Omit<AxiosRequestConfig, "params">;
     queryOptions?: Partial<Omit<UseInfiniteQueryOptions<TResponse>, "queryKey" | "queryFn">>;
@@ -21,7 +24,6 @@ export type ApiInfiniteManyResourceOptions<TResponse> = {
 };
 
 const useInfiniteMany = <TResponse>({
-    resource,
     urlSearchParams,
     options,
     queryOptions,
@@ -29,6 +31,7 @@ const useInfiniteMany = <TResponse>({
     axiosInstance,
     handleError,
     authorization,
+    customResource,
 }: ApiInfiniteManyResourceOptions<TResponse>) => {
     // state
 
@@ -36,12 +39,16 @@ const useInfiniteMany = <TResponse>({
 
     const axios = axiosInstance ?? globalAxiosInstance;
 
-    const limit = options?.pagination?.limit ?? 10;
+    const limitParam = useRouteQuery("limit", "10", { transform: Number });
+
+    const optionsObject = computed(() => toValue(options));
+
+    const limit = computed(() => optionsObject.value?.pagination?.limit ?? limitParam.value);
 
     // methods
 
     const handleInfiniteMany = async ({ limit, offset }: any) => {
-        const { data } = await axios.get<ApiPaginated<TResponse>>(`${resource}/`, {
+        const { data } = await axios.get<ApiPaginated<TResponse>>(`${customResource?.path}/`, {
             params: {
                 ...urlSearchParams?.value,
                 limit: limit,
@@ -55,18 +62,18 @@ const useInfiniteMany = <TResponse>({
     };
 
     return useInfiniteQuery<ApiPaginated<TResponse>, ApiError>({
-        queryKey: [resource, urlSearchParams ?? {}],
+        queryKey: [customResource?.name, urlSearchParams],
         queryFn: ({ pageParam }) => handleInfiniteMany(pageParam),
         initialPageParam: {
-            limit,
+            limit: limit.value,
             offset: 0,
         },
         getNextPageParam: (lastPage, pages) => {
             const page = pages.length + 1;
 
             const nextPageParams = {
-                offset: page * limit - limit,
-                limit,
+                offset: page * limit.value - limit.value,
+                limit: limit.value,
             };
 
             return lastPage?.next ? nextPageParams : undefined;

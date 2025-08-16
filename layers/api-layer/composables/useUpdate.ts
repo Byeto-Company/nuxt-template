@@ -6,7 +6,6 @@ import type { AxiosInstance, AxiosRequestConfig } from "axios";
 // types
 
 export type ApiUpdateResourceOptions<TResponse> = {
-    resource?: ApiResources;
     customResource?: {
         name?: string;
         path: string;
@@ -21,7 +20,6 @@ export type ApiUpdateResourceOptions<TResponse> = {
 };
 
 const useUpdate = <TResponse, TRequest>({
-    resource,
     urlSearchParams,
     axiosOptions,
     axiosInstance,
@@ -41,7 +39,7 @@ const useUpdate = <TResponse, TRequest>({
 
     const handleUpdate = async (variables: TRequest & { id: number | string }) => {
         const { data } = await axios.patch<TResponse>(
-            `${customResource ? customResource.path : resource}/${variables.id}`,
+            `${customResource?.path}/${variables.id}`,
             { ...variables, id: undefined },
             {
                 params: { ...urlSearchParams?.value },

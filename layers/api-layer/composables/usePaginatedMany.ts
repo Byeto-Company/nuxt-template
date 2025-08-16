@@ -6,19 +6,18 @@ import type { AxiosInstance, AxiosRequestConfig } from "axios";
 // types
 
 export type ApiPaginatedManyResourceOptions<TResponse> = {
-    resource?: ApiResources;
     customResource?: {
         name: string;
         path: string;
     };
     urlSearchParams?: ComputedRef<Record<any, any>>;
-    page: ComputedRef<number> | Ref<number>;
-    options?: {
+    options?: MaybeRefOrGetter<{
         pagination?: {
+            page?: number;
             limit?: number;
             initialOffset?: number;
         };
-    };
+    }>;
     axiosInstance?: AxiosInstance;
     axiosOptions?: Omit<AxiosRequestConfig, "params">;
     queryOptions?: Partial<Omit<UseQueryOptions<TResponse>, "queryKey" | "queryFn">>;
@@ -27,10 +26,8 @@ export type ApiPaginatedManyResourceOptions<TResponse> = {
 };
 
 const usePaginatedMany = <TResponse>({
-    resource,
     customResource,
     urlSearchParams,
-    page,
     options,
     queryOptions,
     axiosOptions,
@@ -41,33 +38,38 @@ const usePaginatedMany = <TResponse>({
     // state
 
     const { $axios: globalAxiosInstance } = useNuxtApp();
-
     const axios = axiosInstance ?? globalAxiosInstance;
 
-    const limit = options?.pagination?.limit ?? 10;
-    const initialOffset = options?.pagination?.initialOffset ?? 0;
+    const pageParam = useRouteQuery("page", "1", { transform: Number });
+    const limitParam = useRouteQuery("limit", "10", { transform: Number });
+    const offsetParam = useRouteQuery("offset", undefined, {
+        transform: (value) => (value ? Number(value) : undefined),
+    });
+
+    const optionsObject = computed(() => toValue(options));
+
+    const limit = computed(() => optionsObject.value?.pagination?.limit ?? limitParam.value);
+    const page = computed(() => optionsObject.value?.pagination?.initialOffset ?? pageParam.value);
+    const initialOffset = computed(() => optionsObject.value?.pagination?.initialOffset ?? offsetParam.value);
 
     // methods
 
     const handleMany = async () => {
-        const { data } = await axios.get<ApiPaginated<TResponse>>(
-            `${customResource ? customResource.path : resource}`,
-            {
-                params: {
-                    ...urlSearchParams?.value,
-                    limit: limit,
-                    offset: initialOffset ?? page.value * limit - limit,
-                },
-                ...axiosOptions,
-                authorization,
-            }
-        );
+        const { data } = await axios.get<ApiPaginated<TResponse>>(`${customResource?.path}`, {
+            params: {
+                ...urlSearchParams?.value,
+                limit: limit.value,
+                offset: initialOffset.value ?? page.value * limit.value - limit.value,
+            },
+            ...axiosOptions,
+            authorization,
+        });
 
         return data;
     };
 
     return useQuery<ApiPaginated<TResponse>, ApiError>({
-        queryKey: [customResource ? customResource.name : resource, urlSearchParams ?? {}, page],
+        queryKey: [customResource?.name, urlSearchParams, page],
         queryFn: () => handleMany(),
         meta: { handleError: handleError },
         ...queryOptions,

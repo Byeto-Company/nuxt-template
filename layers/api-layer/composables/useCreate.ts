@@ -6,7 +6,6 @@ import type { AxiosInstance, AxiosRequestConfig } from "axios";
 // types
 
 export type ApiCreateResourceOptions<TResponse> = {
-    resource?: ApiResources;
     customResource?: {
         name?: string;
         path: string;
@@ -21,7 +20,6 @@ export type ApiCreateResourceOptions<TResponse> = {
 };
 
 const useCreate = <TResponse, TRequest>({
-    resource,
     urlSearchParams,
     axiosOptions,
     mutationOptions,
@@ -40,7 +38,7 @@ const useCreate = <TResponse, TRequest>({
     // methods
 
     const handleCreate = async (variables: TRequest) => {
-        const { data } = await axios.post<TResponse>(`${customResource ? customResource.path : resource}`, variables, {
+        const { data } = await axios.post<TResponse>(`${customResource?.path}`, variables, {
             params: { ...urlSearchParams?.value },
             ...axiosOptions,
             headers: {

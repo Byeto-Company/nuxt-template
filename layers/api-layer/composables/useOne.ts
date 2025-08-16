@@ -6,8 +6,7 @@ import type { AxiosInstance, AxiosRequestConfig } from "axios";
 // types
 
 export type ApiOneResourceOptions<TResponse> = {
-    id?: Ref<string | number> | ComputedRef<string | number>;
-    resource?: ApiResources;
+    id?: MaybeRef<string | number>;
     customResource?: {
         name: string;
         path: string;
@@ -21,7 +20,6 @@ export type ApiOneResourceOptions<TResponse> = {
 };
 
 const useOne = <TResponse>({
-    resource,
     customResource,
     urlSearchParams,
     id,
@@ -40,20 +38,17 @@ const useOne = <TResponse>({
     // methods
 
     const handleOne = async () => {
-        const { data } = await axios.get<TResponse>(
-            `${customResource ? customResource.path : resource}${id ? "/" + id.value : ""}`,
-            {
-                params: { ...urlSearchParams?.value },
-                ...axiosOptions,
-                authorization,
-            }
-        );
+        const { data } = await axios.get<TResponse>(`${customResource?.path}${id ? "/" + unref(id) : ""}`, {
+            params: { ...urlSearchParams?.value },
+            ...axiosOptions,
+            authorization,
+        });
 
         return data;
     };
 
     return useQuery<TResponse, ApiError>({
-        queryKey: [customResource ? customResource.name : resource, id, urlSearchParams ?? {}],
+        queryKey: [customResource?.name, id, urlSearchParams],
         queryFn: () => handleOne(),
         meta: { handleError: handleError },
         ...queryOptions,

@@ -6,7 +6,6 @@ import type { AxiosInstance, AxiosRequestConfig } from "axios";
 // types
 
 export type ApiManyResourceOptions<TResponse> = {
-    resource?: ApiResources;
     customResource?: {
         name: string;
         path: string;
@@ -20,7 +19,6 @@ export type ApiManyResourceOptions<TResponse> = {
 };
 
 const useMany = <TResponse>({
-    resource,
     customResource,
     urlSearchParams,
     queryOptions,
@@ -38,7 +36,7 @@ const useMany = <TResponse>({
     // methods
 
     const handleMany = async () => {
-        const { data } = await axios.get<TResponse[]>(`${customResource ? customResource.path : resource}`, {
+        const { data } = await axios.get<TResponse[]>(`${customResource?.path}`, {
             params: {
                 ...urlSearchParams?.value,
             },
@@ -50,7 +48,7 @@ const useMany = <TResponse>({
     };
 
     return useQuery<TResponse[], ApiError>({
-        queryKey: [customResource ? customResource.name : resource, urlSearchParams ?? {}],
+        queryKey: [customResource?.name, urlSearchParams],
         queryFn: () => handleMany(),
         meta: { handleError: handleError },
         ...queryOptions,
