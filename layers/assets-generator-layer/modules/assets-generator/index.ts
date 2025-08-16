@@ -19,14 +19,20 @@ export default defineNuxtModule({
     },
 
     setup(moduleOptions, nuxt) {
-        const assetsList = Array.from(new Set([...moduleOptions.assets]));
-        const assetFolders = assetsList.map((assetFolder: string) => {
-            return path.join(__dirname, assetFolder);
-        });
-        const output = path.join(__dirname, moduleOptions.output);
-
-        const watcher = chokidar.watch(assetFolders, { ignored: /^\./, persistent: false, ignoreInitial: true });
         const logger = useLogger("assets-generator");
+
+        // resolve relative paths to project root
+        const assetsList = Array.from(new Set([...moduleOptions.assets]));
+
+        const assetFolders = assetsList.map((assetFolder: string) => path.resolve(nuxt.options.rootDir, assetFolder));
+
+        const output = path.resolve(nuxt.options.rootDir, moduleOptions.output);
+
+        const watcher = chokidar.watch(assetFolders, {
+            ignored: /^\./,
+            persistent: false,
+            ignoreInitial: true,
+        });
 
         const generate = () => {
             const assetsMap: Record<any, any> = {};
@@ -36,7 +42,7 @@ export default defineNuxtModule({
                     const files = fs.readdirSync(directory);
                     const relativeDirectoryPath = "/" + path.relative("public", directory);
 
-                    files.forEach(async (file) => {
+                    files.forEach((file) => {
                         if (!file.startsWith(".")) {
                             if (file.includes(".")) {
                                 const key = path.basename(file, path.extname(file)).toUpperCase().replaceAll("-", "_");
@@ -48,7 +54,7 @@ export default defineNuxtModule({
 
                                 if (Object.hasOwn(assetsMap[assetFolderKey], key)) {
                                     logger.error(`Assets conflicted. => ${relativeDirectoryPath}/${file}`);
-                                    await watcher.close();
+                                    watcher.close();
                                     process.exit(0);
                                 } else {
                                     assetsMap[assetFolderKey][key] = `${relativeDirectoryPath}/${file}`;
@@ -84,11 +90,11 @@ export default defineNuxtModule({
 
         generate();
 
-        watcher.on("all", function (path) {
+        watcher.on("all", () => {
             generate();
         });
 
-        nuxt.hook("close", async (nuxt) => {
+        nuxt.hook("close", async () => {
             await watcher.close();
         });
     },
