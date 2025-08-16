@@ -1,45 +1,59 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 // imports
 
 import { VueQueryDevtools } from "@tanstack/vue-query-devtools";
+import { ASSETS } from "./constants/assets";
+import * as ui_locales from "@nuxt/ui/locale";
 
-// meta
+// states
 
-useHead({
-    htmlAttrs: {
-        lang: "fa",
-        dir: "rtl",
-        class: "dark",
-    },
-});
+const { locale } = useI18n();
+
+const { dir, lang } = useAppLocale();
 
 useSeoMeta({
     titleTemplate: (titleChunk) => {
-        return titleChunk ? `${titleChunk} - Site Title` : "Site Title";
+        return titleChunk ? `${titleChunk} | Website` : "Website";
     },
+    viewport: {
+        initialScale: 1,
+        maximumScale: 1,
+        userScalable: "no",
+        width: "device-width",
+    },
+});
+
+useHead({
+    htmlAttrs: {
+        dir,
+        lang,
+        class: "dark",
+    },
+    bodyAttrs: { class: "bg-neutral-950" },
 });
 
 useServerSideAuthCheck();
 </script>
 
 <template>
-    <div>
-        <NuxtRouteAnnouncer />
+    <NuxtRouteAnnouncer />
+    <NuxtPwaManifest />
 
-        <NuxtLayout>
-            <UApp
-                :toaster="{
-                    position: 'bottom-center',
-                }"
-            >
+    <NuxtLayout>
+        <UApp
+            :locale="ui_locales[locale]"
+            :toaster="{ position: 'top-center', progress: false, expand: false }"
+            :tooltip="{ delayDuration: 0 }"
+        >
+            <div data-vaul-drawer-wrapper>
                 <NuxtPage />
-            </UApp>
-            <div dir="ltr">
-                <VueQueryDevtools
-                    dir="ltr"
-                    buttonPosition="bottom-left"
-                />
+                <div dir="ltr">
+                    <VueQueryDevtools
+                        dir="ltr"
+                        buttonPosition="bottom-left"
+                    />
+                </div>
             </div>
-        </NuxtLayout>
-    </div>
+        </UApp>
+    </NuxtLayout>
 </template>
