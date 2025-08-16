@@ -1,4 +1,3 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
     compatibilityDate: "2024-11-01",
     devtools: { enabled: true },
@@ -8,37 +7,32 @@ export default defineNuxtConfig({
         typeCheck: false,
     },
 
-    components: [
-        {
-            path: "~/components",
-            pathPrefix: false,
-        },
-    ],
-
     extends: [
         "./layers/pwa-layer",
         "./layers/utils-layer",
         "./layers/api-layer",
         "./layers/nuxt-ui-layer",
+        "./layers/i18n-layer",
         "./layers/auth-layer",
         "./layers/assets-generator-layer",
         "./layers/icons-layer",
-        "./layers/article-builder-layer",
     ],
+
+    image: {
+        quality: 85,
+        domains: [],
+    },
 
     modules: [
-        "@nuxt/icon",
         "@vueuse/nuxt",
         "@formkit/auto-animate/nuxt",
-        "@pinia/nuxt",
-        "@nuxt/ui",
         "motion-v/nuxt",
+        "@pinia/nuxt",
+        "@nuxt/image",
+        "@nuxtjs/i18n",
         "@nuxtjs/seo",
+        "@vite-pwa/nuxt",
     ],
-
-    sitemap: {
-        enabled: false,
-    },
 
     runtimeConfig: {
         public: {
