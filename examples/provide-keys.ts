@@ -1,5 +1,8 @@
-export const PROVIDE_KEYS = {
-    test: {
-        Test: Symbol("Test") as InjectionKey<any>,
-    },
-};
+// export const PROVIDE_KEYS = {
+//     reservation: {
+//         SelectedCells: Symbol("SelectedCells") as InjectionKey<{
+//             set: (value: Record<any, any>) => void;
+//             current: Ref<Record<any, any>[]>;
+//         }>,
+//     },
+// };
