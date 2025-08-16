@@ -1,32 +1,20 @@
 // imports
 
-import { useMutation } from "@tanstack/vue-query";
 import { API_ENDPOINTS } from "~/constants/api-endpoints";
 
 // types
 
-export type UpdateAccountRequest = any;
+export type UpdateAccountRequest = UpdateAccountProfile;
 
-export type UpdateAccountResponse = any;
+export type UpdateAccountResponse = AccountProfile;
 
 const useUpdateAccount = () => {
-    // state
-
-    const { $axios: axios } = useNuxtApp();
-
-    // methods
-
-    const handleUpdateAccount = async (variables: UpdateAccountRequest) => {
-        const { data } = await axios.patch<UpdateAccountResponse>(API_ENDPOINTS.user.profile, variables, {
-            headers: {
-                "Content-Type": "multipart/form-data",
-            },
-        });
-        return data;
-    };
-
-    return useMutation({
-        mutationFn: (variables: UpdateAccountRequest) => handleUpdateAccount(variables),
+    return useUpdate<UpdateAccountResponse, UpdateAccountRequest>({
+        customResource: {
+            path: API_ENDPOINTS.user.profile.path,
+        },
+        contentType: "form",
+        authorization: true,
     });
 };
 

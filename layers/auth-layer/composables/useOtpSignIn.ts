@@ -1,6 +1,5 @@
 // imports
 
-import { useMutation } from "@tanstack/vue-query";
 import { API_ENDPOINTS } from "~/constants/api-endpoints";
 
 // types
@@ -16,19 +15,10 @@ export type OtpSignInResponse = {
 };
 
 const useOtpSignIn = () => {
-    // state
-
-    const { $axios: axios } = useNuxtApp();
-
-    // methods
-
-    const handleOtpSignIn = async (variables: OtpSignInRequest) => {
-        const { data } = await axios.post<OtpSignInResponse>(API_ENDPOINTS.user.signin, variables);
-        return data;
-    };
-
-    return useMutation({
-        mutationFn: (variables: OtpSignInRequest) => handleOtpSignIn(variables)
+    return useCreate<OtpSignInResponse, OtpSignInRequest>({
+        customResource: {
+            path: API_ENDPOINTS.user.signin.path,
+        },
     });
 };
 

@@ -21,10 +21,10 @@ const useAuth = () => {
         refreshToken.value = newToken;
     };
 
-    const logout = (reload?: boolean) => {
+    const logout = async (reload?: boolean) => {
         token.value = undefined;
         refreshToken.value = undefined;
-        if (reload) window.location.reload();
+        if (reload) window.location.href = "/";
     };
 
     const checkAuth = async () => {

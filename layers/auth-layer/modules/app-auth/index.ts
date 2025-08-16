@@ -1,5 +1,6 @@
 import { createResolver, defineNuxtModule, extendPages } from "@nuxt/kit";
 import { defu } from "defu";
+import { addCustomTab } from "@nuxt/devtools-kit";
 
 type ModuleOptions = {
     internalPage: boolean;

@@ -1,7 +1,8 @@
 export default defineNuxtConfig({
     appAuth: {
-        internalPage: false,
+        internalPage: true,
         otpCount: 4,
         otpTimer: 60,
+        pagePath: "/signin",
     },
 });
