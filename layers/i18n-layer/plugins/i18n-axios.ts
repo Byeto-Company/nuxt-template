@@ -5,7 +5,7 @@ export default defineNuxtPlugin({
 
         axios.interceptors.request.use((config) => {
             // @ts-ignore
-            config.headers["Accept-Language"] = $i18n?.locale.value;
+            // config.headers["Accept-Language"] = $i18n?.locale.value;
 
             return config;
         });

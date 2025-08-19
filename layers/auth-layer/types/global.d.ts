@@ -1,7 +1,7 @@
 export {};
 
 declare global {
-    type AccountProfile = unknown;
+    type AccountProfile = unknown
 
     type UpdateAccountProfile = unknown
 }

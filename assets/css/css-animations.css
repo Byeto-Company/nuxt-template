@@ -1,7 +1,0 @@
-/* ANIMATIONS */
-
-@keyframes test {
-    to {
-        transform: translateX(50%);
-    }
-}

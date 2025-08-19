@@ -9,7 +9,9 @@ export default defineNuxtPlugin({
                 return response;
             },
             async function (error: ApiError) {
-                if (error.status === 401) logout();
+                if (error.status === 401) {
+                    await logout();
+                }
                 return Promise.reject(error);
             }
         );

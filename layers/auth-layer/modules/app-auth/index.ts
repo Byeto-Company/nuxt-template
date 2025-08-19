@@ -54,5 +54,23 @@ export default defineNuxtModule<ModuleOptions>({
                 });
             }
         }
+
+        extendPages((pages) => {
+            pages.unshift({
+                name: "devtools-auth-view",
+                path: "/devtools-auth-view",
+                file: resolver.resolve("runtime/templates/devtools-auth-view.vue"),
+            });
+        });
+
+        addCustomTab({
+            name: "app-auth",
+            title: "App Auth",
+            icon: "lucide:lock-keyhole",
+            view: {
+                type: "iframe",
+                src: "/devtools-auth-view",
+            },
+        });
     },
 });

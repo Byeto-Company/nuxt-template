@@ -30,7 +30,7 @@ export default defineNuxtConfig({
         manifest: {
             name: "Unique",
             short_name: "Unique",
-            theme_color: "#ffffff",
+            theme_color: "#000000",
             icons: [
                 {
                     src: "pwa-64x64.png",

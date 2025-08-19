@@ -1,5 +1,4 @@
 {
-<<<<<<< HEAD
     "name": "nuxt-app",
     "private": true,
     "type": "module",
@@ -66,62 +65,4 @@
         "typescript": "^5.8.3",
         "vue-tsc": "^3.0.1"
     }
-=======
-  "name": "nuxt-app",
-  "private": true,
-  "type": "module",
-  "scripts": {
-    "start": "node .output/server/index.mjs",
-    "build": "nuxt build",
-    "dev": "nuxt dev",
-    "dev-o": "nuxt dev -- -o",
-    "generate": "nuxt generate",
-    "preview": "nuxt preview",
-    "postinstall": "nuxt prepare",
-    "upgrade-check": "ncu",
-    "upgrade": "ncu -u"
-  },
-  "dependencies": {
-    "@formkit/auto-animate": "^0.8.2",
-    "@nuxt/icon": "^1.13.0",
-    "@nuxt/ui": "^3.1.3",
-    "@nuxtjs/google-fonts": "^3.2.0",
-    "@nuxtjs/seo": "^3.0.3",
-    "@pinia/nuxt": "^0.11.0",
-    "@tanstack/vue-query": "^5.77.2",
-    "@tanstack/vue-query-devtools": "^5.77.2",
-    "@vuelidate/core": "^2.0.3",
-    "@vuelidate/validators": "^2.0.4",
-    "@vueup/vue-quill": "^1.2.0",
-    "@vueuse/integrations": "^13.3.0",
-    "@vueuse/nuxt": "^13.3.0",
-    "@vueuse/router": "^13.5.0",
-    "axios": "^1.9.0",
-    "chokidar": "^4.0.3",
-    "date-fns-jalali": "^4.1.0-0",
-    "fast-average-color": "^9.5.0",
-    "gsap": "^3.13.0",
-    "lodash-es": "^4.17.21",
-    "motion-v": "^1.1.1",
-    "nuxt": "^3.17.4",
-    "pinia": "^3.0.2",
-    "sortablejs": "^1.15.6",
-    "swiper": "^11.2.8",
-    "universal-cookie": "^7.2.2",
-    "vue": "latest",
-    "vue-draggable-plus": "^0.6.0",
-    "vue-router": "latest",
-    "vue-skeletor": "^1.0.6",
-    "vue3-toastify": "^0.2.8",
-    "winston": "^3.17.0"
-  },
-  "devDependencies": {
-    "@tailwindcss/postcss": "^4.1.8",
-    "@types/lodash-es": "^4.17.12",
-    "@types/node": "^22.15.23",
-    "autoprefixer": "^10.4.21",
-    "postcss": "^8.5.3",
-    "tailwindcss": "^4.1.8"
-  }
->>>>>>> 0eb50ea03f304e3ee416d358a2f1fbc554d9c366
 }

@@ -1,16 +1,8 @@
 const useAppServices = () => {
-    const appStore = useAppStore();
-
-    // methods
-
-    const clearTokens = () => {
-        appStore.setToken("");
-        appStore.setRefreshToken("");
-    };
+    const useAppStore = useAppStore();
 
     return {
-        store: appStore,
-        clearTokens,
+        store: appStore
     };
 };
 
