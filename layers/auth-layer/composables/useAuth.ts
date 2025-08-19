@@ -7,6 +7,7 @@ const useAuth = () => {
 
     const { mutateAsync: refreshAuth } = useRefreshAuth();
     const { mutateAsync: verify } = useVerify();
+    const { mutateAsync: signOut } = useSignOut();
 
     const token = useCookie("token");
     const refreshToken = useCookie("refresh-token");
@@ -22,9 +23,12 @@ const useAuth = () => {
     };
 
     const logout = async (reload?: boolean) => {
-        token.value = undefined;
-        refreshToken.value = undefined;
-        if (reload) window.location.href = "/";
+        if (refreshToken.value) {
+            token.value = undefined;
+            refreshToken.value = undefined;
+            await signOut({ refresh_token: refreshToken.value! });
+            if (reload) window.location.href = "/";
+        }
     };
 
     const checkAuth = async () => {
