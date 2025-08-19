@@ -1,0 +1,9 @@
+export const useAppStore = defineStore("app", () => {
+    const test = ref("");
+
+    const setTest = (value: string) => {
+        test.value = value;
+    };
+
+    return { test,setTest };
+});

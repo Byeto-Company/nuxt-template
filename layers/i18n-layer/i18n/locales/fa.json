@@ -1,0 +1,14 @@
+{
+    "pages": {
+        "club": {
+            "club_prefix": "باشگاه",
+            "free_coach_chart_title": "جدول رزرو آموزشی",
+            "chart_info": {
+                "coach_fixed_reservation": "آموزش فیکسی",
+                "coach_reservation": "آموزش آزاد",
+                "reservation": "رزرو زمین"
+            },
+            "reservation_chart": {}
+        }
+    }
+}
