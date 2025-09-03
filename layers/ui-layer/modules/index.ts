@@ -2,19 +2,19 @@ import { createResolver, defineNuxtModule } from "@nuxt/kit";
 import { defu } from "defu";
 
 type ModuleOptions = {
-    theme: "sport" | "elegant" | "classic";
+    theme: "sport" | "classic" | "default";
 };
 
 export default defineNuxtModule<ModuleOptions>({
     meta: {
-        name: "app-ui",
-        configKey: "appUi",
+        name: "ui-module",
+        configKey: "uiModule",
     },
 
     async setup(moduleOptions, nuxt) {
         const resolver = createResolver(import.meta.url);
 
-        nuxt.options.runtimeConfig.public.appUi = defu(nuxt.options.runtimeConfig.public.appUi, {
+        nuxt.options.runtimeConfig.public.uiModule = defu(nuxt.options.runtimeConfig.public.uiModule, {
             theme: moduleOptions.theme,
         });
 

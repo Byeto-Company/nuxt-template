@@ -5,12 +5,4 @@ export default defineNuxtConfig({
             colors: ["primary", "secondary", "info", "success", "warning", "error"],
         },
     },
-    fonts: {
-        families: [
-            // {
-            //     name: "Peyda",
-            //     provider: "local",
-            // },
-        ],
-    },
 });

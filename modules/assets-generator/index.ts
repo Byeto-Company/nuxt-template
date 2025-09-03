@@ -9,8 +9,8 @@ const __dirname = path.dirname(__filename);
 
 export default defineNuxtModule({
     meta: {
-        name: "assets-generator",
-        configKey: "assetsGenerator",
+        name: "assets-generator-module",
+        configKey: "assetsGeneratorModule",
     },
 
     defaults: {

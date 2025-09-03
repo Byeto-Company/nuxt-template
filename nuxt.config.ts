@@ -15,7 +15,7 @@ export default defineNuxtConfig({
         "github:Byeto-Company/nuxt-auth-layer",
     ],
 
-    assetsGenerator: {
+    assetsGeneratorModule: {
         assets: ["public/img", "public/video"],
         output: "app/constants/assets.ts",
     },

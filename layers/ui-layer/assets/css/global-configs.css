@@ -28,10 +28,12 @@
     --font-weight-heavy: 1000;
 
     /* FONT FAMILY */
+    --font-peyda: "Peyda", sans-serif;
+    --font-morabba: "Morabba", sans-serif;
+    --font-yekanbakh: "YekanBakh", sans-serif;
     /* --font-lato: "Lato", sans-serif;
     --font-inter: "Inter", sans-serif;
     --font-dmsans: "DM Sans", sans-serif; */
-    --font-peyda: "Peyda", "sans-serif";
 
     /* BREAKPOINTS */
     --breakpoint-2xs: 400px;

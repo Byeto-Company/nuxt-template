@@ -11,9 +11,9 @@ export default defineNuxtConfig({
         plugins: [tailwindcss()],
     },
 
-    // appUi: {
-    //     theme: "sport",
-    // },
+    uiModule: {
+        theme: "sport",
+    },
 
     modules: ["@nuxt/ui", "@nuxt/fonts"],
 });
