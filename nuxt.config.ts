@@ -1,30 +1,29 @@
 export default defineNuxtConfig({
     compatibilityDate: "2024-11-01",
-    devtools: { enabled: true },
-    ssr: false,
-    css: ["~/assets/css/tailwind.css"],
+    devtools: {
+        enabled: true,
 
-    sitemap: {
-        enabled: false,
-    },
-
-    postcss: {
-        plugins: {
-            "@tailwindcss/postcss": {},
-            autoprefixer: {},
+        timeline: {
+            enabled: true,
         },
     },
+    ssr: true,
 
     extends: [
-        "./layers/pwa-layer",
-        "./layers/utils-layer",
-        "./layers/api-layer",
-        "./layers/nuxt-ui-layer",
-        "./layers/i18n-layer",
-        "./layers/auth-layer",
-        "./layers/assets-generator-layer",
-        "./layers/icons-layer",
+        "github:Byeto-Company/nuxt-utils-layer",
+        "github:Byeto-Company/nuxt-api-layer",
+        "github:Byeto-Company/nuxt-auth-layer",
     ],
+
+    assetsGeneratorModule: {
+        assets: ["public/img", "public/video"],
+        output: "app/constants/assets.ts",
+    },
+
+    appAuth: {
+        internalPage: true,
+        pagePath: "/signinn",
+    },
 
     image: {
         quality: 85,

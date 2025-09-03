@@ -1,0 +1,52 @@
+/* CONTAINER */
+
+@utility container {
+    @apply mx-auto px-[var(--app-container-padding)] w-full max-sm:max-w-[var(--breakpoint-xs)] max-md:max-w-[var(--breakpoint-sm)] max-lg:max-w-[var(--breakpoint-md)] max-xl:max-w-[var(--breakpoint-lg)] max-w-[var(--breakpoint-xl)];
+}
+
+/* FONT FEATURE */
+
+/* @utility custom-scrollbar {
+    @apply [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-neutral-800 [&::-webkit-scrollbar-thumb]:bg-neutral-600 [&::-webkit-scrollbar-thumb]:rounded-full;
+} */
+ 
+/* BACKGROUND IMAGE */
+
+@utility bg-image-* {
+    background-image: --value(--bg-image- *);
+}
+
+/* BACKGROUND IMAGE SIZE */
+
+@utility bg-size-* {
+    background-size: calc(--value(integer) * var(--spacing)) px;
+}
+
+/* TEXT GRADIENT */
+
+@utility text-gradient {
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* SCROLLBAR */
+
+@utility hide-scrollbar {
+    -ms-overflow-style: none !important;
+    scrollbar-width: none !important;
+}
+
+/* FLEX BOX HELPERS */
+
+@utility flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@utility flex-col-center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}

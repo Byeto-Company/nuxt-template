@@ -1,1 +1,0 @@
-export const ASSETS = { IMG : {  TEST : '/img/test.png',}, VIDEO : {  TEST : '/video/test.mp4',},}
