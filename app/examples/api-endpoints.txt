@@ -1,0 +1,8 @@
+{
+    product : {
+        category : {
+            key : "category",
+            path : "path/to/category/api"
+        }
+    }
+}

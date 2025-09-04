@@ -26,10 +26,12 @@ useHead({
     htmlAttrs: {
         dir,
         lang,
-        class: "dark persian-number font-peyda",
+        class: "",
     },
-    bodyAttrs: { class: "bg-neutral-950" },
+    bodyAttrs: { class: "" },
 });
+
+useServerSideAuthCheck();
 </script>
 
 <template>
@@ -42,14 +44,12 @@ useHead({
             :toaster="{ position: 'top-center', progress: false, expand: false }"
             :tooltip="{ delayDuration: 0 }"
         >
-            <div data-vaul-drawer-wrapper>
-                <NuxtPage />
-                <div dir="ltr">
-                    <VueQueryDevtools
-                        dir="ltr"
-                        buttonPosition="bottom-left"
-                    />
-                </div>
+            <NuxtPage />
+            <div dir="ltr">
+                <VueQueryDevtools
+                    dir="ltr"
+                    buttonPosition="bottom-left"
+                />
             </div>
         </UApp>
     </NuxtLayout>

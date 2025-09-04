@@ -3,12 +3,6 @@
 @utility container {
     @apply mx-auto px-[var(--app-container-padding)] w-full max-sm:max-w-[var(--breakpoint-xs)] max-md:max-w-[var(--breakpoint-sm)] max-lg:max-w-[var(--breakpoint-md)] max-xl:max-w-[var(--breakpoint-lg)] max-w-[var(--breakpoint-xl)];
 }
-
-/* FONT FEATURE */
-
-/* @utility custom-scrollbar {
-    @apply [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-neutral-800 [&::-webkit-scrollbar-thumb]:bg-neutral-600 [&::-webkit-scrollbar-thumb]:rounded-full;
-} */
  
 /* BACKGROUND IMAGE */
 

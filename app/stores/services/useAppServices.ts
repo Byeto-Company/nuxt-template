@@ -1,8 +1,8 @@
 const useAppServices = () => {
-    const useAppStore = useAppStore();
+    const appStore = useAppStore();
 
     return {
-        store: appStore
+        store: appStore,
     };
 };
 

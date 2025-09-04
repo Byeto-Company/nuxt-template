@@ -1,11 +1,7 @@
 export default defineNuxtConfig({
-    compatibilityDate: "2024-11-01",
+    compatibilityDate: "2025-09-04",
     devtools: {
         enabled: true,
-
-        timeline: {
-            enabled: true,
-        },
     },
     ssr: true,
 
@@ -15,19 +11,34 @@ export default defineNuxtConfig({
         "github:Byeto-Company/nuxt-auth-layer",
     ],
 
+    components: [
+        {
+            path: "~/components",
+            pathPrefix: false,
+            prefix: "App",
+        },
+    ],
+
     assetsGeneratorModule: {
         assets: ["public/img", "public/video"],
         output: "app/constants/assets.ts",
     },
 
-    appAuth: {
-        internalPage: true,
-        pagePath: "/signinn",
+    authModule: {
+        // Auth layer module configs
+    },
+
+    uiModule: {
+        theme: "default",
     },
 
     image: {
         quality: 85,
         domains: [],
+    },
+
+    typescript: {
+        includeWorkspace: true
     },
 
     modules: [
@@ -36,9 +47,7 @@ export default defineNuxtConfig({
         "motion-v/nuxt",
         "@pinia/nuxt",
         "@nuxt/image",
-        "@nuxtjs/i18n",
         "@nuxtjs/seo",
-        "@vite-pwa/nuxt",
     ],
 
     runtimeConfig: {

@@ -31,9 +31,6 @@
     --font-peyda: "Peyda", sans-serif;
     --font-morabba: "Morabba", sans-serif;
     --font-yekanbakh: "YekanBakh", sans-serif;
-    /* --font-lato: "Lato", sans-serif;
-    --font-inter: "Inter", sans-serif;
-    --font-dmsans: "DM Sans", sans-serif; */
 
     /* BREAKPOINTS */
     --breakpoint-2xs: 400px;
@@ -53,16 +50,8 @@
     --font-feature-ss10: "ss10";
 
     /* BACKGROUND IMAGES */
-    --bg-image-pattern-1: url("/img/pattern/pattern-1.png");
-    --bg-image-pattern-lines: url("/img/pattern/lines.svg");
-    --bg-image-pattern-hero: url("/img/pattern/hero.png");
+    /* --bg-image-pattern-1: url("/img/pattern/pattern-1.png"); */
 
     /* ANIMATIONS */
-    --animate-marquee: marquee 3s linear infinite;
-
-    @keyframes marquee {
-        to {
-            transform: translateX(50%);
-        }
-    }
+    /* --animate-marquee: marquee 3s linear infinite; */
 }

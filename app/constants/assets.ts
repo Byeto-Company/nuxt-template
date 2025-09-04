@@ -1,1 +1,1 @@
-export const ASSETS = { IMG : {  SADWQE : '/img/sadwqe.jpg',},}
+export const ASSETS = {}
