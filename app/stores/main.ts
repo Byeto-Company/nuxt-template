@@ -1,4 +1,4 @@
-export const useAppStore = defineStore("app", () => {
+export const useMainStore = defineStore("main", () => {
     const test = ref("");
 
     const setTest = (value: string) => {
