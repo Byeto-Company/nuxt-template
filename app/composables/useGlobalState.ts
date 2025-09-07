@@ -1,4 +1,4 @@
-import { STATE_KEYS } from "~/constants/state-keys";
+import { STATE_KEYS } from "~/constants";
 
 export type GlobalStateKey<T> = {
     key: string;

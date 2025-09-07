@@ -1,4 +1,4 @@
-import { BUS_EVENTS } from "~/constants/bus-events";
+import { BUS_EVENTS } from "~/constants";
 
 const useDefineBus = ({ eventKey, id, cb }: { eventKey: keyof typeof BUS_EVENTS; id?: string; cb: Function }) => {
     const { $bus: bus } = useNuxtApp();
