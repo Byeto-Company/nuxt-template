@@ -8,6 +8,6 @@
 @import "./global-configs.css";
 
 /* Selected Theme tailwind config file */
-/* @import "../../themes/default/assets/css/tailwind.css"; */
+@import "../../themes/default/assets/css/tailwind.css";
 
-@source "../..";
+@source "../../../..";

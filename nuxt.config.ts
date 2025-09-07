@@ -28,17 +28,13 @@ export default defineNuxtConfig({
         // Auth layer module configs
     },
 
-    uiModule: {
-        theme: "default",
-    },
-
     image: {
         quality: 85,
         domains: [],
     },
 
     typescript: {
-        includeWorkspace: true
+        includeWorkspace: true,
     },
 
     modules: [

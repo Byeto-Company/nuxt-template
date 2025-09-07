@@ -7,7 +7,7 @@ export default defineNuxtConfig({
         //         dir: "layers/icons-layer/public/icons",
         //     },
         // ],
-        iconifyApiEndpoint: "https://icon-server.time4reserve.ir/",
+        iconifyApiEndpoint: process.env.API_ICONS_URL || "https://icon-server.time4reserve.ir/",
         // fallbackToApi : false
     },
     modules: ["@nuxt/icon"],

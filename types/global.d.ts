@@ -1,11 +1,11 @@
 export {};
 
 declare global {
-  type AccountProfile = {
-    name: string;
-  };
+    type AccountProfile = {
+        name: string;
+    };
 
-  type UpdateAccountProfile = {
-    name: string;
-  };
+    type UpdateAccountProfile = {
+        name: string;
+    };
 }

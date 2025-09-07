@@ -1,1 +1,1 @@
-export * from "./useMainServices"
+export * from "./useMainServices";
