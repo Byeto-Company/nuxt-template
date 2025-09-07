@@ -24,9 +24,24 @@ export default defineNuxtModule({
         // resolve relative paths to project root
         const assetsList = Array.from(new Set([...moduleOptions.assets]));
 
-        const assetFolders = assetsList.map((assetFolder: string) => path.resolve(nuxt.options.rootDir, assetFolder));
+        const assetFolders = assetsList.map((assetFolder: string) =>
+            path.resolve(nuxt.options.rootDir, assetFolder)
+        );
 
         const output = path.resolve(nuxt.options.rootDir, moduleOptions.output);
+
+        /**
+         * Ensure that all required directories exist
+         */
+        const ensureDirExists = (dirPath: string) => {
+            if (!fs.existsSync(dirPath)) {
+                fs.mkdirSync(dirPath, { recursive: true });
+                logger.info(`Created missing directory: ${dirPath}`);
+            }
+        };
+
+        // Make sure asset folders exist
+        assetFolders.forEach(ensureDirExists);
 
         const watcher = chokidar.watch(assetFolders, {
             ignored: /^\./,
