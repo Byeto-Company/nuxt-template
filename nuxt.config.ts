@@ -9,6 +9,7 @@ export default defineNuxtConfig({
         "github:Byeto-Company/nuxt-utils-layer",
         "github:Byeto-Company/nuxt-api-layer",
         "github:Byeto-Company/nuxt-auth-layer",
+        "github:Byeto-Company/nuxt-assets-generator-layer",
     ],
 
     components: [
@@ -33,6 +34,18 @@ export default defineNuxtConfig({
         domains: [],
     },
 
+    icon: {
+        cssLayer: "base",
+        // customCollections: [
+        //     {
+        //         prefix: "ci",
+        //         dir: "layers/icons-layer/public/icons",
+        //     },
+        // ],
+        iconifyApiEndpoint: process.env.API_ICONS_URL || "https://icon-server.time4reserve.ir/",
+        // fallbackToApi : false
+    },
+
     typescript: {
         includeWorkspace: true,
     },
@@ -44,6 +57,7 @@ export default defineNuxtConfig({
         "@pinia/nuxt",
         "@nuxt/image",
         "@nuxtjs/seo",
+        "@nuxt/icon"
     ],
 
     runtimeConfig: {
