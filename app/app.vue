@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 // imports
 
-import { VueQueryDevtools } from "@tanstack/vue-query-devtools";
 import * as ui_locales from "@nuxt/ui/locale";
 
 // states
@@ -18,20 +17,18 @@ useSeoMeta({
         initialScale: 1,
         maximumScale: 1,
         userScalable: "no",
-        width: "device-width",
-    },
+        width: "device-width"
+    }
 });
 
 useHead({
     htmlAttrs: {
         dir,
         lang,
-        class: "",
+        class: ""
     },
-    bodyAttrs: { class: "" },
+    bodyAttrs: { class: "" }
 });
-
-useServerSideAuthCheck();
 </script>
 
 <template>
@@ -44,13 +41,11 @@ useServerSideAuthCheck();
             :toaster="{ position: 'top-center', progress: false, expand: false }"
             :tooltip="{ delayDuration: 0 }"
         >
-            <NuxtPage />
-            <div dir="ltr">
-                <VueQueryDevtools
-                    dir="ltr"
-                    buttonPosition="bottom-left"
-                />
-            </div>
+            <ApiLayerWrapper dir="ltr">
+                <AuthLayerWrapper>
+                    <NuxtPage />
+                </AuthLayerWrapper>
+            </ApiLayerWrapper>
         </UApp>
     </NuxtLayout>
 </template>
