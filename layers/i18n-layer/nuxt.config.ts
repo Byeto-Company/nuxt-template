@@ -2,7 +2,7 @@ export default defineNuxtConfig({
     modules: ["@nuxtjs/i18n"],
 
     i18n: {
-        // strategy: "prefix",
+        strategy: "prefix_except_default",
         // detectBrowserLanguage: false,
         defaultLocale: "fa_ir",
         locales: [

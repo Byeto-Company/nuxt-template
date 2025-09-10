@@ -6,8 +6,8 @@ export const useAppLocale = () => {
     const { $queryClient: queryClient } = useNuxtApp();
     const { locales, setLocale, locale } = useI18n();
 
-    const lang = computed(() => ui_locales[locale.value].code);
-    const dir = computed(() => ui_locales[locale.value].dir);
+    const lang = computed(() => ui_locales[locale.value == "fa" ? "fa_ir" : locale.value].code);
+    const dir = computed(() => ui_locales[locale.value == "fa" ? "fa_ir" : locale.value].dir);
 
     // computed
 
