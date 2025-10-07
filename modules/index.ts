@@ -1,6 +1,9 @@
 import { createResolver, defineNuxtModule, extendPages, useLogger } from "@nuxt/kit";
 import path from "path";
 import fs from "fs/promises";
+import { exec, spawn } from "child_process";
+import util from "util";
+
 // import { defu } from "defu";
 // import { addCustomTab } from "@nuxt/devtools-kit";
 
@@ -19,18 +22,20 @@ export default defineNuxtModule<ModuleOptions>({
         const resolver = createResolver(import.meta.url);
         const logger = useLogger("nuxt-template-module");
 
-        // const themeLayerPath = `../themes/${moduleOptions.theme ?? "default"}`;
+        // Read packages from root directory
 
-        // nuxt.options._layers.push({
-        //     cwd: resolver.resolve(themeLayerPath),
-        //     config: {
-        //         rootDir: resolver.resolve(themeLayerPath),
-        //         srcDir: resolver.resolve(themeLayerPath),
-        //     },
-        //     configFile: resolver.resolve(`${themeLayerPath}/nuxt.config.ts`),
-        // });
+        const currentProjectPackagesList = [];
 
-        const packagesList = new Set();
+        const packageJsonContent = await fs.readFile(path.join(nuxt.options.rootDir, "package.json"), "utf-8");
+        const parsedPackageJsonContent = JSON.parse(packageJsonContent);
+
+        for (const dependency of Object.keys(parsedPackageJsonContent.dependencies)) {
+            currentProjectPackagesList.push(dependency);
+        }
+
+        // Read packages from each layer
+
+        const packagesList = new Set<string>();
 
         for (const layer of nuxt.options._layers) {
             const parentFolderPath = path.dirname(layer.config.rootDir);
@@ -41,13 +46,51 @@ export default defineNuxtModule<ModuleOptions>({
                 const packageJsonContent = await fs.readFile(packageJsonPath, "utf-8");
                 const parsedPackageJsonContent = JSON.parse(packageJsonContent);
 
-                Object.keys(parsedPackageJsonContent.dependencies).forEach((key) => {
-                    console.log(key);
-                    packagesList.add(key);
-                });
+                for (const dependency of Object.keys(parsedPackageJsonContent.dependencies)) {
+                    packagesList.add(dependency);
+                    console.log(`${layer.config.rootDir} - ${dependency}`);
+                }
             }
         }
-        
-        // testLayer?.config.rootDir;
+
+        const packagesToInstall: string[] = [];
+
+        const arrayOfLayersPackages = Array.from(packagesList);
+
+        for (const dependency of arrayOfLayersPackages) {
+            if (currentProjectPackagesList.includes(dependency)) {
+                console.log(`${dependency} is installed.`);
+            } else {
+                packagesToInstall.push(dependency);
+                console.log(`${dependency} should install!`);
+            }
+        }
+
+        const installPackages = () => {
+            return new Promise((resolve, reject) => {
+                const spawnProcess = spawn(`bun`, ["add", ...packagesToInstall, "--ignore-scripts"], {
+                    stdio: "inherit",
+                    shell: true,
+                });
+
+                spawnProcess.on("error", (err) => {
+                    reject(err);
+                });
+
+                spawnProcess.on("close", (code) => {
+                    if (code === 0) {
+                        resolve("ok"); // success
+                    } else {
+                        reject(new Error(`Command failed with exit code ${code}`));
+                    }
+                });
+            });
+        };
+
+        if (packagesToInstall.length > 0) {
+            await installPackages();
+        } else {
+            logger.box("All dependencies are installed");
+        }
     },
 });
