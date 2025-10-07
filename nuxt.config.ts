@@ -26,7 +26,40 @@ export default defineNuxtConfig({
     },
 
     authModule: {
-        // Auth layer module configs
+        endpoints: {
+            develop_token: {
+                name: "",
+                path: "/user/develop_token",
+            },
+            logout: {
+                name: "",
+                path: "/user/logout",
+            },
+            otp: {
+                name: "",
+                path: "/user/send_otp",
+            },
+            profile: {
+                name: "",
+                path: "/user/profile",
+            },
+            refresh: {
+                name: "",
+                path: "/user/token/refresh",
+            },
+            signin: {
+                name: "",
+                path: "/user/token",
+            },
+            update: {
+                name: "",
+                path: "/user/profile",
+            },
+            verify: {
+                name: "",
+                path: "/user/verify",
+            },
+        },
     },
 
     image: {
@@ -57,7 +90,7 @@ export default defineNuxtConfig({
         "@pinia/nuxt",
         "@nuxt/image",
         "@nuxtjs/seo",
-        "@nuxt/icon"
+        "@nuxt/icon",
     ],
 
     runtimeConfig: {
