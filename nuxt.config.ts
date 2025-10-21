@@ -10,6 +10,7 @@ export default defineNuxtConfig({
         "github:Byeto-Company/nuxt-api-layer",
         "github:Byeto-Company/nuxt-auth-layer",
         "github:Byeto-Company/nuxt-assets-generator-layer",
+        "github:Byeto-Company/nuxt-dependency-checker-layer",
     ],
 
     components: [
@@ -75,7 +76,7 @@ export default defineNuxtConfig({
         //         dir: "layers/icons-layer/public/icons",
         //     },
         // ],
-        iconifyApiEndpoint: process.env.API_ICONS_URL || "https://icon-server.time4reserve.ir/",
+        // iconifyApiEndpoint: process.env.API_ICONS_URL || "https://icon-server.time4reserve.ir/",
         // fallbackToApi : false
     },
 
