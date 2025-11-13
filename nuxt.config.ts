@@ -10,7 +10,6 @@ export default defineNuxtConfig({
         "github:Byeto-Company/nuxt-api-layer",
         "github:Byeto-Company/nuxt-auth-layer",
         "github:Byeto-Company/nuxt-assets-generator-layer",
-        "github:Byeto-Company/nuxt-dependency-checker-layer",
     ],
 
     components: [
@@ -96,7 +95,7 @@ export default defineNuxtConfig({
 
     runtimeConfig: {
         public: {
-            API_BASE_URL: process.env.API_BASE_URL || "https://api.alavihospital.ir",
+            API_BASE_URL: process.env.API_BASE_URL || "http://localhost:8000",
             DEBUG: process.env.DEBUG,
         },
     },
