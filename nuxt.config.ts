@@ -6,10 +6,10 @@ export default defineNuxtConfig({
     ssr: true,
 
     extends: [
-        "github:Byeto-Company/nuxt-utils-layer",
-        "github:Byeto-Company/nuxt-api-layer",
-        "github:Byeto-Company/nuxt-auth-layer",
-        "github:Byeto-Company/nuxt-assets-generator-layer",
+        "@byeto/nuxt-utils-layer",
+        "@byeto/nuxt-api-layer",
+        "@byeto/nuxt-auth-layer",
+        "@byeto/nuxt-assets-generator-layer",
     ],
 
     components: [
